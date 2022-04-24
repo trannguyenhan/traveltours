@@ -1,17 +1,7 @@
-## Install: 
+## Backend:
 
-If file `.env` not auto create, create `.env` file with command: 
+Backend write with Laravel framework in traveltours-backend folder
 
-```bash
-cp .env.example .env
-```
+## Frontend: 
 
-Import database and config `DATABASE` in `.env` file.
-Load vendor for Laravel: 
-
-```bash
-composer update
-composer install
-```
-
-
+Frontend write with Vuejs framework in traveltours-frontend folder
