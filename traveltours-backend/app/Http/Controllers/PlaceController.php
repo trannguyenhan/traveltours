@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\PlaceRepository;
 use App\Http\Requests\Base\IdRequest;
+use App\Http\Requests\Place\StoreRequest;
+use App\Http\Requests\Place\UpdateRequest;
 use App\Models\Place;
 
 class PlaceController extends Controller

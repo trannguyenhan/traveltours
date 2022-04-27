@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -54,5 +56,25 @@ Route::group([
         Route::get('/profile', [UserController::class, 'me']);
         Route::post('change-password', [UserController::class, 'changePassword'])->name('change')
             ->middleware(MID_ROLE_ADMIN_OWN);
+    });
+
+    Route::group(['prefix' => '/place'], function () {
+        Route::get('/listing', [PlaceController::class, 'listing']);
+        Route::get('/store', [PlaceController::class, 'store'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::get('/update', [PlaceController::class, 'update'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::get('/delete', [PlaceController::class, 'delete'])
+            ->middleware(MID_ROLE_ADMIN);
+    });
+
+    Route::group(['prefix' => '/review'], function () {
+        Route::get('/listing', [ReviewController::class, 'listing']);
+        Route::get('/store', [ReviewController::class, 'store'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::get('/update', [ReviewController::class, 'update'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::get('/delete', [ReviewController::class, 'delete'])
+            ->middleware(MID_ROLE_ADMIN);
     });
 });
