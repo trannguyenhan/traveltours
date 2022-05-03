@@ -92,6 +92,7 @@
           :rules="rules"
           hide-details="auto"
         />
+        <br />
         <v-btn depressed color="primary" @click="updatePassword()">
           Cập nhật mật khẩu
         </v-btn>
