@@ -8,7 +8,7 @@ use App\Http\Requests\Tour\StoreRequest;
 use App\Http\Requests\Tour\UpdateRequest;
 use App\Models\Tour;
 
-class TourController extends Controller
+class TourController extends BaseController
 {
     public function __construct(TourRepository $repository)
     {

@@ -67,6 +67,15 @@ abstract class BaseRepository
         return \App\Helper::successResponseList($result, $total);
     }
 
+    public function detail($id): JsonResponse
+    {
+        $query = (new $this->_model)->query(); // create new query
+        $query = $this->relationships($query);
+        $modelDetail = $query->find($id);
+
+        return \App\Helper::successResponse($modelDetail);
+    }
+
     // filter by keyword
     public function search($query, $keyword){
         if($keyword == null) {

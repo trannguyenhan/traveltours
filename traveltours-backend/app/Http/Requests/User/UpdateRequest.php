@@ -37,12 +37,6 @@ class UpdateRequest extends FormRequest
                         $fail("Đã tồn tại tài khoản sử dụng email này");
                     }
                 }
-            ],
-            'roles' => 'required|exists:roles,name',
-            'password' => [
-                'string',
-                'required',
-                'max:255'
             ]
         ];
     }

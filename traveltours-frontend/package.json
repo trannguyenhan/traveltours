@@ -1,0 +1,43 @@
+{
+  "name": "tourino",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "vue-cli-service serve",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "babel-eslint": "^10.1.0",
+    "core-js": "^3.6.5",
+    "date-fns": "^2.16.1",
+    "qs": "^6.9.4",
+    "vue": "^2.6.12",
+    "vue-router": "^3.4.5",
+    "vue-stack-grid": "^1.2.1",
+    "vuetify": "^2.3.13",
+    "vuex": "^3.5.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.6",
+    "@vue/cli-plugin-router": "^4.5.6",
+    "@vue/cli-plugin-vuex": "^4.5.6",
+    "@vue/cli-service": "^4.5.6",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-import-resolver-webpack": "^0.12.2",
+    "eslint-loader": "^4.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "prettier": "^2.1.2",
+    "sass": "^1.26.12",
+    "sass-loader": "^8.0.0",
+    "vue-cli-plugin-vuetify": "^2.0.7",
+    "vue-template-compiler": "^2.6.12",
+    "vuetify-loader": "^1.6.0"
+  }
+}

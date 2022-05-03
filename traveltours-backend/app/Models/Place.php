@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Place extends Model
 {
@@ -18,8 +18,8 @@ class Place extends Model
         'images' => 'array'
     ];
 
-    public function reviews(): BelongsToMany
+    public function reviews(): HasMany
     {
-        return $this->belongsToMany(Review::class, 'place_review');
+        return $this->hasMany(Review::class);
     }
 }

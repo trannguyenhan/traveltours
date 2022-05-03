@@ -1,0 +1,156 @@
+<template>
+  <div v-if="currentUser" class="user-profile">
+    <v-card class="mx-auto">
+      <v-navigation-drawer
+        v-if="$vuetify.breakpoint.mdAndUp"
+        v-model="drawer"
+        :mini-variant="mini"
+        mobile-breakpoint="960"
+        dark
+        permanent
+      >
+        <template v-slot:img>
+          <v-img
+            src="https://demos.creative-tim.com/material-dashboard-pro/assets/img/sidebar-1.jpg"
+            gradient="360deg,rgba(25,32,72,.2), rgba(25,32,72,0.9)"
+            height="100%"
+          />
+        </template>
+
+        <v-row>
+          <v-col align="center">
+            <div v-if="!mini">
+              <v-avatar class="my-4" size="150">
+                <img :src="currentUser.avatar" alt="" />
+              </v-avatar>
+              <p class="white--text text-h5">{{ currentUser.username }}</p>
+              <p class="white--text">{{ currentUser.email }}</p>
+            </div>
+            <v-avatar v-else>
+              <img :src="currentUser.avatar" alt="" />
+            </v-avatar>
+          </v-col>
+        </v-row>
+
+        <v-divider class="mb-2" />
+
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            link
+            @click="changeItem(item)"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <template v-slot:append>
+          <div class="pa-2">
+            <v-btn block @click="logout()"> Logout </v-btn>
+          </div>
+        </template>
+      </v-navigation-drawer>
+    </v-card>
+    <div class="profile-information">
+      <div v-if="item === 1">
+        <v-text-field
+          v-model="currentUser.username"
+          label="Username"
+          :rules="rules"
+          hide-details="auto"
+          disabled
+        />
+        <v-text-field
+          v-model="currentUser.email"
+          label="Email"
+          :rules="rules"
+          hide-details="auto"
+          disabled
+        />
+        <v-text-field
+          v-model="currentUser.name"
+          label="Tên"
+          :rules="rules"
+          hide-details="auto"
+        />
+        <br />
+        <v-btn depressed color="primary" @click="updateProfile()">
+          Cập nhật
+        </v-btn>
+      </div>
+      <div v-if="item === 3">
+        <v-text-field label="Mật khẩu" :rules="rules" hide-details="auto" />
+        <v-text-field
+          label="Nhập lại mật khẩu"
+          :rules="rules"
+          hide-details="auto"
+        />
+        <v-btn depressed color="primary" @click="updatePassword()">
+          Cập nhật mật khẩu
+        </v-btn>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { mapGetters } from 'vuex';
+  import { UPDATE_USER, LOGOUT } from '@/store/type/actions';
+
+  export default {
+    data: () => ({
+      drawer: true,
+      mini: false,
+      item: 1,
+      items: [
+        { title: 'My Profile', icon: 'mdi-heart', id: 1 },
+        { title: 'My Tours', icon: 'mdi-star', id: 2 },
+        { title: 'Password', icon: 'mdi-lock', id: 3 },
+      ],
+      rules: [
+        (value) => !!value || 'Required.',
+        (value) => (value && value.length >= 3) || 'Min 3 characters',
+      ],
+    }),
+    computed: {
+      ...mapGetters(['currentUser']),
+    },
+
+    methods: {
+      updateProfile() {
+        this.$store.dispatch(UPDATE_USER, this.currentUser);
+      },
+
+      changeItem(iitem) {
+        this.item = iitem.id;
+      },
+
+      logout() {
+        this.$store.dispatch(LOGOUT);
+        this.$router.go();
+      },
+      updatePassword() {},
+    },
+  };
+</script>
+
+<style scoped>
+  .user-profile {
+    max-width: 960px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .profile-information {
+    margin-top: 5%;
+    width: 60%;
+  }
+</style>

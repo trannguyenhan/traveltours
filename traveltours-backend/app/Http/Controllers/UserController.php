@@ -91,10 +91,13 @@ class UserController extends BaseController
     public function update(UpdateRequest $request){
         $name = $request->input('name');
         $id = $request->input('id');
-        $role = $request->input('roles');
-        $password = $request->input('password');
+        $avatar = $request->input('avatar');
 
-        return $this->repository->doUpdate(['name' => $name, 'id' => $id, 'roles' => $role, 'password' => bcrypt($password)]);
+        return $this->repository->doUpdate([
+            'name' => $name,
+            'id' => $id,
+            'avatar' => $avatar
+        ]);
     }
 
     /**

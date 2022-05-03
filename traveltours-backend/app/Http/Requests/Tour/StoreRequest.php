@@ -13,6 +13,8 @@ class StoreRequest extends BaseRequest
         'start_date' => 'required',
         'slot' => 'required|numeric',
         'vehicle' => 'required|string|max:255',
-        'hotel_star' => 'numeric'
+        'hotel_star' => 'numeric',
+        'categories' => 'array',
+        'categories.*' => 'numeric'
     ];
 }

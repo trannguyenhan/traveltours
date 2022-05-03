@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Base\IdRequest;
 use Illuminate\Http\Request;
 
 class BaseController extends Controller
@@ -18,6 +19,10 @@ class BaseController extends Controller
         $orderBy = $this->getSortBy($request);
 
         return $this->repository->doList($keyWord, $page, $pageSize, $orderBy, $orderType);
+    }
+
+    public function detail(Request $request, $id){
+        return $this->repository->detail($id);
     }
 
     /**

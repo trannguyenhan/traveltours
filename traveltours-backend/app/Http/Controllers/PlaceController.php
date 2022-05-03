@@ -8,7 +8,7 @@ use App\Http\Requests\Place\StoreRequest;
 use App\Http\Requests\Place\UpdateRequest;
 use App\Models\Place;
 
-class PlaceController extends Controller
+class PlaceController extends BaseController
 {
     public function __construct(PlaceRepository $repository)
     {

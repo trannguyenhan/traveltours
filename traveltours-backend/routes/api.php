@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TourController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,7 +60,6 @@ Route::group([
     });
 
     Route::group(['prefix' => '/place'], function () {
-        Route::get('/listing', [PlaceController::class, 'listing']);
         Route::get('/store', [PlaceController::class, 'store'])
             ->middleware(MID_ROLE_ADMIN);
         Route::get('/update', [PlaceController::class, 'update'])
@@ -69,7 +69,6 @@ Route::group([
     });
 
     Route::group(['prefix' => '/review'], function () {
-        Route::get('/listing', [ReviewController::class, 'listing']);
         Route::get('/store', [ReviewController::class, 'store'])
             ->middleware(MID_ROLE_ADMIN);
         Route::get('/update', [ReviewController::class, 'update'])
@@ -77,4 +76,19 @@ Route::group([
         Route::get('/delete', [ReviewController::class, 'delete'])
             ->middleware(MID_ROLE_ADMIN);
     });
+
+    Route::group(['prefix' => '/tour'], function () {
+        Route::get('/store', [TourController::class, 'store'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::get('/update', [TourController::class, 'update'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::get('/delete', [TourController::class, 'delete'])
+            ->middleware(MID_ROLE_ADMIN);
+    });
 });
+
+Route::get('review//listing', [ReviewController::class, 'listing']);
+Route::get('tour/listing', [TourController::class, 'listing']);
+Route::get('place/listing', [PlaceController::class, 'listing']);
+
+Route::get('tour/detail/{id}', [TourController::class, 'detail']);

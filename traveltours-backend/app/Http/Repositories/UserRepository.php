@@ -131,8 +131,6 @@ class UserRepository extends BaseRepository
         if($model != null){
             $model->fill($arr);
             if($model->save()){
-                $role = $arr['roles'];
-                $model->syncRoles([$role]);
                 return \App\Helper::successResponse($model);
             }
         }

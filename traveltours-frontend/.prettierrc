@@ -1,0 +1,7 @@
+{
+  "singleQuote": true,
+  "prettier.eslintIntegration": true,
+  "vueIndentScriptAndStyle": true,
+  "jsxSingleQuote": true,
+  "printWidth": 80
+}

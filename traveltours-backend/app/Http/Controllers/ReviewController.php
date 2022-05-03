@@ -8,7 +8,7 @@ use App\Http\Requests\Review\StoreRequest;
 use App\Http\Requests\Review\UpdateRequest;
 use App\Models\Review;
 
-class ReviewController extends Controller
+class ReviewController extends BaseController
 {
     public function __construct(ReviewRepository $repository)
     {
