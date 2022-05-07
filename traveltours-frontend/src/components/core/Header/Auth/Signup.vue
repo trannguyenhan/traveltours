@@ -13,6 +13,16 @@
           color="secondary"
         />
         <v-text-field
+          v-model="username"
+          label="Username"
+          name="username"
+          prepend-icon="mdi-account-plus"
+          type="text"
+          clearable
+          autofocus
+          color="secondary"
+        />
+        <v-text-field
           v-model="email"
           label="Email"
           name="email"
@@ -83,6 +93,7 @@
     data: () => ({
       showPass: false,
       name: null,
+      username: null,
       email: null,
       password: null,
       passwordConfirm: null,
@@ -94,13 +105,13 @@
           .dispatch(REGISTER, {
             name: this.name,
             email: this.email,
+            username: this.username,
             password: this.password,
             passwordConfirm: this.passwordConfirm,
             photo: this.photo,
           })
           .then(() => {
-            if (this.$route.path.includes('/authentication'))
-              this.$router.push('/');
+            this.$router.push({ path: '/authentication' });
           });
       },
     },

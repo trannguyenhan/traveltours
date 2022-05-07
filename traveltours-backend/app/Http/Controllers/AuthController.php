@@ -46,6 +46,7 @@ class AuthController extends Controller
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
                 'status' => User::ACTIVE,
+                'avatar' => $request->input('avatar')
             ]
         );
 

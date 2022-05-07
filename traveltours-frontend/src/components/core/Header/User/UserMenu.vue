@@ -11,7 +11,7 @@
       </v-avatar>
     </template>
 
-    <div>
+    <div class="menu-nav">
       <v-list
         class="rounded-tr-xl rounded-bl-xl"
         rounded
@@ -36,6 +36,9 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
+        <div class="pa-2">
+          <v-btn block @click="logout()"> Logout </v-btn>
+        </div>
       </v-list>
     </div>
   </v-menu>
@@ -50,12 +53,7 @@
   export default {
     data: () => ({
       menu: false,
-      items: [
-        { title: 'My Profile', icon: 'mdi-heart', route: '' },
-        { title: 'My Tours', icon: 'mdi-star' },
-        { title: 'Password', icon: 'mdi-lock' },
-        { title: 'Log Out', icon: 'mdi-logout' },
-      ],
+      items: [{ title: 'My Profile', icon: 'mdi-heart', route: '' }],
 
       H3T_GLOBAL_TRANSITION: APP_GLOBAL_TRANSITION,
     }),
@@ -69,13 +67,14 @@
           case 0:
             this.$router.push('/User/Profile');
             break;
-          case 3:
-            this.$store.dispatch(LOGOUT);
-            if (this.$route.name !== 'Home') this.$router.push('/');
-            break;
           default:
         }
         this.menu = false;
+      },
+
+      logout() {
+        this.$store.dispatch(LOGOUT);
+        this.$router.go();
       },
     },
   };

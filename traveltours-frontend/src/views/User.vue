@@ -86,12 +86,8 @@
         </v-btn>
       </div>
       <div v-if="item === 3">
-        <v-text-field label="Mật khẩu" :rules="rules" hide-details="auto" />
-        <v-text-field
-          label="Nhập lại mật khẩu"
-          :rules="rules"
-          hide-details="auto"
-        />
+        <v-text-field label="Mật khẩu" hide-details="auto" />
+        <v-text-field label="Nhập lại mật khẩu" hide-details="auto" />
         <br />
         <v-btn depressed color="primary" @click="updatePassword()">
           Cập nhật mật khẩu
