@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusColumnToUsersTable extends Migration
+class AddDisplayNameColumnToRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddStatusColumnToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('status')->nullable();
+        Schema::table('roles', function (Blueprint $table) {
+            $table->string('display_name')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddStatusColumnToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('status');
+        Schema::table('roles', function (Blueprint $table) {
+            $table->dropColumn('display_name');
         });
     }
 }
