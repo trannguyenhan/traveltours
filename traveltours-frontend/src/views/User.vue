@@ -84,6 +84,11 @@
         <v-btn depressed color="primary" @click="updateProfile()">
           Cập nhật
         </v-btn>
+        <br /><br />
+        <input id="update-image" type="file" />
+        <v-btn depressed color="primary" @click="updateAvatarProfile()">
+          Cập nhật ảnh đại diện
+        </v-btn>
       </div>
       <div v-if="item === 3">
         <v-text-field label="Mật khẩu" hide-details="auto" />
@@ -99,7 +104,11 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { UPDATE_USER, LOGOUT } from '@/store/type/actions';
+  import {
+    UPDATE_USER,
+    LOGOUT,
+    UPDATE_AVATAR_USER,
+  } from '@/store/type/actions';
 
   export default {
     data: () => ({
@@ -123,6 +132,13 @@
     methods: {
       updateProfile() {
         this.$store.dispatch(UPDATE_USER, this.currentUser);
+      },
+
+      updateAvatarProfile() {
+        const formData = new FormData();
+        const newAvatar = document.querySelector('#update-image');
+        formData.append('avatar', newAvatar.files[0]);
+        this.$store.dispatch(UPDATE_AVATAR_USER, formData);
       },
 
       changeItem(iitem) {

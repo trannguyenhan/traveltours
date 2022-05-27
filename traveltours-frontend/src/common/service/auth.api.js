@@ -13,4 +13,6 @@ export default {
   checkAuth: () => apiService.get('user/profile'),
   register: (newUser) => apiService.post('auth/register', newUser),
   update: (userUpdate) => apiService.post('user/update', userUpdate),
+  updateImage: (formDataUpdateImage) =>
+    apiService.post('user/update-image', formDataUpdateImage),
 };

@@ -2,7 +2,11 @@
 
 namespace App;
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\URL;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Helper
 {
@@ -83,5 +87,45 @@ class Helper
             'code' => CODE_ERROR,
             'message' => $message? $message : null,
         ], 422);
+    }
+
+    /**
+     * Update image to public folder and return this url
+     *
+     * @param $image
+     * @return array
+     */
+    public static function updateImageUrl($image): array
+    {
+        try {
+            $name = uniqid() . "." . $image->extension();
+            $path = $image->move('uploads', $name);
+            $path = url($path);
+
+            \App\Helper::unlinkOldAvatarCurrentUser();
+
+            return [
+                'code' => 0,
+                'url' => $path
+            ];
+        } catch (\Exception $e){
+            return [
+                'code' => 1,
+                'url' => 'fail'
+            ];
+        }
+    }
+
+    public static function unlinkOldAvatarCurrentUser(){
+        if(auth()->user() != null){
+            $avatar = User::query()->find(auth()->id())->avatar;
+            if($avatar != null){
+                $baseUrl = URL::to("/");
+                $avatar = str_replace($baseUrl, '', $avatar);
+                if(File::exists(public_path($avatar))){
+                    File::delete(public_path($avatar));
+                }
+            }
+        }
     }
 }

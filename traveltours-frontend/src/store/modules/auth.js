@@ -1,13 +1,20 @@
 import authsService from '@/common/service/auth.api';
 import JwtService from '@/common/jwt';
-import { SET_AUTH, PURGE_AUTH, SET_ERROR, SET_USER } from "@/store/type/mutations.js";
+import {
+  SET_AUTH,
+  PURGE_AUTH,
+  SET_ERROR,
+  SET_USER,
+} from '@/store/type/mutations.js';
 import {
   LOGIN,
   LOGOUT,
   REGISTER,
   CHECK_AUTH,
-  UPDATE_USER, UPDATE_PASSWORD
-} from "@/store/type/actions.js";
+  UPDATE_USER,
+  UPDATE_PASSWORD,
+  UPDATE_AVATAR_USER
+} from '@/store/type/actions.js';
 
 const state = {
   user: null,
@@ -51,6 +58,16 @@ const actions = {
       const { data } = await authsService.update(updatedUser);
       commit(SET_USER, data.data);
       return data.data;
+    } catch ({ response }) {
+      commit(SET_ERROR, response.data.error);
+      throw new Error(response.data.error);
+    }
+  },
+
+  async [UPDATE_AVATAR_USER]({ commit }, formDataUpdateImage) {
+    try {
+      const { data } = await authsService.updateImage(formDataUpdateImage);
+      commit(SET_USER, data.data);
     } catch ({ response }) {
       commit(SET_ERROR, response.data.error);
       throw new Error(response.data.error);

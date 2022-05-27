@@ -54,6 +54,8 @@ Route::group([
             ->middleware(MID_ROLE_ADMIN);
         Route::post('update', [UserController::class, 'update'])->name('update')
             ->middleware(MID_ROLE_ADMIN_OWN);
+        Route::post('update-image', [UserController::class, 'updateImage'])->name('update')
+            ->middleware(MID_ROLE_ADMIN_OWN);
         Route::get('/profile', [UserController::class, 'me']);
         Route::post('change-password', [UserController::class, 'changePassword'])->name('change')
             ->middleware(MID_ROLE_ADMIN_OWN);

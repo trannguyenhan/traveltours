@@ -13,6 +13,7 @@ export const LOGOUT = 'logout';
 export const REGISTER = 'register';
 export const CHECK_AUTH = 'checkAuth';
 export const UPDATE_USER = 'updateUser';
+export const UPDATE_AVATAR_USER = 'updateAvatarUser';
 export const UPDATE_PASSWORD = 'updatePassword';
 
 // error

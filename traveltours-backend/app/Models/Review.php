@@ -11,7 +11,7 @@ class Review extends Model
 {
     use HasFactory;
 
-    const UPDATE_FIELDS = ['comment', 'user_id', 'star'];
+    const UPDATE_FIELDS = ['id', 'comment', 'user_id', 'star'];
     const INSERT_FIELDS = ['comment', 'user_id', 'star'];
     protected $fillable = ['id', 'comment', 'user_id', 'star'];
 

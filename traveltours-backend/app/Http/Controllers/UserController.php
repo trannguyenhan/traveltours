@@ -9,6 +9,7 @@ use App\Http\Requests\Base\IdsRequest;
 use App\Http\Requests\User\AssignRequest;
 use App\Http\Requests\User\UpdateRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends BaseController
@@ -88,15 +89,33 @@ class UserController extends BaseController
      * @param UpdateRequest $request
      * @return JsonResponse
      */
-    public function update(UpdateRequest $request){
+    public function update(UpdateRequest $request): JsonResponse
+    {
         $name = $request->input('name');
         $id = $request->input('id');
-        $avatar = $request->input('avatar');
 
         return $this->repository->doUpdate([
             'name' => $name,
-            'id' => $id,
-            'avatar' => $avatar
+            'id' => $id
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateImage(Request $request): JsonResponse
+    {
+        $avatar = \App\Helper::updateImageUrl($request->file('avatar'));
+        if($avatar['code'] == 1){
+            $avatar = null;
+        } else {
+            $avatar = $avatar['url'];
+        }
+
+        return $this->repository->doUpdate([
+            'avatar' => $avatar,
+            'id' => auth()->id()
         ]);
     }
 
