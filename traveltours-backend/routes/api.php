@@ -27,7 +27,7 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function () {
-    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5|60,1');
+    Route::post('/login', [AuthController::class, 'login']);//->middleware('throttle:5|60,1');
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
