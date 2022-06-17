@@ -5,43 +5,47 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Category
+ * Class TourGuide
  *
  * @property int $id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string $name
- * @property string $description
+ * @property string $phone_number
+ * @property string|null $address
  *
  * @package App\Models
  */
-class Category extends Model
+class TourGuide extends Model
 {
     use HasFactory;
 
-	protected $table = 'categories';
+	protected $table = 'tour_guides';
 
 	protected $fillable = [
 		'name',
-		'description'
+		'phone_number',
+		'address'
 	];
 
     const INSERT_FIELDS = [
         'name',
-        'description'
+        'phone_number',
+        'address'
     ];
 
     const UPDATE_FIELDS = [
         'id',
         'name',
-        'description'
+        'phone_number',
+        'address'
     ];
 
-    public function tours(): BelongsToMany
+    public function tours(): HasMany
     {
-        return $this->belongsToMany(Tour::class, 'category_tour', 'category_id', 'tour_id');
+        return $this->hasMany(Tour::class, 'tour_guide_id');
     }
 }

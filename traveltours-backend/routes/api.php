@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TourController;
+use App\Http\Controllers\TourGuideController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -62,29 +64,46 @@ Route::group([
     });
 
     Route::group(['prefix' => '/place'], function () {
-        Route::get('/store', [PlaceController::class, 'store'])
+        Route::post('/store', [PlaceController::class, 'store'])
             ->middleware(MID_ROLE_ADMIN);
-        Route::get('/update', [PlaceController::class, 'update'])
+        Route::post('/update', [PlaceController::class, 'update'])
             ->middleware(MID_ROLE_ADMIN);
-        Route::get('/delete', [PlaceController::class, 'delete'])
+        Route::post('/delete', [PlaceController::class, 'delete'])
             ->middleware(MID_ROLE_ADMIN);
     });
 
     Route::group(['prefix' => '/review'], function () {
-        Route::get('/store', [ReviewController::class, 'store'])
+        Route::post('/store', [ReviewController::class, 'store']);
+        Route::post('/update', [ReviewController::class, 'update'])
             ->middleware(MID_ROLE_ADMIN);
-        Route::get('/update', [ReviewController::class, 'update'])
-            ->middleware(MID_ROLE_ADMIN);
-        Route::get('/delete', [ReviewController::class, 'delete'])
+        Route::post('/delete', [ReviewController::class, 'delete'])
             ->middleware(MID_ROLE_ADMIN);
     });
 
     Route::group(['prefix' => '/tour'], function () {
-        Route::get('/store', [TourController::class, 'store'])
+        Route::post('/store', [TourController::class, 'store'])
             ->middleware(MID_ROLE_ADMIN);
-        Route::get('/update', [TourController::class, 'update'])
+        Route::post('/update', [TourController::class, 'update'])
             ->middleware(MID_ROLE_ADMIN);
-        Route::get('/delete', [TourController::class, 'delete'])
+        Route::post('/delete', [TourController::class, 'delete'])
+            ->middleware(MID_ROLE_ADMIN);
+    });
+
+    Route::group(['prefix' => '/category'], function () {
+        Route::post('/store', [CategoryController::class, 'store'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::post('/update', [CategoryController::class, 'update'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::post('/delete', [CategoryController::class, 'delete'])
+            ->middleware(MID_ROLE_ADMIN);
+    });
+
+    Route::group(['prefix' => '/tour-guide'], function () {
+        Route::post('/store', [TourGuideController::class, 'store'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::post('/update', [TourGuideController::class, 'update'])
+            ->middleware(MID_ROLE_ADMIN);
+        Route::post('/delete', [TourGuideController::class, 'delete'])
             ->middleware(MID_ROLE_ADMIN);
     });
 });
@@ -92,5 +111,6 @@ Route::group([
 Route::get('review//listing', [ReviewController::class, 'listing']);
 Route::get('tour/listing', [TourController::class, 'listing']);
 Route::get('place/listing', [PlaceController::class, 'listing']);
-
+Route::get('category/listing', [CategoryController::class, 'listing']);
 Route::get('tour/detail/{id}', [TourController::class, 'detail']);
+Route::get('tour-guide/listing', [TourGuideController::class, 'listing']);

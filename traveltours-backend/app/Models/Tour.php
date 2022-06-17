@@ -1,32 +1,119 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Class Tour
+ *
+ * @property int $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property int $dest
+ * @property int $tour_guide_id
+ * @property int $price_id
+ * @property int $range
+ * @property Carbon $start_date
+ * @property string $vehicle
+ * @property int $hotel_star
+ * @property string $schedule
+ * @property string $places
+ * @property int $max_slot
+ * @property int $slot
+ *
+ * @package App\Models
+ */
 class Tour extends Model
 {
     use HasFactory;
 
-    const UPDATE_FIELDS = ['id', 'source', 'dest', 'range', 'start_date', 'slot', 'vehicle', 'hotel_star', 'price', 'old_price'];
-    const INSERT_FIELDS = ['source', 'dest', 'range', 'start_date', 'slot', 'vehicle', 'hotel_star', 'price', 'old_price'];
-    protected $fillable = ['id', 'source', 'dest', 'range', 'start_date', 'slot', 'vehicle', 'hotel_star', 'price', 'old_price'];
+	protected $table = 'tours';
 
-    public function placeSource(): BelongsTo
+	protected $casts = [
+		'dest' => 'int',
+		'tour_guide_id' => 'int',
+		'price_id' => 'int',
+		'range' => 'int',
+		'hotel_star' => 'int',
+		'max_slot' => 'int',
+		'slot' => 'int'
+	];
+
+	protected $dates = [
+		'start_date'
+	];
+
+	protected $fillable = [
+		'dest',
+		'tour_guide_id',
+		'price_id',
+		'range',
+		'start_date',
+		'vehicle',
+		'hotel_star',
+		'schedule',
+		'places',
+		'max_slot',
+		'slot'
+	];
+
+    const INSERT_FIELDS = [
+        'dest',
+        'tour_guide_id',
+        'price_id',
+        'range',
+        'start_date',
+        'vehicle',
+        'hotel_star',
+        'schedule',
+        'places',
+        'max_slot',
+        'slot'
+    ];
+
+    const UPDATE_FIELDS = [
+        'id',
+        'dest',
+        'tour_guide_id',
+        'price_id',
+        'range',
+        'start_date',
+        'vehicle',
+        'hotel_star',
+        'schedule',
+        'places',
+        'max_slot',
+        'slot'
+    ];
+
+    public function categories(): BelongsToMany
     {
-        return $this->belongsTo(Place::class, 'source');
+        return $this->belongsToMany(Category::class, 'category_tour', 'tour_id', 'category_id');
     }
 
-    public function placeDest(): BelongsTo
+    public function dest(): BelongsTo
     {
         return $this->belongsTo(Place::class, 'dest');
     }
 
-    public function categories(): BelongsToMany
+    public function price(): BelongsTo
     {
-        return $this->belongsToMany(Category::class, 'tour_category');
+        return $this->belongsTo(Price::class, 'price_id');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'object_id')
+            ->where('type', 'tour');
     }
 }

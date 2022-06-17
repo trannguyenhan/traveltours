@@ -3,9 +3,11 @@
 namespace App\Http\Repositories;
 
 use App\Models\User;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 abstract class BaseRepository
@@ -17,14 +19,18 @@ abstract class BaseRepository
     /**
      * Return model will use in repository
      * \App\Models\Name::class
+     * @return string
      */
-    abstract public function getModel();
+    abstract public function getModel(): string;
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function __construct()
     {
         $this->_model = app()->make($this->getModel());
         $tableName = (new $this->_model)->getTable(); // ex: pages, sub_pages, attributes
-        $this->modelName = \Illuminate\Support\Str::singular($tableName); // ex: page, sub_page, attribute
+        $this->modelName = Str::singular($tableName); // ex: page, sub_page, attribute
     }
 
     /**

@@ -13,7 +13,7 @@ class UserRepository extends BaseRepository
         'roles:id,name'
     ];
 
-    public function getModel()
+    public function getModel(): string
     {
         return User::class;
     }
