@@ -8,13 +8,10 @@
 
     <H3THighlights
       class="py-1"
-      :highlights="tour.place_dest.description"
+      :highlights="tour.dest.description"
       v-on="$listeners"
     />
-    <H3TDestinations
-      class="py-1"
-      :destinations="tour.place_dest.address_detail"
-    />
+    <H3TDestinations class="py-1" :destinations="tour.dest.address_detail" />
 
     <H3TTravelStyle
       class="py-1"
@@ -22,7 +19,7 @@
       v-on="$listeners"
     />
     <H3TDuration class="py-2" :duration="tour.range" />
-    <H3TPrice :old-price="tour.old_price" :price="tour.price" />
+    <H3TPrice :old-price="tour.price.adult + 10" :price="tour.price.adult" />
   </v-container>
 </template>
 
@@ -54,9 +51,8 @@
     methods: {
       calcRating(isRating = true) {
         let ratingAvg = 0;
-        const { reviews } = this.tour.place_dest;
+        const { reviews } = this.tour;
         const numberReviews = reviews.length;
-
         for (let i = 0; i < reviews.length; i += 1) {
           const rating = reviews[i].star;
           ratingAvg += rating;

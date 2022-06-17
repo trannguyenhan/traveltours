@@ -12,9 +12,15 @@
       </template>
       <BaseCard class="my-4 mx-auto">
         <div class="py-4">
-          <v-card-title class="text-h6 primary--text text-capitalize">{{
-            capitalizeFristLetter(day.user.name)
-          }}</v-card-title>
+          <v-card-title class="text-h6 primary--text text-capitalize">
+            {{ capitalizeFristLetter(day.user.name) }}
+
+            <v-rating
+              v-model="day.star"
+              readonly="1"
+              icon-label="custom icon label text {0} of {1}"
+            />
+          </v-card-title>
           <v-card-text>
             <div style="white-space: pre-line; line-height: 1.6em">
               {{ day.comment }}

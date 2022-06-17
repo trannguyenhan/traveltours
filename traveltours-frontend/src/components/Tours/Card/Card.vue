@@ -5,11 +5,13 @@
         <v-img
           aspect-ratio="1.4"
           class="white--text align-end rounded-tr-xl"
-          :src="tour.place_dest.images[0]"
+          :src="tour.dest.images[0]"
         >
-          <H3TSavingRibbon :price="tour.price" :old-price="tour.old_price"
+          <H3TSavingRibbon
+            :price="tour.price.adult"
+            :old-price="tour.price.adult + 10"
         /></v-img>
-        <H3TCardName :name="tour.place_dest.name" />
+        <H3TCardName :name="tour.dest.name" />
       </router-link>
     </div>
 

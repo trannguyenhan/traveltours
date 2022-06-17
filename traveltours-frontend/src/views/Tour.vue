@@ -3,12 +3,12 @@
     <v-row class="mt-4">
       <v-col cols="12" md="8">
         <div style="position: relative">
-          <H3TCarousels :items="tour.place_dest.images" />
+          <H3TCarousels :items="tour.dest.images" />
         </div>
       </v-col>
 
       <v-col cols="12" md="4">
-        <H3TTitle class="text-h4">{{ tour.place_dest.name }}</H3TTitle>
+        <H3TTitle class="text-h4">{{ tour.dest.name }}</H3TTitle>
 
         <H3TQuickFacts :tour="tour" style="font-size: 16px" v-on="$listeners" />
       </v-col>
@@ -23,10 +23,12 @@
           <H3TPrivateTourBlock />
 
           <div class="text-h4">Bình luận</div>
-          <H3TTimeline :timeline="tour.place_dest.reviews" />
+          <H3TTimeline :timeline="tour.reviews" />
         </v-col>
         <v-col cols="12" md="4"
-          ><H3TCheckAvailability :duration="tour.duration" :price="tour.price"
+          ><H3TCheckAvailability
+            :duration="tour.range"
+            :price="tour.price.adult"
         /></v-col>
       </v-row>
     </v-container>

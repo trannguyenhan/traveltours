@@ -4,7 +4,11 @@
 
     <v-col class="mx-5" align="center">
       <v-row v-if="!expand">
-        <span v-for="index in 2" :key="index" class="mr-3 mb-1">
+        <span
+          v-for="index in Math.min(2, travelStyle.length)"
+          :key="index"
+          class="mr-3 mb-1"
+        >
           <router-link
             style="text-decoration: none"
             :to="{
@@ -16,7 +20,7 @@
           </router-link>
         </span>
         <span
-          v-if="travelStyle.length - 2 > 0"
+          v-if="travelStyle.length - Math.min(2, travelStyle.length) > 0"
           class="text-caption secondary--text text--darken-2"
           @click="
             expand = true;
