@@ -20,7 +20,31 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/vue-admin-template/user/logout',
+    url: '/auth/logout',
     method: 'post'
+  })
+}
+
+export function getListUser(params) {
+  return request({
+    url: '/user/listing',
+    method: 'get',
+    params
+  })
+}
+
+export function updateUser(params) {
+  return request({
+    url: '/user/update',
+    method: 'post',
+    data: params
+  })
+}
+
+export function assignUser(params) {
+  return request({
+    url: '/user/assign',
+    method: 'post',
+    data: params
   })
 }

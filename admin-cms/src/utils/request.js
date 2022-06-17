@@ -8,7 +8,8 @@ import { baseUrl } from '@/settings'
 const service = axios.create({
   baseURL: baseUrl, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  timeout: 5000, // request timeout
+  headers: { Authorization: 'Bearer ' + getToken() }
 })
 
 // request interceptor

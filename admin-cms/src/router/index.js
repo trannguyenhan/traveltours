@@ -56,6 +56,50 @@ export const constantRoutes = [
   },
 
   {
+    path: '/tour',
+    component: Layout,
+    redirect: '/tour/categories',
+    name: 'Tour Management',
+    meta: { title: 'Tour Management', icon: 'el-icon-location' },
+    children: [
+      {
+        path: 'categories',
+        name: 'Categories',
+        component: () => import('@/views/tour/category'),
+        meta: { title: 'Category', icon: 'table' }
+      },
+      {
+        path: 'tour-guides',
+        name: 'Tour Guides',
+        component: () => import('@/views/tour/tour_guide'),
+        meta: { title: 'Tour Guides', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/user',
+    name: 'User Management',
+    meta: { title: 'User Management', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/user/user'),
+        meta: { title: 'User', icon: 'table' }
+      },
+      {
+        path: 'role',
+        name: 'Role',
+        component: () => import('@/views/user/role'),
+        meta: { title: 'Role', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
@@ -150,12 +194,12 @@ export const constantRoutes = [
   },
 
   {
-    path: 'external-link',
+    path: 'view-website',
     component: Layout,
     children: [
       {
         path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        meta: { title: 'View website', icon: 'link' }
       }
     ]
   },
