@@ -87,10 +87,6 @@
         <el-form-item label="Email" prop="title">
           <el-input v-model="user.email" />
         </el-form-item>
-        <!-- <b-form-select v-model="user.status" class="mb-3" label="Status">
-          <b-form-select-option value="active">Active</b-form-select-option>
-          <b-form-select-option value="locked">Locked</b-form-select-option>
-        </b-form-select> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
@@ -115,8 +111,6 @@
 
 <script>
 import { getListUser, updateUser } from "@/api/user";
-// import "bootstrap/dist/js/bootstrap.js";
-// import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 export default {
   filters: {
     statusFilter(status) {
@@ -182,12 +176,6 @@ export default {
       this.user = this.list[index];
       this.dialogFormVisible = true;
       this.dialogCreate = false;
-    },
-
-    changeStatus() {
-      let currentStatus = this.user.status;
-      if (currentStatus == "active") currentStatus = "locked";
-      else currentStatus = "active";
     },
   },
 };

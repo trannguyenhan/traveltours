@@ -11,7 +11,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function listing(Request $request){
+    public function listing(Request $request)
+    {
         $keyWord = $request->query('keyword');
         $page = $this->getPage($request);
         $pageSize = $this->getPageSize($request);
@@ -21,7 +22,8 @@ class BaseController extends Controller
         return $this->repository->doList($keyWord, $page, $pageSize, $orderBy, $orderType);
     }
 
-    public function detail(Request $request, $id){
+    public function detail(Request $request, $id)
+    {
         return $this->repository->detail($id);
     }
 
@@ -33,7 +35,7 @@ class BaseController extends Controller
     private function getSortBy($request): array
     {
         $orderBy = [];
-        if($request->query('sort_by') != null){
+        if ($request->query('sort_by') != null) {
             if (is_array($request->query('sort_by'))) {
                 $orderBy = $request->query('sort_by');
             } else {

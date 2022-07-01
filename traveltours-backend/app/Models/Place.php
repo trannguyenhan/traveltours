@@ -26,20 +26,20 @@ class Place extends Model
 {
     use HasFactory;
 
-	protected $table = 'places';
+    protected $table = 'places';
 
-	protected $casts = [
-		'images' => 'json'
-	];
+    protected $casts = [
+        'images' => 'json',
+    ];
 
-	protected $fillable = [
-		'province',
-		'district',
-		'address_detail',
-		'name',
-		'description',
-		'images'
-	];
+    protected $fillable = [
+        'province',
+        'district',
+        'address_detail',
+        'name',
+        'description',
+        'images'
+    ];
 
     const INSERT_FIELDS = [
         'province',
@@ -63,7 +63,7 @@ class Place extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'object_id')
-                    ->where('type', 'place');
+            ->where('type', 'place');
     }
 
     /**
