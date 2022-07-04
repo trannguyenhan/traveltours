@@ -31,6 +31,10 @@ class Order extends Model
 
 	protected $table = 'orders';
 
+    const PENNING = 'penning';
+    const ACCEPT = 'accept';
+    const REJECT = 'reject';
+
 	protected $casts = [
 		'tour_id' => 'int',
 		'coupon_id' => 'int',
