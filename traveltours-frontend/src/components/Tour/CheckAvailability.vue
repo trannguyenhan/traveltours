@@ -4,7 +4,7 @@
       <v-card-title>Select Date and Travelers</v-card-title>
 
       <v-date-picker
-        v-model="computedRange"
+        v-model="computedRangeByStartDate"
         range
         no-title
         scrollable

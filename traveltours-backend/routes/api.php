@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TourController;
@@ -36,7 +37,7 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => ['api', 'auth:api']
+//    'middleware' => ['api', 'auth:api']
 ], function(){
     Route::group(['prefix' => '/user'], function () {
         Route::post('assign', [UserController::class, 'assignAccount'])->name('assign')
@@ -106,6 +107,15 @@ Route::group([
         Route::post('/delete', [TourGuideController::class, 'delete'])
             ->middleware(MID_ROLE_ADMIN);
     });
+
+    Route::group(['prefix' => '/order'], function () {
+        Route::post('/store', [OrderController::class, 'store']);
+//            ->middleware(ROLE_MEMBER);
+        Route::post('/update', [OrderController::class, 'update'])
+            ->middleware(ROLE_MEMBER);
+        Route::post('/delete', [OrderController::class, 'delete'])
+            ->middleware(ROLE_MEMBER);
+    });
 });
 
 Route::get('review//listing', [ReviewController::class, 'listing']);
@@ -114,3 +124,4 @@ Route::get('place/listing', [PlaceController::class, 'listing']);
 Route::get('category/listing', [CategoryController::class, 'listing']);
 Route::get('tour/detail/{id}', [TourController::class, 'detail']);
 Route::get('tour-guide/listing', [TourGuideController::class, 'listing']);
+Route::get('order/detail/{id}', [OrderController::class, 'detail']);

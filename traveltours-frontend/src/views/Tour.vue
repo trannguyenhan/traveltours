@@ -28,7 +28,8 @@
         <v-col cols="12" md="4"
           ><H3TCheckAvailability
             :duration="tour.range"
-            :price="tour.price.adult"
+            :price_adult="tour.price.adult"
+            :price_children="tour.price.child"
         /></v-col>
       </v-row>
     </v-container>
@@ -37,6 +38,7 @@
 
 <script>
   // @ is an alias to /src
+  import { mapGetters } from 'vuex';
   import H3TCarousels from '@/components/Carousels.vue';
   import H3TTimeline from '@/components/Timeline.vue';
   import H3TBookFlexibility from '@/components/Tour/BookFlexibilityBlock.vue';
@@ -45,7 +47,6 @@
 
   import H3TTitle from '@/components/Tour/Title.vue';
 
-  import { mapGetters } from 'vuex';
   import H3TQuickFacts from '@/components/Tours/Card/quickFacts.vue';
 
   import { FETCH_TOUR } from '@/store/type/actions';

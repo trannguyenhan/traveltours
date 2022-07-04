@@ -41,10 +41,22 @@
     methods: {
       increment() {
         this.value = parseInt(this.value, 10) + 1;
+        this.$emit('changeValue', this.value);
       },
       decrement() {
-        if (this.value > 1) this.value = parseInt(this.value, 10) - 1;
+        if (this.value > 0) this.value = parseInt(this.value, 10) - 1;
+        this.$emit('changeValue', this.value);
       },
+    },
+    props: {
+      num: {
+        type: Number,
+      },
+    },
+    data() {
+      return {
+        value: this.num,
+      };
     },
   };
 </script>
