@@ -109,6 +109,7 @@ Route::group([
     });
 
     Route::group(['prefix' => '/order'], function () {
+        Route::get('listing', [OrderController::class, 'listing']);
         Route::post('/store', [OrderController::class, 'store'])
             ->middleware(ROLE_MEMBER);
         Route::post('/update', [OrderController::class, 'update'])
