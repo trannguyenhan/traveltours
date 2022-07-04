@@ -109,8 +109,8 @@ Route::group([
     });
 
     Route::group(['prefix' => '/order'], function () {
-        Route::post('/store', [OrderController::class, 'store']);
-//            ->middleware(ROLE_MEMBER);
+        Route::post('/store', [OrderController::class, 'store'])
+            ->middleware(ROLE_MEMBER);
         Route::post('/update', [OrderController::class, 'update'])
             ->middleware(ROLE_MEMBER);
         Route::post('/delete', [OrderController::class, 'delete'])

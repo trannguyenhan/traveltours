@@ -13,6 +13,15 @@ class OrderRepository extends BaseRepository
         return Order::class;
     }
 
+    public function search($query, $keyword)
+    {
+        if(!auth()->user()->hasRole(ROLE_ADMIN)){
+            $query = $query->where('user_id', auth()->id());
+        }
+
+        return parent::search($query, $keyword);
+    }
+
     public function doStore($arr): JsonResponse
     {
         $arr['status'] = Order::PENNING;
