@@ -63,6 +63,12 @@ export const constantRoutes = [
     meta: { title: 'Tour Management', icon: 'el-icon-location' },
     children: [
       {
+        path: 'listing',
+        name: "Tour",
+        component: () => import('@/views/tour/tour'),
+        meta: { title: 'Tour', icon: 'table' }
+      },
+      {
         path: 'categories',
         name: 'Categories',
         component: () => import('@/views/tour/category'),
@@ -73,7 +79,8 @@ export const constantRoutes = [
         name: 'Tour Guides',
         component: () => import('@/views/tour/tour_guide'),
         meta: { title: 'Tour Guides', icon: 'table' }
-      }
+      },
+
     ]
   },
 

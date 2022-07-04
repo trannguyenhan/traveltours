@@ -37,35 +37,36 @@ class Tour extends Model
 {
     use HasFactory;
 
-	protected $table = 'tours';
+    protected $table = 'tours';
 
-	protected $casts = [
-		'dest' => 'int',
-		'tour_guide_id' => 'int',
-		'price_id' => 'int',
-		'range' => 'int',
-		'hotel_star' => 'int',
-		'max_slot' => 'int',
-		'slot' => 'int'
-	];
+    protected $casts = [
+        'dest' => 'int',
+        'tour_guide_id' => 'int',
+        'price_id' => 'int',
+        'range' => 'int',
+        'hotel_star' => 'int',
+        'max_slot' => 'int',
+        'slot' => 'int',
+        'places' => 'array',
+    ];
 
-	protected $dates = [
-		'start_date'
-	];
+    protected $dates = [
+        'start_date'
+    ];
 
-	protected $fillable = [
-		'dest',
-		'tour_guide_id',
-		'price_id',
-		'range',
-		'start_date',
-		'vehicle',
-		'hotel_star',
-		'schedule',
-		'places',
-		'max_slot',
-		'slot'
-	];
+    protected $fillable = [
+        'dest',
+        'tour_guide_id',
+        'price_id',
+        'range',
+        'start_date',
+        'vehicle',
+        'hotel_star',
+        'schedule',
+        'places',
+        'max_slot',
+        'slot'
+    ];
 
     const INSERT_FIELDS = [
         'dest',
@@ -115,5 +116,10 @@ class Tour extends Model
     {
         return $this->hasMany(Review::class, 'object_id')
             ->where('type', 'tour');
+    }
+
+    public function tour_guide(): BelongsTo
+    {
+        return $this->belongsTo(TourGuide::class,'tour_guide_id');
     }
 }
