@@ -27,7 +27,10 @@
         </v-col>
         <v-col cols="12" md="4"
           ><H3TCheckAvailability
-            :duration="tour.range"
+            :start-date="
+              new Date(tour.start_date).toISOString().substring(0, 10)
+            "
+            :range="tour.range"
             :price_adult="tour.price.adult"
             :price_children="tour.price.child"
         /></v-col>

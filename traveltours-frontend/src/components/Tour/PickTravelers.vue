@@ -9,7 +9,12 @@
         <span class="secondary--text text--darken-1">${{ price_adult }}</span>
       </v-col>
       <v-col>
-        <TrnPickNumber ref="adults" v-on="$listeners" :num="adults" @changeValue="(value) => adults = value"/>
+        <TrnPickNumber
+          ref="adults"
+          v-on="$listeners"
+          :num="adults"
+          @changeValue="(value) => (adults = value)"
+        />
       </v-col>
     </v-row>
 
@@ -41,8 +46,9 @@
 
 <script>
   import pluralize from '@/common/pluralize.js';
-  import TrnPickNumber from './PickNumber';
   import orderApi from '@/common/service/order.api';
+  import TrnPickNumber from './PickNumber';
+  import { mapGetters } from "vuex";
 
   export default {
     components: {
@@ -63,13 +69,12 @@
       children: 0,
       data_send: {
         tour_id: 1,
-        coupon_id: 1,
         user_id: 1,
         child_count: 0,
         adult_count: 0,
         total_price: 0,
         tax: 10,
-        payment_method: 'visa',
+        payment_method: 'cod',
         status: 'ok',
       },
     }),
@@ -80,6 +85,7 @@
       childrenQuantity() {
         return pluralize(this.children, 'Child', 'Children');
       },
+      ...mapGetters(['currentUser']),
     },
     methods: {
       totalPrice(count1, price1, count2, price2) {
@@ -89,6 +95,7 @@
         this.data_send = {
           ...this.data_send,
           tour_id: this.$route.params.id,
+          user_id: this.currentUser.id,
           child_count: this.children,
           adult_count: this.adults,
           total_price: this.totalPrice(

@@ -13,7 +13,7 @@ import {
   CHECK_AUTH,
   UPDATE_USER,
   UPDATE_PASSWORD,
-  UPDATE_AVATAR_USER
+  UPDATE_AVATAR_USER,
 } from '@/store/type/actions.js';
 
 const state = {
