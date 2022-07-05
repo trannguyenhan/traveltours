@@ -24,9 +24,9 @@ class TourRepository extends BaseRepository
         $arrPlace = $modelDetail->places;
         $list_detail_place = [];
         foreach ($arrPlace as $placeId) {
-            $list_detail_place[] = Place::query()->where('id', $placeId)->get();
+            $list_detail_place[] = Place::query()->where('id', $placeId)->get()[0];
         }
-        $modelDetail->places = $list_detail_place;
+        $modelDetail->places_detail = $list_detail_place;
 
         return Helper::successResponse($modelDetail);
     }

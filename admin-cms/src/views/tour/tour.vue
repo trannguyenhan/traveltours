@@ -73,6 +73,42 @@
         <el-form-item label="Name" prop="title">
           <el-input v-model="tour.name" />
         </el-form-item>
+        <el-form-item label="Range" prop="title">
+          <el-input type="number" label="Range" v-model="tour.range" />
+        </el-form-item>
+        <el-form-item label="Max Slot" prop="title">
+          <el-input
+            type="number"
+            step="1"
+            label="Range"
+            v-model="tour.max_slot"
+          />
+        </el-form-item>
+        <el-form-item label="Remaining Slot" prop="title">
+          <el-input type="number" step="1" label="" v-model="tour.slot" />
+        </el-form-item>
+        <el-form-item label="Start Date" prop="title">
+          <el-input
+            step="1"
+            placeholder="Pick a date"
+            v-model="tour.slot"
+            type="date"
+          />
+        </el-form-item>
+        <div>{{ this.tour.places_detail }}</div>
+        <el-form-item label="Places"
+          ><el-select
+            v-model="tour.places"
+            multiple
+            placeholder="Select Places"
+          >
+            <el-option
+              v-for="item in this.all_places"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            /> </el-select
+        ></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
@@ -96,7 +132,8 @@
 </template>
 
 <script>
-import { getListTour, updateTour, deleteTour } from "@/api/tour";
+import { getListTour, updateTour, deleteTour, getDetailTour } from "@/api/tour";
+import { getListPlace } from "@/api/place";
 export default {
   filters: {
     statusFilter(status) {
@@ -114,18 +151,27 @@ export default {
       list: null,
       tour: null,
       listLoading: true,
+      places: [],
+      all_places: [],
     };
   },
   created() {
     this.fetchData();
   },
   methods: {
+    getDetailTour(id) {
+      return getDetailTour(id);
+    },
     async fetchData() {
       this.listLoading = true;
+
       getListTour().then((response) => {
         this.list = response.data;
         if (this.list.length > 0) {
-          this.tour = this.list[0];
+          getDetailTour(this.list[0].id).then((response) => {
+            this.tour = response.data;
+            console.log(this.tour);
+          });
         } else {
           this.tour = {
             name: "",
@@ -133,6 +179,10 @@ export default {
           };
         }
         this.listLoading = false;
+      });
+
+      getListPlace().then((response) => {
+        this.all_places = response.data;
       });
     },
 
@@ -155,7 +205,11 @@ export default {
       });
     },
     handleUpdate(index) {
-      this.tour = this.list[index];
+      // this.tour = this.list[index];
+      getDetailTour(this.list[index].id).then((response) => {
+        this.tour = response.data;
+        console.log(this.tour);
+      });
       this.dialogFormVisible = true;
       this.dialogCreate = false;
     },

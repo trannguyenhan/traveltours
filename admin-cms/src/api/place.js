@@ -1,32 +1,32 @@
 import request from '@/utils/request'
 
-export function getListTour(params) {
+export function getListPlace(params) {
     return request({
-        url: '/tour/listing',
+        url: '/place/listing',
         method: 'get',
         params
     })
 }
 
-export function updateTour(params) {
+export function updatePlace(params) {
     return request({
-        url: '/tour/update',
+        url: '/place/update',
         method: 'post',
         data: params
     })
 }
 
-export function deleteTour(params) {
+export function deletePlace(params) {
     return request({
-        url: '/tour/delete',
+        url: '/place/delete',
         method: 'post',
         data: params
     })
 }
 
-export function getDetailTour(id) {
+export function getDetailPlace(id) {
     return request({
-        url: '/tour/detail/' + id,
+        url: '/tour/place/' + id,
         method: 'get',
     })
 }
