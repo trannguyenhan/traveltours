@@ -13,24 +13,29 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Name" width="200">
+      <el-table-column align="center" label="Name" width="200">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="Start Date">
+      <el-table-column align="center" label="Start Date">
         <template slot-scope="scope">
           <span>{{ formatDate(scope.row.start_date) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Range">
+      <el-table-column align="center" label="Range">
         <template slot-scope="scope">
           <span>{{ scope.row.range }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Place">
+      <el-table-column align="center" label="Max Slot">
         <template slot-scope="scope">
-          <span>{{ scope.row.places }}</span>
+          <span>{{ scope.row.max_slot }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Remaining Slot">
+        <template slot-scope="scope">
+          <span>{{ scope.row.slot }}</span>
         </template>
       </el-table-column>
 
@@ -172,5 +177,9 @@ export default {
   width: 60px;
   height: 60px;
   border-radius: 10px;
+}
+
+.table {
+  text-align: center;
 }
 </style>
