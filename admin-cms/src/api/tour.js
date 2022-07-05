@@ -7,3 +7,11 @@ export function getListTour(params) {
         params
     })
 }
+
+export function updateTour(params) {
+    return request({
+        url: '/tour/update',
+        method: 'post',
+        data: params
+    })
+}

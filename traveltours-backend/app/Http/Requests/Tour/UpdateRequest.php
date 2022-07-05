@@ -8,7 +8,6 @@ class UpdateRequest extends BaseRequest
 {
     public $regx = [
         'id' => 'required|numeric',
-        'source' => 'required|numeric|exists:places,id',
         'dest' => 'required|numeric|exists:places,id',
         'range' => 'required|numeric',
         'start_date' => 'required',

@@ -71,7 +71,7 @@
         style="width: 400px; margin-left: 50px"
       >
         <el-form-item label="Name" prop="title">
-          <el-input v-model="tour.name" disabled="true" />
+          <el-input v-model="tour.name" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -79,7 +79,7 @@
         <el-button
           v-if="!dialogCreate"
           type="primary"
-          @click="updateUser(user)"
+          @click="updateTour(tour)"
         >
           Update
         </el-button>
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { getListTour } from "@/api/tour";
+import { getListTour, updateTour } from "@/api/tour";
 export default {
   filters: {
     statusFilter(status) {
@@ -124,7 +124,6 @@ export default {
       this.listLoading = true;
       getListTour().then((response) => {
         this.list = response.data;
-        console.log(this.list);
         if (this.list.length > 0) {
           this.tour = this.list[0];
         } else {
@@ -142,18 +141,10 @@ export default {
       return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
     },
 
-    // listRole(roles) {
-    //   let result = [];
-    //   if (roles.length > 0) {
-    //     for (let i = 0; i < roles.length; i++) {
-    //       result.push(roles[i].name);
-    //     }
-    //   }
-    //   return result;
-    // },
-
-    updateUser(user) {
-      updateUser(user).then((response) => {
+    updateTour(tour) {
+      tour.dest = tour.dest.id;
+      console.log(tour);
+      updateTour(tour).then((response) => {
         if (response.code === 0) {
           this.$notify({
             message: "Update success",
@@ -164,7 +155,7 @@ export default {
       });
     },
     handleUpdate(index) {
-      this.user = this.list[index];
+      this.tour = this.list[index];
       this.dialogFormVisible = true;
       this.dialogCreate = false;
     },
