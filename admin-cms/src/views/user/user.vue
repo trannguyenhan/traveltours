@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { getListUser, updateUser } from "@/api/user";
+import { getListUser, updateUser, deleteUser } from "@/api/user";
 // import "bootstrap/dist/js/bootstrap.js";
 // import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 export default {
@@ -178,10 +178,23 @@ export default {
         }
       });
     },
+
     handleUpdate(index) {
       this.user = this.list[index];
       this.dialogFormVisible = true;
       this.dialogCreate = false;
+    },
+
+    handleDelete(index) {
+      deleteUser({ id: this.list[index].id }).then((response) => {
+        if (response.code === 0) {
+          this.$notify({
+            message: "Update success",
+            type: "success",
+          });
+          this.fetchData();
+        }
+      });
     },
 
     changeStatus() {

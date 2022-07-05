@@ -48,3 +48,11 @@ export function assignUser(params) {
     data: params
   })
 }
+
+export function deleteUser(params) {
+  return request({
+    url: '/user/delete',
+    method: 'post',
+    data: params
+  })
+}

@@ -15,3 +15,11 @@ export function updateTour(params) {
         data: params
     })
 }
+
+export function deleteTour(params) {
+    return request({
+        url: '/tour/delete',
+        method: 'post',
+        data: params
+    })
+}

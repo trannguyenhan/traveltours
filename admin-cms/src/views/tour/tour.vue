@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { getListTour, updateTour } from "@/api/tour";
+import { getListTour, updateTour, deleteTour } from "@/api/tour";
 export default {
   filters: {
     statusFilter(status) {
@@ -158,6 +158,18 @@ export default {
       this.tour = this.list[index];
       this.dialogFormVisible = true;
       this.dialogCreate = false;
+    },
+
+    handleDelete(index) {
+      deleteTour({ id: this.list[index].id }).then((response) => {
+        if (response.code === 0) {
+          this.$notify({
+            message: "Update success",
+            type: "success",
+          });
+          this.fetchData();
+        }
+      });
     },
   },
 };
