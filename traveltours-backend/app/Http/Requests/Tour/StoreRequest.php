@@ -15,6 +15,7 @@ class StoreRequest extends BaseRequest
         'vehicle' => 'required|string|max:255',
         'hotel_star' => 'numeric',
         'categories' => 'array',
-        'categories.*' => 'numeric'
+        'categories.*' => 'numeric',
+        'places' => 'array'
     ];
 }

@@ -65,7 +65,8 @@ class Tour extends Model
         'schedule',
         'places',
         'max_slot',
-        'slot'
+        'slot',
+        'name'
     ];
 
     const INSERT_FIELDS = [
@@ -79,7 +80,8 @@ class Tour extends Model
         'schedule',
         'places',
         'max_slot',
-        'slot'
+        'slot',
+        'name'
     ];
 
     const UPDATE_FIELDS = [
@@ -94,7 +96,8 @@ class Tour extends Model
         'schedule',
         'places',
         'max_slot',
-        'slot'
+        'slot',
+        'name'
     ];
 
     public function categories(): BelongsToMany
@@ -120,6 +123,6 @@ class Tour extends Model
 
     public function tour_guide(): BelongsTo
     {
-        return $this->belongsTo(TourGuide::class,'tour_guide_id');
+        return $this->belongsTo(TourGuide::class, 'tour_guide_id');
     }
 }
