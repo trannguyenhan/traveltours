@@ -7,7 +7,7 @@ use App\Http\Requests\BaseRequest;
 class StoreRequest extends BaseRequest
 {
     public $regx = [
-        'source' => 'required|numeric|exists:places,id',
+        // 'source' => 'required|numeric|exists:places,id',
         'dest' => 'required|numeric|exists:places,id',
         'range' => 'required|numeric',
         'start_date' => 'required',
@@ -15,6 +15,7 @@ class StoreRequest extends BaseRequest
         'vehicle' => 'required|string|max:255',
         'hotel_star' => 'numeric',
         'categories' => 'array',
-        'categories.*' => 'numeric'
+        'categories.*' => 'numeric',
+        'places' => 'array'
     ];
 }

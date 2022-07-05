@@ -13,40 +13,32 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Name" width="200">
+      <el-table-column align="center" label="Name" width="200">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="Username">
+      <el-table-column align="center" label="Start Date">
         <template slot-scope="scope">
-          <span>{{ scope.row.username }}</span>
+          <span>{{ formatDate(scope.row.start_date) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Email">
+      <el-table-column align="center" label="Range">
         <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+          <span>{{ scope.row.range }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Avatar">
+      <el-table-column align="center" label="Max Slot">
         <template slot-scope="scope">
-          <el-image :src="scope.row.avatar" class="user-avatar" />
+          <span>{{ scope.row.max_slot }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Role">
+      <el-table-column align="center" label="Remaining Slot">
         <template slot-scope="scope">
-          <el-tag v-for="role in listRole(scope.row.roles)" :type="info">
-            {{ role }}
-          </el-tag>
+          <span>{{ scope.row.slot }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{ row }">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column>
+
       <el-table-column
         label="Actions"
         align="center"
@@ -71,29 +63,59 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="Edit User" :visible.sync="dialogFormVisible">
+    <el-dialog title="Edit Tour" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
-        :model="user"
+        :model="tour"
         label-position="left"
         style="width: 400px; margin-left: 50px"
       >
-        <el-form-item label="username" prop="title">
-          <el-input v-model="user.username" disabled="true" />
-        </el-form-item>
         <el-form-item label="Name" prop="title">
-          <el-input v-model="user.name" />
+          <el-input v-model="tour.name" />
         </el-form-item>
-        <el-form-item label="Email" prop="title">
-          <el-input v-model="user.email" />
+        <el-form-item label="Range" prop="title">
+          <el-input v-model="tour.range" type="number" label="Range" />
         </el-form-item>
+        <el-form-item label="Max Slot" prop="title">
+          <el-input
+            v-model="tour.max_slot"
+            type="number"
+            step="1"
+            label="Range"
+          />
+        </el-form-item>
+        <el-form-item label="Remaining Slot" prop="title">
+          <el-input v-model="tour.slot" type="number" step="1" label="" />
+        </el-form-item>
+        <el-form-item label="Start Date" prop="title">
+          <el-input
+            v-model="tour.slot"
+            step="1"
+            placeholder="Pick a date"
+            type="date"
+          />
+        </el-form-item>
+
+        <el-form-item
+          label="Places"
+        ><el-select
+          v-model="tour.places"
+          multiple
+          placeholder="Select Places"
+        >
+          <el-option
+            v-for="item in this.all_places"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          /> </el-select></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
         <el-button
           v-if="!dialogCreate"
           type="primary"
-          @click="updateUser(user)"
+          @click="updateTour(tour)"
         >
           Update
         </el-button>
@@ -110,75 +132,101 @@
 </template>
 
 <script>
-import { getListUser, updateUser } from "@/api/user";
+import { getListTour, updateTour, deleteTour, getDetailTour } from '@/api/tour'
+import { getListPlace } from '@/api/place'
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        active: "success",
-        locked: "danger",
-      };
-      return statusMap[status];
-    },
+        active: 'success',
+        locked: 'danger'
+      }
+      return statusMap[status]
+    }
   },
   data() {
     return {
       dialogFormVisible: false,
       dialogCreate: false,
       list: null,
-      user: null,
+      tour: null,
       listLoading: true,
-    };
+      places: [],
+      all_places: []
+    }
   },
   created() {
-    this.fetchData();
+    this.fetchData()
   },
   methods: {
+    getDetailTour(id) {
+      return getDetailTour(id)
+    },
     async fetchData() {
-      this.listLoading = true;
-      getListUser().then((response) => {
-        this.list = response.data;
-        console.log(this.list);
+      this.listLoading = true
+
+      getListTour().then((response) => {
+        this.list = response.data
         if (this.list.length > 0) {
-          this.user = this.list[0];
+          getDetailTour(this.list[0].id).then((response) => {
+            this.tour = response.data
+            console.log(this.tour)
+          })
         } else {
-          this.user = {
-            name: "",
-            description: "",
-          };
+          this.tour = {
+            name: '',
+            description: ''
+          }
         }
-        this.listLoading = false;
-      });
+        this.listLoading = false
+      })
+
+      getListPlace().then((response) => {
+        this.all_places = response.data
+      })
     },
 
-    listRole(roles) {
-      let result = [];
-      if (roles.length > 0) {
-        for (let i = 0; i < roles.length; i++) {
-          result.push(roles[i].name);
-        }
-      }
-      return result;
+    formatDate(dat) {
+      const date = new Date(dat)
+      return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
     },
 
-    updateUser(user) {
-      updateUser(user).then((response) => {
+    updateTour(tour) {
+      tour.dest = tour.dest.id
+      console.log(tour)
+      updateTour(tour).then((response) => {
         if (response.code === 0) {
           this.$notify({
-            message: "Update success",
-            type: "success",
-          });
-          this.dialogFormVisible = false;
+            message: 'Update success',
+            type: 'success'
+          })
+          this.dialogFormVisible = false
         }
-      });
+      })
     },
     handleUpdate(index) {
-      this.user = this.list[index];
-      this.dialogFormVisible = true;
-      this.dialogCreate = false;
+      // this.tour = this.list[index];
+      getDetailTour(this.list[index].id).then((response) => {
+        this.tour = response.data
+        console.log(this.tour)
+      })
+      this.dialogFormVisible = true
+      this.dialogCreate = false
     },
-  },
-};
+
+    handleDelete(index) {
+      deleteTour({ id: this.list[index].id }).then((response) => {
+        if (response.code === 0) {
+          this.$notify({
+            message: 'Update success',
+            type: 'success'
+          })
+          this.fetchData()
+        }
+      })
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .user-avatar {
@@ -186,5 +234,9 @@ export default {
   width: 60px;
   height: 60px;
   border-radius: 10px;
+}
+
+.table {
+  text-align: center;
 }
 </style>
