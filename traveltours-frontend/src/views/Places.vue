@@ -1,28 +1,24 @@
 <template>
   <div>
-    <div class="tour-list">
+    <div class="place-list">
       <TrnGrid />
     </div>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-  import TrnGrid from '@/components/Tours/Grid.vue';
+  import TrnGrid from '@/components/Places/Grid.vue';
 
   export default {
-    name: 'Tours',
+    name: 'Places',
     components: {
       TrnGrid,
-    },
-    computed: {
-      ...mapGetters(['getFeaturedTours']),
     },
   };
 </script>
 
 <style scoped>
-  .tour-list {
+  .place-list {
     max-width: 1080px !important;
     /* min-height: 800px; */
     margin: auto;

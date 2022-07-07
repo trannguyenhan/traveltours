@@ -6,10 +6,12 @@ import { SET_TOUR } from '../type/mutations';
 const state = () => ({
   tour: [],
   reviews: [],
+  item_id_2: 1,
 });
 
 const getters = {
   tour: (state) => state.tour,
+  item_id_2: (state) => state.item_id_2,
 };
 
 const actions = {
@@ -19,6 +21,9 @@ const actions = {
     if (response) commit(SET_TOUR, response.data.data);
     console.log(state.tour);
   },
+  checkItemId2 ({ commit }, val)  {
+    commit('checkItemId2', val);
+  }
 };
 
 const mutations = {
@@ -26,6 +31,9 @@ const mutations = {
     state.tour = tour;
     console.log(tour);
   },
+  checkItemId2(state, val) {
+    state.item_id_2 = val;
+  }
 };
 
 export default {

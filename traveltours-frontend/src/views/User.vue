@@ -90,6 +90,14 @@
           Cập nhật ảnh đại diện
         </v-btn>
       </div>
+      <div v-if="item === 2">
+        <v-data-table
+          :headers="headers"
+          :items="orderInfo"
+          :items-per-page="5"
+          class="elevation-1"
+        />
+      </div>
       <div v-if="item === 3">
         <v-text-field label="Mật khẩu" hide-details="auto" />
         <v-text-field label="Nhập lại mật khẩu" hide-details="auto" />
@@ -104,6 +112,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import orderApi from '@/common/service/order.api';
   import {
     UPDATE_USER,
     LOGOUT,
@@ -114,7 +123,7 @@
     data: () => ({
       drawer: true,
       mini: false,
-      item: 1,
+      item: 2,
       items: [
         { title: 'My Profile', icon: 'mdi-heart', id: 1 },
         { title: 'My Tours', icon: 'mdi-star', id: 2 },
@@ -124,9 +133,32 @@
         (value) => !!value || 'Required.',
         (value) => (value && value.length >= 3) || 'Min 3 characters',
       ],
+      orderInfo: [],
+      headers: [
+        {
+          text: 'Mã đặt hàng',
+          align: 'start',
+          value: 'id',
+        },
+        {
+          text: 'Số lượng người lớn',
+          value: 'adult_count',
+        },
+        { text: 'Số lượng trẻ em', value: 'child_count' },
+        {
+          text: 'Phương thức thanh toán',
+          value: 'payment_method',
+          sortable: false,
+        },
+        { text: 'Tổng tiền', value: 'total_price' },
+        { text: 'Trạng thái', value: 'status', sortable: false, },
+      ],
     }),
     computed: {
       ...mapGetters(['currentUser']),
+    },
+    mounted() {
+      this.listOrder();
     },
 
     methods: {
@@ -134,6 +166,11 @@
         this.$store.dispatch(UPDATE_USER, this.currentUser);
       },
 
+      async listOrder() {
+        const resp = await orderApi.listTour();
+        this.orderInfo = resp.data.data;
+        console.log(resp.data.data);
+      },
       updateAvatarProfile() {
         const formData = new FormData();
         const newAvatar = document.querySelector('#update-image');
@@ -141,8 +178,11 @@
         this.$store.dispatch(UPDATE_AVATAR_USER, formData);
       },
 
-      changeItem(iitem) {
-        this.item = iitem.id;
+      changeItem(item) {
+        this.item = item.id;
+        if (item.id === 2) {
+          this.listOrder();
+        }
       },
 
       logout() {

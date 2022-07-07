@@ -24,6 +24,17 @@ const routes = [
     props: true,
   },
   {
+    name: 'Places',
+    path: '/places',
+    component: () => import('@/views/Places.vue'),
+  },
+  {
+    name: 'places',
+    path: '/place/:id',
+    component: () => import('@/views/Place.vue'),
+    props: true,
+  },
+  {
     name: 'User',
     path: '/user',
     component: () => import('@/views/User.vue'),

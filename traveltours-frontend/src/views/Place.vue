@@ -17,10 +17,10 @@
     <v-container class="mt-6">
       <v-row>
         <v-col cols="12" md="8">
-          <div class="text-h4">Book With Extra Flexibility</div>
-          <H3TBookFlexibility />
-          <div class="text-h4">Your Travel, Your Tour</div>
-          <H3TPrivateTourBlock />
+<!--          <div class="text-h4">Book With Extra Flexibility</div>-->
+<!--          <H3TBookFlexibility />-->
+<!--          <div class="text-h4">Your Travel, Your Tour</div>-->
+<!--          <H3TPrivateTourBlock />-->
           <v-row class="justify-center">
             <v-btn
               class="text-h5 justify-center btnComment"
@@ -42,8 +42,8 @@
                     large
                   />
                   <v-text-field
-                    label="Đánh giá của bạn"
                     v-model="comment"
+                    label="Đánh giá của bạn"
                     :rules="rules"
                     hide-details="auto"
                   />
@@ -64,15 +64,6 @@
           <div class="text-h4">Bình luận</div>
           <H3TTimeline :timeline="tour.reviews" />
         </v-col>
-        <v-col cols="12" md="4"
-          ><H3TCheckAvailability
-            :start-date="
-              new Date(tour.start_date).toISOString().substring(0, 10)
-            "
-            :range="tour.range"
-            :price_adult="tour.price.adult"
-            :price_children="tour.price.child"
-        /></v-col>
       </v-row>
     </v-container>
   </div>
@@ -89,11 +80,11 @@
 
   import H3TTitle from '@/components/Tour/Title.vue';
 
-  import H3TQuickFacts from '@/components/Tours/Card/quickFacts.vue';
+  import H3TQuickFacts from '@/components/Places/Card/quickFacts.vue';
 
   import { FETCH_TOUR } from '@/store/type/actions';
   import store from '@/store';
-  import reviewApi from "@/common/service/review.api";
+  import reviewApi from '@/common/service/review.api';
 
   export default {
     name: 'Tour',
