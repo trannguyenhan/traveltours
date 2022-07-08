@@ -2,12 +2,11 @@
 
 namespace App;
 
-use App\Models\User;
 use App\Models\Place;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Helper
 {
@@ -94,6 +93,7 @@ class Helper
      * Update image to public folder and return this url
      *
      * @param $image
+     * @param array $option
      * @return array
      */
     public static function updateImageUrl($image, $option = ["type" => null, "id" => null]): array
