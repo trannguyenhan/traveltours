@@ -70,7 +70,8 @@ class UserController extends BaseController
      * @param IdRequest $request
      * @return mixed
      */
-    public function delete(IdRequest $request){
+    public function delete(IdRequest $request)
+    {
         return $this->deleteTemplate($request);
     }
 
@@ -79,7 +80,8 @@ class UserController extends BaseController
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function massDelete(IdsRequest $request){
+    public function massDelete(IdsRequest $request)
+    {
         $ids = $request->input('ids');
 
         return $this->repository->doMultiDelete($ids);
@@ -106,8 +108,8 @@ class UserController extends BaseController
      */
     public function updateImage(Request $request): JsonResponse
     {
-        $avatar = \App\Helper::updateImageUrl($request->file('avatar'));
-        if($avatar['code'] == 1){
+        $avatar = \App\Helper::updateImageUrl($request->file('avatar'), $option = ["type" => "user", "id" => auth()->id()]);
+        if ($avatar['code'] == 1) {
             $avatar = null;
         } else {
             $avatar = $avatar['url'];

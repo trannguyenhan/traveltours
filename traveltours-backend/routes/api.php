@@ -30,15 +30,15 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function () {
-    Route::post('/login', [AuthController::class, 'login']);//->middleware('throttle:5|60,1');
+    Route::post('/login', [AuthController::class, 'login']); //->middleware('throttle:5|60,1');
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
 });
 
 Route::group([
-//    'middleware' => ['api', 'auth:api']
-], function(){
+    'middleware' => ['api', 'auth:api']
+], function () {
     Route::group(['prefix' => '/user'], function () {
         Route::post('assign', [UserController::class, 'assignAccount'])->name('assign')
             ->middleware(MID_ROLE_ADMIN);
@@ -122,7 +122,12 @@ Route::group([
 Route::get('review//listing', [ReviewController::class, 'listing']);
 Route::get('tour/listing', [TourController::class, 'listing']);
 Route::get('place/listing', [PlaceController::class, 'listing']);
+Route::get('place/detail/{id}', [PlaceController::class, 'detail']);
 Route::get('category/listing', [CategoryController::class, 'listing']);
 Route::get('tour/detail/{id}', [TourController::class, 'detail']);
 Route::get('tour-guide/listing', [TourGuideController::class, 'listing']);
 Route::get('order/detail/{id}', [OrderController::class, 'detail']);
+Route::get('vietnam-address', function () {
+   return  response()->file("data.json");
+    // return \App\Helper::successResponse($data);
+});

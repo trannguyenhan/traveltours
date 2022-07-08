@@ -96,19 +96,19 @@
           />
         </el-form-item>
 
-        <el-form-item
-          label="Places"
-        ><el-select
-          v-model="tour.places"
-          multiple
-          placeholder="Select Places"
-        >
-          <el-option
-            v-for="item in this.all_places"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          /> </el-select></el-form-item>
+        <el-form-item label="Places"
+          ><el-select
+            v-model="tour.places"
+            multiple
+            placeholder="Select Places"
+          >
+            <el-option
+              v-for="item in this.all_places"
+              :key="Number(item.id)"
+              :label="item.name"
+              :value="Number(item.id)"
+            /> </el-select
+        ></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
@@ -162,6 +162,12 @@ export default {
     getDetailTour(id) {
       return getDetailTour(id)
     },
+    convertNumber(array) {
+      for (let i = 0; i < array.length; i++) {
+        array[i] = Number(array[i]);
+      }
+      return array;
+    },
     async fetchData() {
       this.listLoading = true
 
@@ -174,9 +180,9 @@ export default {
           })
         } else {
           this.tour = {
-            name: '',
-            description: ''
-          }
+            name: "",
+            description: "",
+          };
         }
         this.listLoading = false
       })
@@ -207,11 +213,12 @@ export default {
     handleUpdate(index) {
       // this.tour = this.list[index];
       getDetailTour(this.list[index].id).then((response) => {
-        this.tour = response.data
-        console.log(this.tour)
-      })
-      this.dialogFormVisible = true
-      this.dialogCreate = false
+        this.tour = response.data;
+        this.tour.places = this.convertNumber(this.tour.places);
+        console.log(this.tour);
+      });
+      this.dialogFormVisible = true;
+      this.dialogCreate = false;
     },
 
     handleDelete(index) {
