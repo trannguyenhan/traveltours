@@ -132,8 +132,13 @@
 </template>
 
 <script>
-import { getListPlace, updatePlace, deletePlace, getDetailPlace } from "@/api/palce";
-import { getListPlace } from "@/api/place";
+import {
+  getListPlace,
+  updatePlace,
+  deletePlace,
+  getDetailPlace,
+} from "@/api/place";
+
 export default {
   filters: {
     statusFilter(status) {

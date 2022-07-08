@@ -40,6 +40,7 @@
         :item="child"
         :base-path="resolvePath(child.path)"
         class="nest-menu"
+        style="text-decoration: none"
       />
     </el-submenu>
   </div>

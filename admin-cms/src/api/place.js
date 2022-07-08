@@ -1,5 +1,12 @@
 import request from '@/utils/request'
 
+export function createPlace(params) {
+    return request({
+        url: '/place/store',
+        method: 'post',
+        data: params
+    })
+}
 export function getListPlace(params) {
     return request({
         url: '/place/listing',

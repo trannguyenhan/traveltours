@@ -1,49 +1,90 @@
 <template>
   <div class="container">
-    <el-select
-      v-model="place.province"
-      class="m-2"
-      placeholder="Tỉnh/Thành phố"
-      size="large"
+    <el-form
+      ref="dataForm"
+      :model="place"
+      label-position="left"
+      style="width: 500px; margin-left: 250px"
     >
-      <el-option
-        v-for="item in addressData"
-        :key="item.Name"
-        :label="item.Name"
-        :value="item.Name"
-      />
-    </el-select>
-    <el-select
-      v-model="place.district"
-      class="m-2"
-      placeholder="Quận/Huyện"
-      size="large"
-    >
-      <el-option
-        v-for="item in listDistrict()"
-        :key="item.Id"
-        :label="item.Name"
-        :value="item.Name"
-      />
-    </el-select>
-    <el-select
-      v-model="place.ward"
-      class="m-2"
-      placeholder="Phường/Xã"
-      size="large"
-    >
-      <el-option
-        v-for="item in listWard()"
-        :key="item.Id"
-        :label="item.Name"
-        :value="item.Name"
-      />
-    </el-select>
+      <el-form-item label="Tên địa điểm" prop="title">
+        <el-input type="textarea" v-model="place.name" autosize />
+      </el-form-item>
+      <el-form-item label="Chọn Tỉnh/Thành phố" prop="title">
+        <el-select
+          v-model="place.province"
+          class="m-2"
+          placeholder="Tỉnh/Thành phố"
+          size="large"
+        >
+          <el-option
+            v-for="item in addressData"
+            :key="item.Name"
+            :label="item.Name"
+            :value="item.Name"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="Chọn Quận/Huyện" prop="title">
+        <el-select
+          v-model="place.district"
+          class="m-2"
+          placeholder="Quận/Huyện"
+          size="large"
+        >
+          <el-option
+            v-for="item in listDistrict()"
+            :key="item.Id"
+            :label="item.Name"
+            :value="item.Name"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="Chọn Phường/Xã">
+        <el-select
+          v-model="place.ward"
+          class="m-2"
+          placeholder="Phường/Xã"
+          size="large"
+        >
+          <el-option
+            v-for="item in listWard()"
+            :key="item.Id"
+            :label="item.Name"
+            :value="item.Name"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="Địa điểm cụ thể" prop="title">
+        <el-input
+          autosize
+          type="textarea"
+          v-model="place.address_detail"
+          placeholder="Địa điểm cụ thể"
+        />
+      </el-form-item>
+
+      <el-form-item label="Mô tả" prop="title">
+        <el-input
+          autosize
+          type="textarea"
+          v-model="place.description"
+          multiple="multiple"
+          placeholder="Mô tả"
+        />
+      </el-form-item>
+      <input id="update-images" type="file" multiple="multiple" />
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button @click="onCancel">Cancel</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
 import { getAddressDetail } from "@/api/data";
+import { createPlace } from "@/api/place";
 
 export default {
   data() {
@@ -55,7 +96,6 @@ export default {
         ward: null,
         description: null,
         address_detail: null,
-        images: [],
       },
       districtList: [],
       wardList: [],
@@ -87,6 +127,32 @@ export default {
         this.addressData = response.data;
       });
     },
+
+    onSubmit() {
+      const formData = new FormData();
+      const listImages = document.querySelector("#update-images");
+      let len = listImages.files.length;
+      for (let i = 0; i < len; i++) {
+        // console.log(listImages.files[i]);
+        formData.append("images[" + i + "]", listImages.files[i]);
+      }
+      let listKey = Object.keys(this.place);
+      for (let i = 0; i < listKey.length; i++) {
+        let key = listKey[i];
+        console.log(key);
+        formData.append(key, this.place.key);
+      }
+      console.log(formData);
+      createPlace(formData).then((response) => {
+        if (response.code === 0) {
+          this.$notify({
+            message: "Create success",
+            type: "success",
+          });
+          this.$router.push("/place/listing");
+        }
+      });
+    },
   },
 };
 </script>
@@ -94,5 +160,11 @@ export default {
 <style scoped>
 .line {
   text-align: center;
+}
+.m-2 {
+  width: 500px;
+}
+a {
+  text-decoration: none;
 }
 </style>

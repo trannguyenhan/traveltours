@@ -94,7 +94,7 @@ export const constantRoutes = [
       {
         path: 'listing',
         name: "place",
-        component: () => import('@/views/tour/tour'),
+        component: () => import('@/views/place/place'),
         meta: { title: 'Place', icon: 'table' }
       },
 
