@@ -137,12 +137,18 @@ export default {
         formData.append("images[" + i + "]", listImages.files[i]);
       }
       let listKey = Object.keys(this.place);
-      for (let i = 0; i < listKey.length; i++) {
-        let key = listKey[i];
-        console.log(key);
-        formData.append(key, this.place.key);
-      }
-      console.log(formData);
+      //   for (let i = 0; i < listKey.length; i++) {
+      //     let key = listKey[i];
+      //     console.log(key);
+      //     formData.append(key, this.place.key);
+      //   }
+      formData.append("name", this.place.name);
+      formData.append("province", this.place.province);
+      formData.append("district", this.place.district);
+      formData.append("address_detail", this.place.address_detail);
+      formData.append("description", this.place.description);
+      formData.append("ward", this.place.ward);
+      console.log(this.place);
       createPlace(formData).then((response) => {
         if (response.code === 0) {
           this.$notify({
