@@ -18,8 +18,16 @@ class Controller extends BaseController
      * @param $storeFields
      * @return mixed
      */
-    public function storeTemplate($request, $storeFields){
-        $arr = $request->only($storeFields);
+    public function storeTemplate($request, $storeFields)
+    {
+        // $arr = $request->only($storeFields);
+        foreach ($storeFields as $key => $value) {
+            $arr[$value] = $request->$value;
+        }
+
+        if ($request->images) {
+            $arr['images'] = $request->images;
+        }
         return $this->repository->doStore($arr);
     }
 
@@ -28,7 +36,8 @@ class Controller extends BaseController
      * @param $updateFields
      * @return mixed
      */
-    public function updateTemplate($request, $updateFields){
+    public function updateTemplate($request, $updateFields)
+    {
         $arr = $request->only($updateFields);
         return $this->repository->doUpdate($arr);
     }
@@ -38,7 +47,8 @@ class Controller extends BaseController
      * @param $request
      * @return mixed
      */
-    public function deleteTemplate($request){
+    public function deleteTemplate($request)
+    {
         $id = $request->input('id');
         return $this->repository->doDelete($id);
     }

@@ -74,7 +74,7 @@
           <el-input v-model="tour.name" />
         </el-form-item>
         <el-form-item label="Range" prop="title">
-          <el-input type="number" label="Range" v-model="tour.range" />
+          <el-input type="number" v-model="tour.range" label="Range" />
         </el-form-item>
         <el-form-item label="Max Slot" prop="title">
           <el-input
@@ -95,7 +95,7 @@
             type="date"
           />
         </el-form-item>
-        <div>{{ this.tour.places_detail }}</div>
+
         <el-form-item label="Places"
           ><el-select
             v-model="tour.places"
@@ -104,9 +104,9 @@
           >
             <el-option
               v-for="item in this.all_places"
-              :key="item.id"
+              :key="Number(item.id)"
               :label="item.name"
-              :value="item.id"
+              :value="Number(item.id)"
             /> </el-select
         ></el-form-item>
       </el-form>
@@ -162,6 +162,12 @@ export default {
     getDetailTour(id) {
       return getDetailTour(id);
     },
+    convertNumber(array) {
+      for (let i = 0; i < array.length; i++) {
+        array[i] = Number(array[i]);
+      }
+      return array;
+    },
     async fetchData() {
       this.listLoading = true;
 
@@ -208,6 +214,7 @@ export default {
       // this.tour = this.list[index];
       getDetailTour(this.list[index].id).then((response) => {
         this.tour = response.data;
+        this.tour.places = this.convertNumber(this.tour.places);
         console.log(this.tour);
       });
       this.dialogFormVisible = true;

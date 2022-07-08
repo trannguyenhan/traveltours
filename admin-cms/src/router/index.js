@@ -85,6 +85,30 @@ export const constantRoutes = [
   },
 
   {
+    path: '/place',
+    component: Layout,
+    redirect: '/tour/categories',
+    name: 'Place Management',
+    meta: { title: 'Place Management', icon: 'el-icon-location' },
+    children: [
+      {
+        path: 'listing',
+        name: "place",
+        component: () => import('@/views/tour/tour'),
+        meta: { title: 'Place', icon: 'table' }
+      },
+
+      {
+        path: 'add',
+        name: 'Add Place',
+        component: () => import('@/views/place/add_place'),
+        meta: { title: 'Add Place', icon: 'form' }
+      },
+
+    ]
+  },
+
+  {
     path: '/user',
     component: Layout,
     redirect: '/user/user',

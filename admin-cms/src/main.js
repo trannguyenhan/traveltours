@@ -14,9 +14,9 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap-vue/dist/bootstrap-vue.css';
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

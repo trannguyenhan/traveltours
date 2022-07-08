@@ -7,6 +7,7 @@ use App\Http\Requests\Base\IdRequest;
 use App\Http\Requests\Place\StoreRequest;
 use App\Http\Requests\Place\UpdateRequest;
 use App\Models\Place;
+use \App\Helper;
 
 class PlaceController extends BaseController
 {
@@ -15,15 +16,35 @@ class PlaceController extends BaseController
         $this->repository = $repository;
     }
 
-    public function store(StoreRequest $request){
+    public function store(StoreRequest $request)
+    {
+        if ($request->hasFile('images')) {
+            $listImg = [];
+            foreach ($request->file('images') as $image) {
+                $updateImg = Helper::updateImageUrl($image, $option = ['type' => 'place', 'id' => null]);
+                if ($updateImg['code'] == 1) {
+                    $listImg[] = null;
+                } else {
+                    $listImg[] = $updateImg['url'];
+                }
+            }
+
+
+            $request->images = $listImg;
+        }
+
+
+
         return $this->storeTemplate($request, Place::INSERT_FIELDS);
     }
 
-    public function update(UpdateRequest $request){
+    public function update(UpdateRequest $request)
+    {
         return $this->updateTemplate($request, Place::UPDATE_FIELDS);
     }
 
-    public function delete(IdRequest $request){
+    public function delete(IdRequest $request)
+    {
         return $this->deleteTemplate($request);
     }
 }
