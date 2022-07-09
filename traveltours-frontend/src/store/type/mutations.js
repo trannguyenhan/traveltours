@@ -2,8 +2,16 @@
 export const FETCH_START = 'setLoading';
 export const FETCH_END = 'setTours';
 
+export const FETCH_PLACE_END = 'setPlaces';
+
+export const FETCH_ORDER_END = 'setOrders';
+
 // tour
 export const SET_TOUR = 'setTour';
+
+export const SET_PLACE = 'setPlace';
+
+
 
 // auth
 export const SET_AUTH = 'setAuth';

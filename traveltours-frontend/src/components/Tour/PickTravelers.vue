@@ -45,22 +45,16 @@
       <v-card>
         <v-card-title class="text-h5 grey lighten-2"> Thông báo </v-card-title>
 
-        <v-card-text> Bạn đã đặt tour thành công. </v-card-text>
+        <v-card-text>
+          Bạn đã đặt tour thành công với mã đặt hàng {{ orderCode }}.
+        </v-card-text>
 
         <v-divider />
 
         <v-card-actions>
           <v-spacer />
           <router-link to="/user/profile">
-            <v-btn
-              color="primary"
-              text
-              @click="
-                dialog = false;
-              "
-            >
-              OK
-            </v-btn>
+            <v-btn color="primary" text @click="dialog = false"> OK </v-btn>
           </router-link>
         </v-card-actions>
       </v-card>
@@ -89,6 +83,7 @@
       },
     },
     data: () => ({
+      orderCode: 0,
       adults: 1,
       children: 0,
       data_send: {
@@ -117,24 +112,29 @@
         return count1 * price1 + count2 * price2;
       },
       async bookTour() {
-        this.data_send = {
-          ...this.data_send,
-          tour_id: this.$route.params.id,
-          user_id: this.currentUser.id,
-          child_count: this.children,
-          adult_count: this.adults,
-          total_price: this.totalPrice(
-            this.children,
-            this.price_children,
-            this.adults,
-            this.price_adult
-          ),
-        };
-        const resp = await orderApi.bookTour(this.data_send);
-        if (resp.status === 200) {
-          this.dialog = true;
+        try {
+          this.data_send = {
+            ...this.data_send,
+            tour_id: this.$route.params.id,
+            user_id: this.currentUser.id,
+            child_count: this.children,
+            adult_count: this.adults,
+            total_price: this.totalPrice(
+              this.children,
+              this.price_children,
+              this.adults,
+              this.price_adult
+            ),
+          };
+          const resp = await orderApi.bookTour(this.data_send);
+          if (resp.status === 200) {
+            this.dialog = true;
+            console.log(resp);
+            this.orderCode = resp.data.data.id;
+          }
+        } catch (e) {
+          alert('Ban chua dang nhap');
         }
-        console.log(resp.status);
       },
     },
   };

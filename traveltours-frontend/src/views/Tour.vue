@@ -22,9 +22,7 @@
           <div class="text-h4">Your Travel, Your Tour</div>
           <H3TPrivateTourBlock />
           <v-row class="justify-center">
-            <v-btn
-              class="text-h5 justify-center btnComment"
-              @click="dialog1 = true"
+            <v-btn class="text-h5 justify-center btnComment" @click="checkAuth"
               >Bình luận</v-btn
             >
           </v-row>
@@ -42,8 +40,8 @@
                     large
                   />
                   <v-text-field
-                    label="Đánh giá của bạn"
                     v-model="comment"
+                    label="Đánh giá của bạn"
                     :rules="rules"
                     hide-details="auto"
                   />
@@ -93,7 +91,8 @@
 
   import { FETCH_TOUR } from '@/store/type/actions';
   import store from '@/store';
-  import reviewApi from "@/common/service/review.api";
+  import reviewApi from '@/common/service/review.api';
+  import OrderApi from '@/common/service/order.api';
 
   export default {
     name: 'Tour',
@@ -138,6 +137,13 @@
       ...mapGetters(['tour', 'currentUser']),
     },
     methods: {
+      async checkAuth() {
+        try {
+        //write function to check member have book this tour?
+        } catch (e) {
+          alert('Bạn chưa đặt tour này nên không thể đánh giá!');
+        }
+      },
       reloadPage() {
         window.location.reload();
       },
@@ -145,7 +151,7 @@
         this.data_comment = {
           ...this.data_comment,
           comment: this.comment,
-          object_id: this.$route.params.id,
+          object_id: this.tour.id,
           user_id: this.currentUser.id,
           star: this.rating,
         };

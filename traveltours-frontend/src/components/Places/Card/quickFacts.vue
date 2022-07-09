@@ -8,10 +8,10 @@
 
     <H3THighlights
       class="py-1"
-      :highlights="tour.dest.description"
+      :highlights="place.description"
       v-on="$listeners"
     />
-    <H3TDestinations class="py-1" :destinations="tour.dest.address_detail" />
+    <H3TDestinations class="py-1" :destinations="place.address_detail" />
   </v-container>
 </template>
 
@@ -28,7 +28,7 @@
     },
 
     props: {
-      tour: {
+      place: {
         type: Object,
         required: true,
       },
@@ -37,7 +37,7 @@
     methods: {
       calcRating(isRating = true) {
         let ratingAvg = 0;
-        const { reviews } = this.tour;
+        const { reviews } = this.place;
         const numberReviews = reviews.length;
         for (let i = 0; i < reviews.length; i += 1) {
           const rating = reviews[i].star;

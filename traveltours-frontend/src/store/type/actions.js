@@ -1,11 +1,17 @@
 // tourList
 export const FETCH_TOURS = 'fetchTours';
 
+export const FETCH_PLACES = 'fetchPlaces';
+
+export const FETCH_ORDERS = 'fetchOrders';
+
 export const FETCH_DESTINATIONS = 'fetchDestinations';
 export const FETCH_TRAVELSTYLE = 'fetchTravelStyle';
 
 // tour
 export const FETCH_TOUR = 'fetchTour';
+
+export const FETCH_PLACE = 'fetchPlace';
 
 // auth
 export const LOGIN = 'login';

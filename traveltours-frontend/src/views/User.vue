@@ -151,7 +151,7 @@
           sortable: false,
         },
         { text: 'Tổng tiền', value: 'total_price' },
-        { text: 'Trạng thái', value: 'status', sortable: false, },
+        { text: 'Trạng thái', value: 'status', sortable: false },
       ],
     }),
     computed: {

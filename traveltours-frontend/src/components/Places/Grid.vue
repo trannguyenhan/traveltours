@@ -1,11 +1,11 @@
 <template>
   <div>
     <TrnFilter />
-    <div v-if="isToursLoading" class="text-center TrnLoading mb-3">
+    <div v-if="isPlacesLoading" class="text-center TrnLoading mb-3">
       <H3TLoadingAnimation />
     </div>
     <div v-else>
-      <div v-if="returned === 0" class="text-center text-h5 TrnLoading">
+      <div v-if="returnedPlace === 0" class="text-center text-h5 TrnLoading">
         <H3TCompass style="font-size: 6em" />
         <br />
         Không có kết quả
@@ -27,11 +27,11 @@
           </v-col>
           <v-col class="text-right">
             <H3TPagination
-              v-if="total"
+              v-if="totalPlace"
               no-button
               :length="pageQuantity"
-              :returned="returned"
-              :total="total"
+              :returned="returnedPlace"
+              :total="totalPlace"
             />
           </v-col>
         </v-row>
@@ -44,21 +44,21 @@
           :monitor-images-loaded="true"
         >
           <stack-item
-            v-for="(tour, i) in tours"
+            v-for="(place, i) in places"
             :key="i"
             style="transition: transform 1000ms"
             :class="$vuetify.breakpoint.xs ? 'TrnGridMobile' : ''"
           >
-            <H3TCard :tour="tour" @reload-grid="reloadGrid" />
+            <H3TCard :place="place" @reload-grid="reloadGrid" />
           </stack-item>
         </stack>
 
         <H3TPagination
-          v-if="total"
+          v-if="totalPlace"
           class="text-center"
           :length="pageQuantity"
-          :returned="returned"
-          :total="total"
+          :returned="returnedPlace"
+          :total="totalPlace"
         />
       </div>
     </div>
@@ -68,7 +68,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import { Stack, StackItem } from 'vue-stack-grid';
-  import { FETCH_TOURS } from '@/store/type/actions';
+  import { FETCH_PLACES } from '@/store/type/actions';
 
   import H3TSort from '@/components/Tours/Sort.vue';
   import H3TFilter from '@/components/Tours/Filter/Filter.vue';
@@ -94,18 +94,23 @@
     },
 
     computed: {
-      ...mapGetters(['isToursLoading', 'tours', 'total', 'returned']),
+      ...mapGetters([
+        'isPlacesLoading',
+        'places',
+        'totalPlace',
+        'returnedPlace',
+      ]),
       placeQuantity() {
-        return pluralize(this.total, 'place');
+        return pluralize(this.totalPlace, 'place');
       },
       pageQuantity() {
-        return Math.ceil(this.total / APP_ITEMS_PER_PAGE);
+        return Math.ceil(this.totalPlace / APP_ITEMS_PER_PAGE);
       },
     },
 
     watch: {
       $route: {
-        handler: 'fetchTours',
+        handler: 'fetchPlaces',
         immediate: true,
       },
     },
@@ -117,8 +122,8 @@
         });
       },
 
-      async fetchTours() {
-        await this.$store.dispatch(FETCH_TOURS, this.$route.query);
+      async fetchPlaces() {
+        await this.$store.dispatch(FETCH_PLACES, this.$route.query);
       },
     },
   };
