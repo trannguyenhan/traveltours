@@ -1,5 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
+import { getToken } from '@/common/jwt';
 
 import errorResponseHandler from '@/common/service/errorHandler.api.js';
 import { APP_API_URL, APP_TIME_OUT } from '@/common/config';
@@ -7,6 +8,12 @@ import { APP_API_URL, APP_TIME_OUT } from '@/common/config';
 export const FetchApi = axios.create({
   baseURL: APP_API_URL,
   timeout: APP_TIME_OUT,
+});
+const token = getToken();
+export const FetchApiAuth = axios.create({
+  baseURL: APP_API_URL,
+  timeout: APP_TIME_OUT,
+  headers: { Authorization: `Bearer ${token}` },
 });
 
 // apply interceptor on response
@@ -29,6 +36,9 @@ const queryStringify = (query) =>
 export const apiService = {
   get: (resource, query) => FetchApi.get(resource + queryStringify(query)),
   post: (resource, params) => FetchApi.post(`${resource}`, params),
+  postAuth: (resource, params) => FetchApiAuth.post(`${resource}`, params),
+  getAuth: (resource, query) =>
+    FetchApiAuth.get(resource + queryStringify(query)),
 };
 
 export const TagsService = {

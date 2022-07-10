@@ -109,9 +109,9 @@ Route::group([
     });
 
     Route::group(['prefix' => '/order'], function () {
-        Route::get('listing', [OrderController::class, 'listing']);
-        Route::post('/store', [OrderController::class, 'store'])
-            ->middleware(ROLE_MEMBER);
+        Route::get('/listing', [OrderController::class, 'listing']);
+        Route::post('/store', [OrderController::class, 'store']);
+//            ->middleware(ROLE_MEMBER);
         Route::post('/update', [OrderController::class, 'update'])
             ->middleware(ROLE_MEMBER);
         Route::post('/delete', [OrderController::class, 'delete'])
@@ -119,7 +119,7 @@ Route::group([
     });
 });
 
-Route::get('review//listing', [ReviewController::class, 'listing']);
+Route::get('review/listing', [ReviewController::class, 'listing']);
 Route::get('tour/listing', [TourController::class, 'listing']);
 Route::get('place/listing', [PlaceController::class, 'listing']);
 Route::get('place/detail/{id}', [PlaceController::class, 'detail']);

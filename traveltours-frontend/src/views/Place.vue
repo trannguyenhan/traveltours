@@ -3,24 +3,24 @@
     <v-row class="mt-4">
       <v-col cols="12" md="8">
         <div style="position: relative">
-          <H3TCarousels :items="tour.dest.images" />
+          <H3TCarousels :items="place.images" />
         </div>
       </v-col>
 
       <v-col cols="12" md="4">
-        <H3TTitle class="text-h4">{{ tour.dest.name }}</H3TTitle>
+        <H3TTitle class="text-h4">{{ place.name }}</H3TTitle>
 
-        <H3TQuickFacts :tour="tour" style="font-size: 16px" v-on="$listeners" />
+        <H3TQuickFacts
+          :place="place"
+          style="font-size: 16px"
+          v-on="$listeners"
+        />
       </v-col>
     </v-row>
 
     <v-container class="mt-6">
       <v-row>
         <v-col cols="12" md="8">
-          <div class="text-h4">Book With Extra Flexibility</div>
-          <H3TBookFlexibility />
-          <div class="text-h4">Your Travel, Your Tour</div>
-          <H3TPrivateTourBlock />
           <v-row class="justify-center">
             <v-btn class="text-h5 justify-center btnComment" @click="checkAuth"
               >Bình luận</v-btn
@@ -60,17 +60,8 @@
           </div>
 
           <div class="text-h4">Bình luận</div>
-          <H3TTimeline :timeline="tour.reviews" />
+          <H3TTimeline :timeline="place.reviews" />
         </v-col>
-        <v-col cols="12" md="4"
-          ><H3TCheckAvailability
-            :start-date="
-              new Date(tour.start_date).toISOString().substring(0, 10)
-            "
-            :range="tour.range"
-            :price_adult="tour.price.adult"
-            :price_children="tour.price.child"
-        /></v-col>
       </v-row>
     </v-container>
   </div>
@@ -81,26 +72,18 @@
   import { mapGetters } from 'vuex';
   import H3TCarousels from '@/components/Carousels.vue';
   import H3TTimeline from '@/components/Timeline.vue';
-  import H3TBookFlexibility from '@/components/Tour/BookFlexibilityBlock.vue';
-  import H3TPrivateTourBlock from '@/components/Tour/PrivateTourBlock.vue';
-  import H3TCheckAvailability from '@/components/Tour/CheckAvailability.vue';
-
   import H3TTitle from '@/components/Tour/Title.vue';
 
-  import H3TQuickFacts from '@/components/Tours/Card/quickFacts.vue';
+  import H3TQuickFacts from '@/components/Places/Card/quickFacts.vue';
 
-  import { FETCH_TOUR } from '@/store/type/actions';
+  import { FETCH_PLACE } from '@/store/type/actions';
   import store from '@/store';
   import reviewApi from '@/common/service/review.api';
-  import OrderApi from '@/common/service/order.api';
 
   export default {
-    name: 'Tour',
+    name: 'Place',
     components: {
-      H3TBookFlexibility,
-      H3TPrivateTourBlock,
       H3TCarousels,
-      H3TCheckAvailability,
       H3TTimeline,
       H3TQuickFacts,
       H3TTitle,
@@ -123,42 +106,48 @@
         (value) => (value && value.length >= 3) || 'Min 3 characters',
       ],
       data_comment: {
-        type: 'tour',
+        type: 'place',
       },
     }),
 
     beforeRouteEnter(to, from, next) {
-      Promise.all([store.dispatch(FETCH_TOUR, to.params.id)]).then(() => {
+      Promise.all([store.dispatch(FETCH_PLACE, to.params.id)]).then(() => {
         next();
       });
     },
 
     computed: {
-      ...mapGetters(['tour', 'currentUser']),
+      ...mapGetters(['place', 'currentUser']),
     },
     methods: {
-      async checkAuth() {
+      checkAuth() {
         try {
-        //write function to check member have book this tour?
+          if (this.currentUser.id > 0) {
+            this.dialog1 = true;
+          }
         } catch (e) {
-          alert('Bạn chưa đặt tour này nên không thể đánh giá!');
+          alert('Bạn chưa đăng nhập');
         }
       },
       reloadPage() {
         window.location.reload();
       },
       async submitComment() {
-        this.data_comment = {
-          ...this.data_comment,
-          comment: this.comment,
-          object_id: this.tour.id,
-          user_id: this.currentUser.id,
-          star: this.rating,
-        };
-        const resp = await reviewApi.submitComment(this.data_comment);
-        if (resp.status === 200) {
-          this.dialog1 = false;
-          this.reloadPage();
+        try {
+          this.data_comment = {
+            ...this.data_comment,
+            comment: this.comment,
+            object_id: this.$route.params.id,
+            user_id: this.currentUser.id,
+            star: this.rating,
+          };
+          const resp = await reviewApi.submitComment(this.data_comment);
+          if (resp.status === 200) {
+            this.dialog1 = false;
+            this.reloadPage();
+          }
+        } catch (e) {
+          alert('Bạn chưa đăng nhập');
         }
       },
     },

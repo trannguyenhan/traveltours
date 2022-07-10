@@ -4,6 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
+use PHPUnit\Exception;
 
 class OrderRepository extends BaseRepository
 {
@@ -13,14 +14,19 @@ class OrderRepository extends BaseRepository
         return Order::class;
     }
 
-    public function search($query, $keyword)
-    {
-        if(!auth()->user()->hasRole(ROLE_ADMIN)){
-            $query = $query->where('user_id', auth()->id());
-        }
-
-        return parent::search($query, $keyword);
-    }
+//    public function search($query, $keyword)
+//    {
+//        try {
+//            if(!auth()->user()->hasRole(ROLE_ADMIN)){
+//                $query = $query->where('user_id', auth()->id());
+//            }
+//        }
+//        catch (\Exception $e){
+//            return parent::search($query, $keyword);
+//        }
+//
+//        return parent::search($query, $keyword);
+//    }
 
     public function doStore($arr): JsonResponse
     {

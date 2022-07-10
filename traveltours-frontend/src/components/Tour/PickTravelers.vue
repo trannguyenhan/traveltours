@@ -11,8 +11,8 @@
       <v-col>
         <TrnPickNumber
           ref="adults"
-          v-on="$listeners"
           :num="adults"
+          v-on="$listeners"
           @changeValue="(value) => (adults = value)"
         />
       </v-col>
@@ -32,8 +32,8 @@
       <v-col>
         <TrnPickNumber
           ref="childrens"
-          v-on="$listeners"
           :num="children"
+          v-on="$listeners"
           @changeValue="(value) => (children = value)"
         />
       </v-col>
@@ -41,14 +41,32 @@
     <v-row class="justify-center">
       <v-btn class="btnBookTour" @click="bookTour">Book Tour</v-btn>
     </v-row>
+    <v-dialog v-model="dialog" width="500">
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2"> Thông báo </v-card-title>
+
+        <v-card-text>
+          Bạn đã đặt tour thành công với mã đặt hàng {{ orderCode }}.
+        </v-card-text>
+
+        <v-divider />
+
+        <v-card-actions>
+          <v-spacer />
+          <router-link to="/user/profile">
+            <v-btn color="primary" text @click="dialog = false"> OK </v-btn>
+          </router-link>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   import pluralize from '@/common/pluralize.js';
   import orderApi from '@/common/service/order.api';
   import TrnPickNumber from './PickNumber';
-  import { mapGetters } from "vuex";
 
   export default {
     components: {
@@ -65,6 +83,7 @@
       },
     },
     data: () => ({
+      orderCode: 0,
       adults: 1,
       children: 0,
       data_send: {
@@ -77,6 +96,7 @@
         payment_method: 'cod',
         status: 'ok',
       },
+      dialog: false,
     }),
     computed: {
       adultsQuantity() {
@@ -92,21 +112,29 @@
         return count1 * price1 + count2 * price2;
       },
       async bookTour() {
-        this.data_send = {
-          ...this.data_send,
-          tour_id: this.$route.params.id,
-          user_id: this.currentUser.id,
-          child_count: this.children,
-          adult_count: this.adults,
-          total_price: this.totalPrice(
-            this.children,
-            this.price_children,
-            this.adults,
-            this.price_adult
-          ),
-        };
-        const resp = orderApi.bookTour(this.data_send);
-        console.log(resp);
+        try {
+          this.data_send = {
+            ...this.data_send,
+            tour_id: this.$route.params.id,
+            user_id: this.currentUser.id,
+            child_count: this.children,
+            adult_count: this.adults,
+            total_price: this.totalPrice(
+              this.children,
+              this.price_children,
+              this.adults,
+              this.price_adult
+            ),
+          };
+          const resp = await orderApi.bookTour(this.data_send);
+          if (resp.status === 200) {
+            this.dialog = true;
+            console.log(resp);
+            this.orderCode = resp.data.data.id;
+          }
+        } catch (e) {
+          alert('Ban chua dang nhap');
+        }
       },
     },
   };
