@@ -87,6 +87,7 @@
       adults: 1,
       children: 0,
       data_send: {
+        coupon_id: 1,
         tour_id: 1,
         user_id: 1,
         child_count: 0,
@@ -133,6 +134,7 @@
             this.orderCode = resp.data.data.id;
           }
         } catch (e) {
+          console.log(e);
           alert('Ban chua dang nhap');
         }
       },

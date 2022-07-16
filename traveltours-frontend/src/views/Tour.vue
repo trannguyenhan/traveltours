@@ -23,7 +23,7 @@
           <H3TPrivateTourBlock />
           <v-row class="justify-center">
             <v-btn class="text-h5 justify-center btnComment" @click="checkAuth"
-              >Bình luận</v-btn
+              >Comment</v-btn
             >
           </v-row>
           <div class="text-center">
@@ -31,7 +31,7 @@
               <v-form v-model="valid">
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2">
-                    Bình luận
+                    Comment
                   </v-card-title>
                   <v-rating
                     v-model="rating"
@@ -51,7 +51,7 @@
                   <v-card-actions>
                     <v-spacer />
                     <v-btn color="primary" text @click="submitComment">
-                      Bình luận
+                      Comment
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -59,7 +59,7 @@
             </v-dialog>
           </div>
 
-          <div class="text-h4">Bình luận</div>
+          <div class="text-h4">Comment</div>
           <H3TTimeline :timeline="tour.reviews" />
         </v-col>
         <v-col cols="12" md="4"
@@ -93,6 +93,7 @@
   import store from '@/store';
   import reviewApi from '@/common/service/review.api';
   import OrderApi from '@/common/service/order.api';
+  import orderApi from "@/common/service/order.api";
 
   export default {
     name: 'Tour',
@@ -139,9 +140,14 @@
     methods: {
       async checkAuth() {
         try {
-        //write function to check member have book this tour?
+          const checkTrue = await orderApi.checkBookTour(this.tour.id,this.currentUser.id);
+          if (checkTrue.data) {
+            this.dialog1 = true;
+          } else {
+            alert('Bạn chưa đặt tour này nên không thể đánh giá!');
+          }
         } catch (e) {
-          alert('Bạn chưa đặt tour này nên không thể đánh giá!');
+          alert('Đã có lỗi xảy ra. Vui lòng thử lại');
         }
       },
       reloadPage() {

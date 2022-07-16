@@ -127,6 +127,8 @@ Route::get('category/listing', [CategoryController::class, 'listing']);
 Route::get('tour/detail/{id}', [TourController::class, 'detail']);
 Route::get('tour-guide/listing', [TourGuideController::class, 'listing']);
 Route::get('order/detail/{id}', [OrderController::class, 'detail']);
+Route::get('order/all/{id}', [OrderController::class, 'all']);
+Route::get('order/checkbooktour/{tourId}/{userId}', [OrderController::class, 'checkBookTour']);
 Route::get('vietnam-address', function () {
    return  response()->file("data.json");
     // return \App\Helper::successResponse($data);

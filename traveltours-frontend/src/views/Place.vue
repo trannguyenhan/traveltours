@@ -23,7 +23,7 @@
         <v-col cols="12" md="8">
           <v-row class="justify-center">
             <v-btn class="text-h5 justify-center btnComment" @click="checkAuth"
-              >Bình luận</v-btn
+              >Comment</v-btn
             >
           </v-row>
           <div class="text-center">
@@ -31,7 +31,7 @@
               <v-form v-model="valid">
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2">
-                    Bình luận
+                    Comment
                   </v-card-title>
                   <v-rating
                     v-model="rating"
@@ -51,7 +51,7 @@
                   <v-card-actions>
                     <v-spacer />
                     <v-btn color="primary" text @click="submitComment">
-                      Bình luận
+                      Comment
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -59,7 +59,7 @@
             </v-dialog>
           </div>
 
-          <div class="text-h4">Bình luận</div>
+          <div class="text-h4">Comment</div>
           <H3TTimeline :timeline="place.reviews" />
         </v-col>
       </v-row>
@@ -147,7 +147,7 @@
             this.reloadPage();
           }
         } catch (e) {
-          alert('Bạn chưa đăng nhập');
+          alert("Vui lòng load lại trang");
         }
       },
     },

@@ -141,6 +141,11 @@
           value: 'id',
         },
         {
+          text: 'Tên chuyến đi',
+          value: 'tour.name',
+          sortable: false,
+        },
+        {
           text: 'Số lượng người lớn',
           value: 'adult_count',
         },
@@ -167,7 +172,7 @@
       },
 
       async listOrder() {
-        const resp = await orderApi.listTour();
+        const resp = await orderApi.listTour(this.currentUser.id);
         this.orderInfo = resp.data.data;
         console.log(resp.data.data);
       },
