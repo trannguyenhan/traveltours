@@ -121,6 +121,7 @@ class Helper
     {
         $type = $option['type'];
         $id = $option['id'];
+
         if ($type == 'user') {
             $avatar = User::query()->find($id)->avatar;
             if ($avatar != null) {
@@ -131,6 +132,7 @@ class Helper
                 }
             }
         }
+
         if ($type == 'place') {
             $listImage = Place::query()->find($id)->images;
             foreach ($listImage as $key => $oldImage) {

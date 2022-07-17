@@ -9,4 +9,4 @@ const ROLE_MEMBER = 'member';
 const ROLE_SELLER = 'seller';
 
 const MID_ROLE_ADMIN = 'role:admin';
-const MID_ROLE_ADMIN_OWN = 'super_admin_or_own';
+const MID_ROLE_MEMBER = 'role:member';

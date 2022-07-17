@@ -36,7 +36,7 @@ class UserController extends BaseController
      */
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
-        $user = \App\Models\User::query()->find($request->input('id'));
+        $user = \App\Models\User::query()->find(auth()->id());
         $password = $request->input('password');
         $newPassword = $request->input('new_password');
 

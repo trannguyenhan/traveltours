@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Helper;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
@@ -25,10 +26,10 @@ class UserRepository extends BaseRepository
 
         if($model->save()){
             $model->assignRole('editor');
-            return \App\Helper::successResponse($model);
+            return Helper::successResponse($model);
         }
 
-        return \App\Helper::errorResponse();
+        return Helper::errorResponse();
     }
 
     public function doAssign($request): JsonResponse
@@ -42,10 +43,10 @@ class UserRepository extends BaseRepository
 
         if($model->save()){
             $model->assignRole(ROLE_MEMBER);
-            return \App\Helper::successResponse($model);
+            return Helper::successResponse($model);
         }
 
-        return \App\Helper::errorResponse();
+        return Helper::errorResponse();
     }
 
     /**
@@ -67,13 +68,12 @@ class UserRepository extends BaseRepository
             }
 
             $user->password = bcrypt($newPassword);
-            $user->password_updated_at = now();
             if($user->save()){
-                return \App\Helper::successResponse("Change password success!");
+                return Helper::successResponse("Change password success!");
             }
         }
 
-        return \App\Helper::errorResponse("fail!");
+        return Helper::errorResponse("fail!");
     }
 
     /**
@@ -96,13 +96,13 @@ class UserRepository extends BaseRepository
             }
 
             if($user->save()){
-                return \App\Helper::successResponse("Lock success!");
+                return Helper::successResponse("Lock success!");
             } else {
-                return \App\Helper::errorResponse("error");
+                return Helper::errorResponse("error");
             }
         }
 
-        return \App\Helper::errorResponse("User doesn't exists!");
+        return Helper::errorResponse("User doesn't exists!");
     }
 
     public function doUnlock($id): JsonResponse
@@ -115,13 +115,13 @@ class UserRepository extends BaseRepository
             }
 
             if($user->save()){
-                return \App\Helper::successResponse("Unlock success!");
+                return Helper::successResponse("Unlock success!");
             } else {
-                return \App\Helper::errorResponse("error");
+                return Helper::errorResponse("error");
             }
         }
 
-        return \App\Helper::errorResponse("User doesn't exists!");
+        return Helper::errorResponse("User doesn't exists!");
     }
 
     public function doUpdate($arr): JsonResponse
@@ -131,10 +131,10 @@ class UserRepository extends BaseRepository
         if($model != null){
             $model->fill($arr);
             if($model->save()){
-                return \App\Helper::successResponse($model);
+                return Helper::successResponse($model);
             }
         }
 
-        return \App\Helper::errorResponse("update fail!");
+        return Helper::errorResponse("update fail!");
     }
 }

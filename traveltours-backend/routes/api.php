@@ -55,13 +55,10 @@ Route::group([
     Route::group(['prefix' => '/user'], function () {
         Route::get('/listing', [UserController::class, 'listing'])
             ->middleware(MID_ROLE_ADMIN);
-        Route::post('update', [UserController::class, 'update'])->name('update')
-            ->middleware(MID_ROLE_ADMIN_OWN);
-        Route::post('update-image', [UserController::class, 'updateImage'])->name('update')
-            ->middleware(MID_ROLE_ADMIN_OWN);
+        Route::post('update', [UserController::class, 'update'])->name('update');
+        Route::post('update-image', [UserController::class, 'updateImage'])->name('update');
         Route::get('/profile', [UserController::class, 'me']);
-        Route::post('change-password', [UserController::class, 'changePassword'])->name('change')
-            ->middleware(MID_ROLE_ADMIN_OWN);
+        Route::post('change-password', [UserController::class, 'changePassword'])->name('change');
     });
 
     Route::group(['prefix' => '/place'], function () {
@@ -110,12 +107,12 @@ Route::group([
 
     Route::group(['prefix' => '/order'], function () {
         Route::get('/listing', [OrderController::class, 'listing']);
-        Route::post('/store', [OrderController::class, 'store']);
-//            ->middleware(ROLE_MEMBER);
+        Route::post('/store', [OrderController::class, 'store'])
+            ->middleware(MID_ROLE_MEMBER);
         Route::post('/update', [OrderController::class, 'update'])
-            ->middleware(ROLE_MEMBER);
+            ->middleware(MID_ROLE_MEMBER);
         Route::post('/delete', [OrderController::class, 'delete'])
-            ->middleware(ROLE_MEMBER);
+            ->middleware(MID_ROLE_MEMBER);
     });
 });
 
