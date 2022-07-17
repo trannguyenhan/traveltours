@@ -9,6 +9,7 @@ export const FetchApi = axios.create({
   baseURL: APP_API_URL,
   timeout: APP_TIME_OUT,
 });
+
 const token = getToken();
 export const FetchApiAuth = axios.create({
   baseURL: APP_API_URL,

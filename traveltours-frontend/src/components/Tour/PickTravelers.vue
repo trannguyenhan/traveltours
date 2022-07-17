@@ -11,6 +11,7 @@
       <v-col>
         <TrnPickNumber
           ref="adults"
+          v-model="adults"
           :num="adults"
           v-on="$listeners"
           @changeValue="(value) => (adults = value)"
@@ -32,6 +33,7 @@
       <v-col>
         <TrnPickNumber
           ref="childrens"
+          v-model="children"
           :num="children"
           v-on="$listeners"
           @changeValue="(value) => (children = value)"
@@ -66,6 +68,7 @@
   import { mapGetters } from 'vuex';
   import pluralize from '@/common/pluralize.js';
   import orderApi from '@/common/service/order.api';
+  import Swal from 'sweetalert2';
   import TrnPickNumber from './PickNumber';
 
   export default {
@@ -87,7 +90,6 @@
       adults: 1,
       children: 0,
       data_send: {
-        coupon_id: 1,
         tour_id: 1,
         user_id: 1,
         child_count: 0,
@@ -113,30 +115,39 @@
         return count1 * price1 + count2 * price2;
       },
       async bookTour() {
-        try {
-          this.data_send = {
-            ...this.data_send,
-            tour_id: this.$route.params.id,
-            user_id: this.currentUser.id,
-            child_count: this.children,
-            adult_count: this.adults,
-            total_price: this.totalPrice(
-              this.children,
-              this.price_children,
-              this.adults,
-              this.price_adult
-            ),
-          };
-          const resp = await orderApi.bookTour(this.data_send);
-          if (resp.status === 200) {
-            this.dialog = true;
-            console.log(resp);
-            this.orderCode = resp.data.data.id;
-          }
-        } catch (e) {
-          console.log(e);
-          alert('Ban chua dang nhap');
-        }
+        this.data_send = {
+          ...this.data_send,
+          tour_id: this.$route.params.id,
+          user_id: this.currentUser.id,
+          child_count: this.children,
+          adult_count: this.adults,
+          total_price: this.totalPrice(
+            this.children,
+            this.price_children,
+            this.adults,
+            this.price_adult
+          ),
+        };
+
+        await orderApi
+          .bookTour(this.data_send)
+          .then((response) => {
+            if (response.status === 200) {
+              this.dialog = true;
+              this.orderCode = response.data.data.id;
+            } else if (response.status === 422) {
+              Swal.fire({
+                text: 'Bạn cần điền đầy đủ thông tin',
+                icon: 'error',
+              });
+            }
+          })
+          .catch(() => {
+            Swal.fire({
+              text: 'Bạn chưa đăng nhập',
+              icon: 'error',
+            });
+          });
       },
     },
   };

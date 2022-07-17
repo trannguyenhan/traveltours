@@ -74,8 +74,17 @@ const actions = {
     }
   },
 
-  async [UPDATE_PASSWORD]({ commit }, password, newPassword){
-
+  async [UPDATE_PASSWORD]({ commit }, data) {
+    try {
+      const response = await authsService.updatePassword(
+        data.password,
+        data.new_password
+      );
+      return response;
+    } catch ({ response }) {
+      commit(SET_ERROR, response.data.error);
+      throw new Error(response.data.error);
+    }
   },
 };
 

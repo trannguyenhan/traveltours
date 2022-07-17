@@ -15,4 +15,10 @@ export default {
   update: (userUpdate) => apiService.post('user/update', userUpdate),
   updateImage: (formDataUpdateImage) =>
     apiService.post('user/update-image', formDataUpdateImage),
+  updatePassword: (oldPassword, newPassword) =>
+    apiService.post('user/change-password', {
+      password: oldPassword,
+      new_password: newPassword,
+      password_confirmation: newPassword,
+    }),
 };

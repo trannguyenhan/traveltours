@@ -79,6 +79,7 @@
   import { FETCH_PLACE } from '@/store/type/actions';
   import store from '@/store';
   import reviewApi from '@/common/service/review.api';
+  import Swal from 'sweetalert2';
 
   export default {
     name: 'Place',
@@ -126,7 +127,10 @@
             this.dialog1 = true;
           }
         } catch (e) {
-          alert('Bạn chưa đăng nhập');
+          Swal.fire({
+            text: 'Bạn chưa đăng nhập',
+            icon: 'error',
+          });
         }
       },
       reloadPage() {
@@ -147,7 +151,7 @@
             this.reloadPage();
           }
         } catch (e) {
-          alert("Vui lòng load lại trang");
+          alert('Vui lòng load lại trang');
         }
       },
     },

@@ -90,7 +90,7 @@
           Cập nhật ảnh đại diện
         </v-btn>
       </div>
-      <div v-if="item === 2">
+      <div v-if="item === 2" style="width: 150%">
         <v-data-table
           :headers="headers"
           :items="orderInfo"
@@ -99,8 +99,12 @@
         />
       </div>
       <div v-if="item === 3">
-        <v-text-field label="Mật khẩu" hide-details="auto" />
-        <v-text-field label="Nhập lại mật khẩu" hide-details="auto" />
+        <v-text-field v-model="password" label="Mật khẩu" hide-details="auto" />
+        <v-text-field
+          v-model="newPassword"
+          label="Nhập lại mật khẩu"
+          hide-details="auto"
+        />
         <br />
         <v-btn depressed color="primary" @click="updatePassword()">
           Cập nhật mật khẩu
@@ -117,7 +121,9 @@
     UPDATE_USER,
     LOGOUT,
     UPDATE_AVATAR_USER,
+    UPDATE_PASSWORD,
   } from '@/store/type/actions';
+  import Swal from 'sweetalert2';
 
   export default {
     data: () => ({
@@ -133,6 +139,8 @@
         (value) => !!value || 'Required.',
         (value) => (value && value.length >= 3) || 'Min 3 characters',
       ],
+      password: '',
+      newPassword: '',
       orderInfo: [],
       headers: [
         {
@@ -194,7 +202,30 @@
         this.$store.dispatch(LOGOUT);
         this.$router.go();
       },
-      updatePassword() {},
+      updatePassword() {
+        this.$store
+          .dispatch(UPDATE_PASSWORD, {
+            password: this.password,
+            new_password: this.newPassword,
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              Swal.fire({
+                text: 'Cập nhật mật khẩu thành công',
+                icon: 'success',
+              });
+            }
+          })
+          .catch(() => {
+            Swal.fire({
+              text: 'Cập nhật mật khẩu thất bại',
+              icon: 'error',
+            });
+          });
+
+        this.password = '';
+        this.newPassword = '';
+      },
     },
   };
 </script>

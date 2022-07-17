@@ -62,15 +62,16 @@
           <div class="text-h4">Comment</div>
           <H3TTimeline :timeline="tour.reviews" />
         </v-col>
-        <v-col cols="12" md="4"
-          ><H3TCheckAvailability
+        <v-col cols="12" md="4">
+          <H3TCheckAvailability
             :start-date="
               new Date(tour.start_date).toISOString().substring(0, 10)
             "
             :range="tour.range"
             :price_adult="tour.price.adult"
             :price_children="tour.price.child"
-        /></v-col>
+          />
+        </v-col>
       </v-row>
     </v-container>
   </div>
@@ -92,8 +93,8 @@
   import { FETCH_TOUR } from '@/store/type/actions';
   import store from '@/store';
   import reviewApi from '@/common/service/review.api';
-  import OrderApi from '@/common/service/order.api';
-  import orderApi from "@/common/service/order.api";
+  import orderApi from '@/common/service/order.api';
+  import Swal from 'sweetalert2';
 
   export default {
     name: 'Tour',
@@ -140,14 +141,25 @@
     methods: {
       async checkAuth() {
         try {
-          const checkTrue = await orderApi.checkBookTour(this.tour.id,this.currentUser.id);
-          if (checkTrue.data) {
-            this.dialog1 = true;
-          } else {
-            alert('Bạn chưa đặt tour này nên không thể đánh giá!');
-          }
+          await orderApi
+            .checkBookTour(this.tour.id, this.currentUser.id)
+            .then((response) => {
+              if (response.status === 200) {
+                if (response.data.data) {
+                  this.dialog1 = true;
+                } else {
+                  Swal.fire({
+                    text: 'Bạn chưa đặt tour này nên không thể đánh giá!',
+                    icon: 'error',
+                  });
+                }
+              }
+            });
         } catch (e) {
-          alert('Đã có lỗi xảy ra. Vui lòng thử lại');
+          await Swal.fire({
+            text: 'Đã có lỗi xảy ra. Vui lòng thử lại',
+            icon: 'error',
+          });
         }
       },
       reloadPage() {
