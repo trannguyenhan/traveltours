@@ -8,6 +8,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\TourGuideController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CouponsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -125,6 +126,7 @@ Route::get('tour/detail/{id}', [TourController::class, 'detail']);
 Route::get('tour-guide/listing', [TourGuideController::class, 'listing']);
 Route::get('order/detail/{id}', [OrderController::class, 'detail']);
 Route::get('order/all/{id}', [OrderController::class, 'all']);
+Route::get('coupon/check/{couponCode}', [CouponsController::class, 'checkCouponCode']);
 Route::get('order/checkbooktour/{tourId}/{userId}', [OrderController::class, 'checkBookTour']);
 Route::get('vietnam-address', function () {
    return  response()->file("data.json");

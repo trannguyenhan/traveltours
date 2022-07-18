@@ -41,6 +41,17 @@
       </v-col>
     </v-row>
     <v-row class="justify-center">
+      <div style="display: flex">
+        <v-text-field
+          v-model="coupon"
+          style="margin: 0 15px"
+          hide-details="auto"
+          label="Coupon Code"
+        />
+        <v-btn class="btnBookTour" @click="applyCoupon">Apply</v-btn>
+      </div>
+    </v-row>
+    <v-row class="justify-center">
       <v-btn class="btnBookTour" @click="bookTour">Book Tour</v-btn>
     </v-row>
     <v-dialog v-model="dialog" width="500">
@@ -86,6 +97,10 @@
       },
     },
     data: () => ({
+      coupon: '',
+      coupon_id: '',
+      discount: 0,
+      threshold: 0,
       orderCode: 0,
       adults: 1,
       children: 0,
@@ -111,8 +126,41 @@
       ...mapGetters(['currentUser']),
     },
     methods: {
-      totalPrice(count1, price1, count2, price2) {
-        return count1 * price1 + count2 * price2;
+      async applyCoupon() {
+        await this.checkValidCouponCode(this.coupon).then((resp) => {
+          if (resp.data === 'not exist') {
+            Swal.fire({
+              text: 'Mã giảm giá không tồn tại hoặc đã hết số lượt sử dụng',
+              icon: 'error',
+            });
+            this.coupon = '';
+            this.coupon_id = '';
+          } else {
+            this.coupon_id = resp.data[0].id;
+            this.threshold = resp.data[0].threshold;
+            this.discount = resp.data[0].discount;
+            console.log(this.threshold)
+            console.log(this.discount)
+            Swal.fire({
+              text: 'Mã giảm giá đã được áp dụng cho chuyến đi của bạn',
+              icon: 'success',
+            });
+          }
+        });
+      },
+      async checkValidCouponCode(couponCode) {
+        const data = await orderApi.checkValidCouponCode(couponCode);
+        console.log(data);
+        return data;
+      },
+      totalPrice(count1, price1, count2, price2, discountPercent, threshold) {
+        const sum = count1 * price1 + count2 * price2;
+        if (this.coupon_id === '') {
+          return sum;
+        }
+        return (sum * discountPercent) / 100 > threshold
+          ? sum - threshold
+          : sum - (sum * discountPercent) / 100;
       },
       async bookTour() {
         this.data_send = {
@@ -121,11 +169,14 @@
           user_id: this.currentUser.id,
           child_count: this.children,
           adult_count: this.adults,
+          coupon_id: this.coupon_id,
           total_price: this.totalPrice(
             this.children,
             this.price_children,
             this.adults,
-            this.price_adult
+            this.price_adult,
+            this.discount,
+            this.threshold
           ),
         };
 
@@ -142,7 +193,8 @@
               });
             }
           })
-          .catch(() => {
+          .catch((e) => {
+            console.log(this.data_send);
             Swal.fire({
               text: 'Bạn chưa đăng nhập',
               icon: 'error',
