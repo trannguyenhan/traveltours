@@ -115,39 +115,44 @@
         return count1 * price1 + count2 * price2;
       },
       async bookTour() {
-        this.data_send = {
-          ...this.data_send,
-          tour_id: this.$route.params.id,
-          user_id: this.currentUser.id,
-          child_count: this.children,
-          adult_count: this.adults,
-          total_price: this.totalPrice(
-            this.children,
-            this.price_children,
-            this.adults,
-            this.price_adult
-          ),
-        };
-
-        await orderApi
-          .bookTour(this.data_send)
-          .then((response) => {
-            if (response.status === 200) {
-              this.dialog = true;
-              this.orderCode = response.data.data.id;
-            } else if (response.status === 422) {
+        if (this.currentUser != null) {
+          await orderApi
+            .bookTour({
+              ...this.data_send,
+              tour_id: this.$route.params.id,
+              user_id: this.currentUser.id,
+              child_count: this.children,
+              adult_count: this.adults,
+              total_price: this.totalPrice(
+                this.children,
+                this.price_children,
+                this.adults,
+                this.price_adult
+              ),
+            })
+            .then((response) => {
+              if (response.status === 200) {
+                this.dialog = true;
+                this.orderCode = response.data.data.id;
+              } else if (response.status === 422) {
+                Swal.fire({
+                  text: 'Bạn cần điền đầy đủ thông tin',
+                  icon: 'error',
+                });
+              }
+            })
+            .catch(() => {
               Swal.fire({
-                text: 'Bạn cần điền đầy đủ thông tin',
+                text: 'Bạn chưa đăng nhập',
                 icon: 'error',
               });
-            }
-          })
-          .catch(() => {
-            Swal.fire({
-              text: 'Bạn chưa đăng nhập',
-              icon: 'error',
             });
+        } else {
+          await Swal.fire({
+            text: 'Bạn chưa đăng nhập',
+            icon: 'error',
           });
+        }
       },
     },
   };

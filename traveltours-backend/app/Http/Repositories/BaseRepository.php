@@ -39,15 +39,19 @@ abstract class BaseRepository
      * @param $pageSize
      * @param array $orderBy
      * @param array $orderType
+     * @param $filter
      * @return JsonResponse
      */
     public function doList($keyword,
                            $page,
                            $pageSize,
                            $orderBy = ['created_at'],
-                           $orderType = ['desc']): JsonResponse
+                           $orderType = ['desc'],
+                           $filter): JsonResponse
     {
         $query = (new $this->_model)->query(); // create new query
+
+        \App\Helper::filterFromParams($filter, $query);
 
         $query = $this->search($query, $keyword);
         $total = $query->count();

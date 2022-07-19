@@ -29,25 +29,25 @@
       bookFlexibility: [
         {
           icon: 'mdi-calendar-clock',
-          title: 'Change dates',
-          content: 'Choose new departure dates if your plans change.',
+          title: 'Lịch trình',
+          content: 'Lịch trình cụ thể, rõ ràng nơi đến, nơi ở, khách sạn.',
         },
         {
           icon: 'mdi-map-marker-check-outline',
-          title: 'Choose a different tour',
+          title: 'Chọn chuyến tham quan khác',
           content:
-            'Change to a different tour if you want something different.',
+            'Đổi sang một chuyến tham quan khác nếu bạn muốn điều gì đó khác biệt.',
         },
         {
           icon: 'mdi-credit-card-check-outline',
-          title: 'Get credit if plans change',
-          content:
-            'Get credit for future trips if you need more time to decide.',
+          title: 'Thanh toán',
+          content: 'Thanh toán linh hoạt',
         },
         {
           icon: 'mdi-headset',
-          title: '24/7 Support',
-          content: 'Reach out to us anytime via online chat, phone or email.',
+          title: 'Hỗ trợ 24/7',
+          content:
+            'Gọi điện vào đường dây nóng hoặc gửi email cho chúng tôi nếu bạn muốn hỗ trợ.',
         },
       ],
     }),

@@ -1,6 +1,6 @@
 <template>
   <div class="my-6">
-    <div>Have you considered booking this tour privately? Contact Us now!</div>
+    <div>Thông tin về tour du lịch!</div>
 
     <v-row>
       <v-col
@@ -27,33 +27,39 @@
     components: {
       TrnBulletPoint,
     },
-    data: () => ({
-      bookFlexibility: [
+    props: {
+      item: {
+        type: Object,
+        required: true,
+      },
+    },
+    mounted() {
+      console.log(this.item);
+      this.bookFlexibility = [
         {
           icon: 'mdi-notebook-edit-outline',
-          title: 'Personalise your trip',
-          content:
-            'Make changes to the itinerary, accommodation, or transport method.',
+          title: 'Phương tiện di chuyển',
+          content: this.item.vehicle,
         },
         {
           icon: 'mdi-hospital-box-outline',
-          title: 'Increased safety during COVID',
-          content:
-            'Spend the majority of time amongst your group to reduce exposure with others.',
+          title: 'Số người tham gia',
+          content: `Số người đăng ký tối đa là ${this.item.max_slot}, số người đã đăng ký là ${this.item.slot}`,
         },
         {
           icon: 'mdi-star-face',
-          title: 'Travel more exclusively',
-          content:
-            'Your tour guide can focus all their attention on your group.',
+          title: 'Loại khách sạn',
+          content: `Khách sạn ${this.item.hotel_star} sao`,
         },
         {
           icon: 'mdi-halloween',
-          title: 'Travel for a special occasion',
-          content:
-            'Celebrate an important event by only travelling with your friends or family.',
+          title: 'Hướng dẫn viên du lịch',
+          content: `${this.item.tour_guide.name}`,
         },
-      ],
+      ]
+    },
+    data: () => ({
+      bookFlexibility: [],
     }),
   };
 </script>

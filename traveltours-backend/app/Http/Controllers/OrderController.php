@@ -30,6 +30,7 @@ class OrderController extends BaseController
 
     public function checkBookTour($tourId, $userId)
     {
-        $this->repository->checkBookTour($tourId, $userId);
+        $checking = $this->repository->checkBookTour($tourId, $userId);
+        return \App\Helper::errorResponse($checking);
     }
 }

@@ -19,7 +19,9 @@ class BaseController extends Controller
         $orderType = $this->getOrderTypes($request);
         $orderBy = $this->getSortBy($request);
 
-        return $this->repository->doList($keyWord, $page, $pageSize, $orderBy, $orderType);
+        $filter = \App\Helper::getFilterParams($request);
+
+        return $this->repository->doList($keyWord, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 
     public function detail(Request $request, $id)

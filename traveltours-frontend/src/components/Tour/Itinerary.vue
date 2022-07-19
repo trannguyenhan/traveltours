@@ -12,18 +12,15 @@
       </template>
       <BaseCard class="my-4 mx-auto">
         <div class="py-4">
-          <v-card-title class="text-h6 primary--text text-capitalize">
-            {{ capitalizeFristLetter(item.user.name) }}
+          <router-link :to="{ path: '/place/' + item.id }">
+            <v-card-title class="text-h6 primary--text text-capitalize">{{
+              capitalizeFristLetter(item.address_detail)
+            }}</v-card-title>
+          </router-link>
 
-            <v-rating
-              v-model="item.star"
-              readonly="1"
-              icon-label="custom icon label text {0} of {1}"
-            />
-          </v-card-title>
           <v-card-text>
             <div style="white-space: pre-line; line-height: 1.6em">
-              {{ item.comment }}
+              {{ item.description }}
             </div>
           </v-card-text>
         </div>
@@ -33,7 +30,7 @@
 </template>
 
 <script>
-  import BaseCard from './base/Card';
+  import BaseCard from '../base/Card';
 
   export default {
     components: {
@@ -47,16 +44,25 @@
     },
     methods: {
       splitedSummary(string) {
+        // eslint-disable-next-line no-irregular-whitespace
         return string.trim().split(/\. |\. |! /);
       },
       capitalizeFristLetter(string) {
         return string.toLowerCase();
       },
     },
+    // data: () => ({
+    //   tours: require('@/data/tour.json'), // eslint-disable-line global-require
+    // }),
   };
 </script>
 
 <style scoped>
+  /* .v-timeline--dense {
+    max-width: 80vh;
+    margin: auto !important;
+  } */
+
   .trn-capital::first-letter {
     text-transform: uppercase;
   }

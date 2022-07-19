@@ -17,10 +17,15 @@
     <v-container class="mt-6">
       <v-row>
         <v-col cols="12" md="8">
-          <div class="text-h4">Book With Extra Flexibility</div>
+          <div class="text-h4">Tại sao bạn chọn H3T?</div>
           <H3TBookFlexibility />
-          <div class="text-h4">Your Travel, Your Tour</div>
-          <H3TPrivateTourBlock />
+
+          <div class="text-h4">Thông tin về tour</div>
+          <H3TPrivateTourBlock :item="tour" />
+
+          <div class="text-h4">Lịch trình</div>
+          <H3TItinerary :timeline="tour.places_detail" />
+
           <v-row class="justify-center">
             <v-btn class="text-h5 justify-center btnComment" @click="checkAuth"
               >Comment</v-btn
@@ -44,6 +49,7 @@
                     label="Đánh giá của bạn"
                     :rules="rules"
                     hide-details="auto"
+                    style="width: 95%; margin: auto"
                   />
 
                   <v-divider />
@@ -85,6 +91,7 @@
   import H3TBookFlexibility from '@/components/Tour/BookFlexibilityBlock.vue';
   import H3TPrivateTourBlock from '@/components/Tour/PrivateTourBlock.vue';
   import H3TCheckAvailability from '@/components/Tour/CheckAvailability.vue';
+  import H3TItinerary from '@/components/Tour/Itinerary';
 
   import H3TTitle from '@/components/Tour/Title.vue';
 
@@ -106,6 +113,7 @@
       H3TTimeline,
       H3TQuickFacts,
       H3TTitle,
+      H3TItinerary
     },
 
     props: {
@@ -139,13 +147,16 @@
       ...mapGetters(['tour', 'currentUser']),
     },
     methods: {
+      async fetchTours() {
+        await this.$store.dispatch(FETCH_TOUR, this.tour.id);
+      },
       async checkAuth() {
         try {
           await orderApi
             .checkBookTour(this.tour.id, this.currentUser.id)
             .then((response) => {
               if (response.status === 200) {
-                if (response.data.data) {
+                if (response.data.message) {
                   this.dialog1 = true;
                 } else {
                   Swal.fire({
@@ -156,14 +167,18 @@
               }
             });
         } catch (e) {
-          await Swal.fire({
-            text: 'Đã có lỗi xảy ra. Vui lòng thử lại',
-            icon: 'error',
-          });
+          if (this.currentUser == null) {
+            await Swal.fire({
+              text: 'Bạn chưa đăng nhập',
+              icon: 'error',
+            });
+          } else {
+            await Swal.fire({
+              text: 'Đã có lỗi xảy ra. Vui lòng thử lại',
+              icon: 'error',
+            });
+          }
         }
-      },
-      reloadPage() {
-        window.location.reload();
       },
       async submitComment() {
         this.data_comment = {
@@ -176,7 +191,7 @@
         const resp = await reviewApi.submitComment(this.data_comment);
         if (resp.status === 200) {
           this.dialog1 = false;
-          this.reloadPage();
+          await this.fetchTours();
         }
       },
     },
@@ -184,18 +199,6 @@
 </script>
 
 <style scoped>
-  .tourino-clip-path {
-    clip-path: polygon(0 15%, 100% 0%, 100% 85%, 0% 100%);
-  }
-
-  .tourino-clip-path-bottom {
-    clip-path: polygon(0 0, 100% 0%, 100% 75%, 0% 100%);
-  }
-
-  .tour-page {
-    max-width: 800px;
-  }
-
   .btnComment {
     background-color: #ff9800 !important;
     color: #ffffff;
