@@ -13,29 +13,24 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Name" width="200">
+      <el-table-column align="center" label="Tên địa điểm" width="200">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Start Date">
+      <el-table-column align="center" label="Quận/Huyện" width="200">
         <template slot-scope="scope">
-          <span>{{ formatDate(scope.row.start_date) }}</span>
+          {{ scope.row.district }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Range">
+      <el-table-column align="center" label="Phường/Xã" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.range }}</span>
+          {{ scope.row.ward }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Max Slot">
+      <el-table-column align="center" label="Địa điểm cụ thể" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.max_slot }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Remaining Slot">
-        <template slot-scope="scope">
-          <span>{{ scope.row.slot }}</span>
+          {{ scope.row.address_detail }}
         </template>
       </el-table-column>
 
@@ -63,38 +58,36 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="Edit Tour" :visible.sync="dialogFormVisible">
+    <el-dialog title="Edit Place" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
-        :model="tour"
+        :model="place"
         label-position="left"
         style="width: 400px; margin-left: 50px"
       >
         <el-form-item label="Name" prop="title">
-          <el-input v-model="tour.name" />
+          <el-input v-model="place.name" />
         </el-form-item>
-        <el-form-item label="Range" prop="title">
-          <el-input v-model="tour.range" type="number" label="Range" />
-        </el-form-item>
-        <el-form-item label="Max Slot" prop="title">
+
+        <!-- <el-form-item label="Max Slot" prop="title">
           <el-input
-            v-model="tour.max_slot"
             type="number"
             step="1"
             label="Range"
+            v-model="tour.max_slot"
           />
         </el-form-item>
         <el-form-item label="Remaining Slot" prop="title">
-          <el-input v-model="tour.slot" type="number" step="1" label="" />
+          <el-input type="number" step="1" label="" v-model="tour.slot" />
         </el-form-item>
         <el-form-item label="Start Date" prop="title">
           <el-input
-            v-model="tour.start_date"
+            step="1"
             placeholder="Pick a date"
+            v-model="tour.slot"
             type="date"
           />
         </el-form-item>
-        <div>{{ tour.start_date }}</div>
 
         <el-form-item label="Places"
           ><el-select
@@ -104,19 +97,15 @@
           >
             <el-option
               v-for="item in this.all_places"
-              :key="Number(item.id)"
+              :key="item.id"
               :label="item.name"
-              :value="Number(item.id)"
+              :value="item.id"
             /> </el-select
-        ></el-form-item>
+        ></el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
-        <el-button
-          v-if="!dialogCreate"
-          type="primary"
-          @click="updateTour(tour)"
-        >
+        <el-button v-if="!dialogCreate" type="primary" @click="updatePlace()">
           Update
         </el-button>
         <el-button
@@ -132,8 +121,13 @@
 </template>
 
 <script>
-import { getListTour, updateTour, deleteTour, getDetailTour } from "@/api/tour";
-import { getListPlace } from "@/api/place";
+import {
+  getListPlace,
+  updatePlace,
+  deletePlace,
+  getDetailPlace,
+} from "@/api/place";
+
 export default {
   filters: {
     statusFilter(status) {
@@ -149,9 +143,9 @@ export default {
       dialogFormVisible: false,
       dialogCreate: false,
       list: null,
-      tour: null,
       listLoading: true,
       places: [],
+      place: null,
       all_places: [],
     };
   },
@@ -159,48 +153,35 @@ export default {
     this.fetchData();
   },
   methods: {
-    getDetailTour(id) {
-      return getDetailTour(id);
-    },
-    convertNumber(array) {
-      for (let i = 0; i < array.length; i++) {
-        array[i] = Number(array[i]);
-      }
-      return array;
-    },
     async fetchData() {
       this.listLoading = true;
 
-      getListTour().then((response) => {
+      getListPlace().then((response) => {
         this.list = response.data;
         if (this.list.length > 0) {
-          getDetailTour(this.list[0].id).then((response) => {
-            this.tour = response.data;
-            console.log(this.tour);
+          getDetailPlace(this.list[0].id).then((response) => {
+            this.place = response.data;
           });
         } else {
-          this.tour = {
+          this.place = {
             name: "",
             description: "",
           };
         }
         this.listLoading = false;
       });
-
-      getListPlace().then((response) => {
-        this.all_places = response.data;
-      });
     },
 
     formatDate(dat) {
-      const date = new Date(dat);
+      let date = new Date(dat);
       return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
     },
 
-    updateTour(tour) {
-      tour.dest = tour.dest.id;
-      console.log(tour);
-      updateTour(tour).then((response) => {
+    updatePlace() {
+      console.log(this.place);
+      if (!this.place.ward) this.place.ward = "xã";
+      updatePlace(this.place).then((response) => {
+        // console.log(response.data);
         if (response.code === 0) {
           this.$notify({
             message: "Update success",
@@ -211,12 +192,10 @@ export default {
       });
     },
     handleUpdate(index) {
-      this.tour = this.list[index];
-      console.log(this.tour);
-      getDetailTour(this.list[index].id).then((response) => {
-        // this.tour = response.data;
-        this.tour.places = this.convertNumber(this.tour.places);
-        console.log(this.tour);
+      // this.tour = this.list[index];
+      getDetailPlace(this.list[index].id).then((response) => {
+        this.place = response.data;
+        // console.log(this.place);
       });
       this.dialogFormVisible = true;
       this.dialogCreate = false;

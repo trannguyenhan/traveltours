@@ -38,7 +38,14 @@ class Controller extends BaseController
      */
     public function updateTemplate($request, $updateFields)
     {
-        $arr = $request->only($updateFields);
+        // $arr = $request->only($updateFields);
+        foreach ($updateFields as $key => $value) {
+            $arr[$value] = $request->$value;
+        }
+
+        if ($request->images) {
+            $arr['images'] = $request->images;
+        }
         return $this->repository->doUpdate($arr);
     }
 

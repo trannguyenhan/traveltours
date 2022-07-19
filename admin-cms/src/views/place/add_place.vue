@@ -74,7 +74,8 @@
         />
       </el-form-item>
 
-      <input id="update-images" type="file" multiple="multiple">
+      <input id="update-images" type="file" multiple="multiple" />
+
       <br /><br />
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Create</el-button>
@@ -85,8 +86,8 @@
 </template>
 
 <script>
-import { getAddressDetail } from '@/api/data'
-import { createPlace } from '@/api/place'
+import { getAddressDetail } from "@/api/data";
+import { createPlace } from "@/api/place";
 
 export default {
   data() {
@@ -97,72 +98,72 @@ export default {
         district: null,
         ward: null,
         description: null,
-        address_detail: null
+        address_detail: null,
       },
       districtList: [],
       wardList: [],
       listLoading: null,
-      addressData: null
-    }
+      addressData: null,
+    };
   },
   created() {
-    this.fetchData()
+    this.fetchData();
   },
   methods: {
     listDistrict() {
       for (let i = 0; i < this.addressData.length; i++) {
         if (this.addressData[i].Name == this.place.province) {
-          this.districtList = this.addressData[i].Districts
-          return this.districtList
+          this.districtList = this.addressData[i].Districts;
+          return this.districtList;
         }
       }
     },
     listWard() {
       for (let i = 0; i < this.districtList.length; i++) {
         if (this.districtList[i].Name == this.place.district) {
-          return this.districtList[i].Wards
+          return this.districtList[i].Wards;
         }
       }
     },
     async fetchData() {
       getAddressDetail().then((response) => {
-        this.addressData = response.data
-      })
+        this.addressData = response.data;
+      });
     },
 
     onSubmit() {
-      const formData = new FormData()
-      const listImages = document.querySelector('#update-images')
-      const len = listImages.files.length
+      const formData = new FormData();
+      const listImages = document.querySelector("#update-images");
+      const len = listImages.files.length;
       for (let i = 0; i < len; i++) {
         // console.log(listImages.files[i]);
-        formData.append('images[' + i + ']', listImages.files[i])
+        formData.append("images[" + i + "]", listImages.files[i]);
       }
-      const listKey = Object.keys(this.place)
+      const listKey = Object.keys(this.place);
       //   for (let i = 0; i < listKey.length; i++) {
       //     let key = listKey[i];
       //     console.log(key);
       //     formData.append(key, this.place.key);
       //   }
-      formData.append('name', this.place.name)
-      formData.append('province', this.place.province)
-      formData.append('district', this.place.district)
-      formData.append('address_detail', this.place.address_detail)
-      formData.append('description', this.place.description)
-      formData.append('ward', this.place.ward)
-      console.log(this.place)
+      formData.append("name", this.place.name);
+      formData.append("province", this.place.province);
+      formData.append("district", this.place.district);
+      formData.append("address_detail", this.place.address_detail);
+      formData.append("description", this.place.description);
+      formData.append("ward", this.place.ward);
+      console.log(this.place);
       createPlace(formData).then((response) => {
         if (response.code === 0) {
           this.$notify({
-            message: 'Create success',
-            type: 'success'
-          })
-          this.$router.push('/place/listing')
+            message: "Create success",
+            type: "success",
+          });
+          this.$router.push("/place/listing");
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
