@@ -26,6 +26,9 @@ export default {
     return apiService.getAuth(`order/all/${id}`, backendQuerify(query));
   },
   checkBookTour: (tourId, userId) => {
-    return apiService.getAuth(`order/checkbooktour/${tourId}/${userId}`);
+    return apiService.get(`order/checkbooktour/${tourId}/${userId}`);
+  },
+  checkValidCouponCode: (couponCode) => {
+    return apiService.get(`coupon/check/${couponCode}`);
   },
 };
