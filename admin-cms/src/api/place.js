@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 export function createPlace(params) {
-    return request({
-        url: '/place/store',
-        method: 'post',
-        data: params
-    })
+  return request({
+    url: '/place/store',
+    method: 'post',
+    data: params
+  })
 }
 export function getListPlace(params) {
   return request({
@@ -33,7 +33,7 @@ export function deletePlace(params) {
 
 export function getDetailPlace(id) {
   return request({
-    url: '/tour/place/' + id,
+    url: '/place/detail/' + id,
     method: 'get'
   })
 }

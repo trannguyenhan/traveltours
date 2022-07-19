@@ -40,6 +40,20 @@ class PlaceController extends BaseController
 
     public function update(UpdateRequest $request)
     {
+        if ($request->hasFile('images')) {
+            $listImg = [];
+            foreach ($request->file('images') as $image) {
+                $updateImg = Helper::updateImageUrl($image, $option = ['type' => 'place', 'id' => $request->input("id")]);
+                if ($updateImg['code'] == 1) {
+                    $listImg[] = null;
+                } else {
+                    $listImg[] = $updateImg['url'];
+                }
+            }
+
+
+            $request->images = $listImg;
+        }
         return $this->updateTemplate($request, Place::UPDATE_FIELDS);
     }
 

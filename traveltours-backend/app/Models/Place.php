@@ -35,6 +35,7 @@ class Place extends Model
     protected $fillable = [
         'province',
         'district',
+        'ward',
         'address_detail',
         'name',
         'description',
@@ -44,6 +45,7 @@ class Place extends Model
     const INSERT_FIELDS = [
         'province',
         'district',
+        'ward',
         'address_detail',
         'name',
         'description',
@@ -54,6 +56,7 @@ class Place extends Model
         'id',
         'province',
         'district',
+        'ward',
         'address_detail',
         'name',
         'description',
