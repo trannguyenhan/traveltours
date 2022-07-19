@@ -1,0 +1,47 @@
+version: "3.8"
+services: 
+    backend:
+        build: 
+            context: ./traveltours-backend
+            args:
+                user: trannguyenhan
+                uid: 1000
+            dockerfile: Dockerfile
+        volumes:
+            - ./traveltours-backend/:/var/www/html/
+        networks:
+            - h3t
+    
+    nginx:
+        image: nginx:stable-alpine
+        ports:
+            - 8000:80
+        volumes:
+            - ./traveltours-backend/:/var/www/html/
+            - ./traveltours-backend/nginx/conf.d:/etc/nginx/conf.d/
+        networks:
+            - h3t
+
+    db:
+        image: mysql
+        environment:
+            MYSQL_DATABASE: traveltours
+            MYSQL_ROOT_PASSWORD: mysql12345
+            MYSQL_USER: trannguyenhan
+            MYSQL_PASSWORD: mysql12345
+        ports: 
+            - "9906:3306"
+        volumes:
+            - ./db/traveltoursdb.sql:/docker-entrypoint-initdb.d/dump.sql
+        networks:
+            - h3t
+
+    frontend:
+        build: ./traveltours-frontend
+        ports: 
+            - 8080:8080
+        networks:
+            - h3t
+networks: 
+    h3t:
+        driver: bridge

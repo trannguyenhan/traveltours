@@ -18,8 +18,8 @@
         close
         color="primary"
         @click:close="removeFilterItem(item.name, selection)"
-        >{{ item.name }}</v-chip
-      >
+        >{{ item.name }}
+      </v-chip>
     </template>
 
     <template #item="{ item }">
