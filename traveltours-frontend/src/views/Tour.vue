@@ -113,7 +113,7 @@
       H3TTimeline,
       H3TQuickFacts,
       H3TTitle,
-      H3TItinerary
+      H3TItinerary,
     },
 
     props: {

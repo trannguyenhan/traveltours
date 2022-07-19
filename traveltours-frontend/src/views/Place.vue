@@ -6,7 +6,6 @@
           <H3TCarousels :items="place.images" />
         </div>
       </v-col>
-
       <v-col cols="12" md="4">
         <H3TTitle class="text-h4">{{ place.name }}</H3TTitle>
 
@@ -44,6 +43,7 @@
                     label="Đánh giá của bạn"
                     :rules="rules"
                     hide-details="auto"
+                    style="width: 95%; margin: auto"
                   />
 
                   <v-divider />
@@ -133,8 +133,8 @@
           });
         }
       },
-      reloadPage() {
-        window.location.reload();
+      async fetchTours() {
+        await this.$store.dispatch(FETCH_PLACE, this.place.id);
       },
       async submitComment() {
         try {
@@ -148,10 +148,13 @@
           const resp = await reviewApi.submitComment(this.data_comment);
           if (resp.status === 200) {
             this.dialog1 = false;
-            this.reloadPage();
+            await this.fetchTours();
           }
         } catch (e) {
-          alert('Vui lòng load lại trang');
+          await Swal.fire({
+            text: 'Đã có lỗi xảy ra. Vui lòng thử lại',
+            icon: 'error',
+          });
         }
       },
     },
@@ -159,18 +162,6 @@
 </script>
 
 <style scoped>
-  .tourino-clip-path {
-    clip-path: polygon(0 15%, 100% 0%, 100% 85%, 0% 100%);
-  }
-
-  .tourino-clip-path-bottom {
-    clip-path: polygon(0 0, 100% 0%, 100% 75%, 0% 100%);
-  }
-
-  .tour-page {
-    max-width: 800px;
-  }
-
   .btnComment {
     background-color: #ff9800 !important;
     color: #ffffff;
