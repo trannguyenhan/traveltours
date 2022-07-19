@@ -5,7 +5,7 @@
     item-text="label"
     :items="duration"
     prepend-icon="mdi-calendar-clock"
-    label="Duration"
+    label="Thời gian chuyến đi"
     :class="{ 'trn-no-border': hasSelectionValue() }"
   >
     <template #selection="{ item }">

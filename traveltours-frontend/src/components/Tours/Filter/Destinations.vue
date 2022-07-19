@@ -4,10 +4,10 @@
     clearable
     hide-details
     multiple
-    :items="destinations"
-    item-text="value"
+    :items="places"
+    item-text="name"
     prepend-icon="mdi-map-marker-outline"
-    label="What places do you want to travel?"
+    label="Chọn nơi mà bạn muốn tới?"
     :search-input.sync="search"
     :loading="isOptionListLoading"
     no-data-text=""
@@ -19,29 +19,29 @@
       <v-chip
         close
         color="primary"
-        @click:close="removeFilterItem(item.value, selection)"
-        >{{ item.value }}</v-chip
-      >
+        @click:close="removeFilterItem(item.name, selection)"
+        >{{ item.name }}
+      </v-chip>
     </template>
 
     <template #item="{ item }">
       <v-list-item-content>
-        <span>{{ item.value }} - ( {{ item.count }} tours)</span>
+        <span>{{ item.name }}</span>
       </v-list-item-content>
     </template>
   </v-autocomplete>
 </template>
 
 <script>
-  import { FETCH_DESTINATIONS } from '@/store/type/actions.js';
+  import { FETCH_PLACES } from '@/store/type/actions.js';
 
   import getPredefinedOption from './mixins/getPredefinedOption';
   import syncSelectionWithUrl from './mixins/syncSelectionWithUrl';
 
   export default {
     mixins: [
-      getPredefinedOption('destinations', FETCH_DESTINATIONS),
-      syncSelectionWithUrl('destinations'),
+      getPredefinedOption('places', FETCH_PLACES),
+      syncSelectionWithUrl('places'),
     ],
     data: () => ({
       search: null,

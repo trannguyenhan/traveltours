@@ -36,7 +36,7 @@ class OrderRepository extends BaseRepository
     public function checkBookTour($tourId, $userId): bool
     {
         $query = (new $this->_model)->query();
-        $query = $query->where('user_id','=',$userId)->where('tour_id','=',$tourId)->where('status','=','ok');
+        $query = $query->where('user_id','=',$userId)->where('tour_id','=',$tourId)->where('status','=', Order::ACCEPT);
 
         $total = $query->count();
         if($total>0){

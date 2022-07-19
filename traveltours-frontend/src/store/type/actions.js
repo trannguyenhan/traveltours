@@ -2,6 +2,8 @@
 export const FETCH_TOURS = 'fetchTours';
 
 export const FETCH_PLACES = 'fetchPlaces';
+export const FETCH_CATEGORIES = 'fetchCategories';
+export const SET_CATEGORIES = 'setCategories';
 
 export const FETCH_ORDERS = 'fetchOrders';
 

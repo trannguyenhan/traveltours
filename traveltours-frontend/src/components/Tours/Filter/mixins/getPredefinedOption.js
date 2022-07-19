@@ -37,7 +37,6 @@ export default function (field, fetchFieldAction) {
       setSelection() {
         this.getOptionList().then(() => {
           multipleSelection(field).methods.setSelection.call(this);
-          // this.selection = [...this.$route.query[field]];
         });
       },
     },

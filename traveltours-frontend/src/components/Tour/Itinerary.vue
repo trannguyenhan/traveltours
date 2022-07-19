@@ -1,5 +1,4 @@
 <template>
-  <!-- :dense="$vuetify.breakpoint.mdAndDown" -->
   <v-timeline dense class="ml-n11 mr-10">
     <v-timeline-item
       v-for="(item, i) in timeline"
@@ -51,20 +50,7 @@
         return string.toLowerCase();
       },
     },
-    // data: () => ({
-    //   tours: require('@/data/tour.json'), // eslint-disable-line global-require
-    // }),
   };
 </script>
 
-<style scoped>
-  /* .v-timeline--dense {
-    max-width: 80vh;
-    margin: auto !important;
-  } */
-
-  .trn-capital::first-letter {
-    text-transform: uppercase;
-  }
-</style>
-v
+<style scoped></style>

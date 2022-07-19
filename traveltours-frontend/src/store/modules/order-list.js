@@ -5,12 +5,12 @@ import { FETCH_START, FETCH_ORDER_END } from '../type/mutations';
 
 const state = () => ({
   orders: [],
-    users_tours:[]
+  users_tours: [],
 });
 
 const getters = {
   orders: (state) => state.orders,
-    users_tours: (state) => state.users_tours,
+  users_tours: (state) => state.users_tours,
 };
 
 const actions = {

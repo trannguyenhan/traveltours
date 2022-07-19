@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Repositories\OrderRepository;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Models\Order;
+use Illuminate\Http\JsonResponse;
 
 class OrderController extends BaseController
 {
@@ -15,7 +16,11 @@ class OrderController extends BaseController
     }
 
 
-    public function all($id)
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function all($id): JsonResponse
     {
         return $this->repository->all($id);
     }
@@ -28,9 +33,18 @@ class OrderController extends BaseController
         return $this->storeTemplate($request, Order::INSERT_FIELDS);
     }
 
-    public function checkBookTour($tourId, $userId)
+    /**
+     * @param $tourId
+     * @param $userId
+     * @return JsonResponse
+     */
+    public function checkBookTour($tourId, $userId): JsonResponse
     {
         $checking = $this->repository->checkBookTour($tourId, $userId);
         return \App\Helper::errorResponse($checking);
+    }
+
+    public function accept($tourId){
+
     }
 }
