@@ -93,7 +93,7 @@ export const constantRoutes = [
   {
     path: '/place',
     component: Layout,
-    redirect: '/tour/categories',
+    // redirect: '/tour/categories',
     name: 'Place Management',
     meta: { title: 'Place Management', icon: 'el-icon-location' },
     children: [
@@ -112,6 +112,17 @@ export const constantRoutes = [
       },
 
     ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/order',
+    children: [{
+      path: 'order',
+      name: 'order',
+      component: () => import('@/views/order/order'),
+      meta: { title: 'Order', icon: 'dashboard' }
+    }]
   },
 
   {

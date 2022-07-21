@@ -54,15 +54,6 @@
           type="date"
         />
       </el-form-item>
-      <el-form-item label="Schedule" prop="title">
-        <el-input
-          v-model="tour.schedule"
-          autosize
-          type="textarea"
-          multiple="multiple"
-          placeholder="Lịch trình"
-        />
-      </el-form-item>
 
       <el-form-item label="Places"
         ><el-select v-model="tour.places" multiple placeholder="Select Places">
@@ -73,23 +64,6 @@
             :value="Number(item.id)"
           /> </el-select
       ></el-form-item>
-
-      <el-form-item label="Giá vé người lớn">
-        <el-input
-          type="number"
-          step="100000"
-          v-model="tour.adult_price"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="Giá vé trẻ em">
-        <el-input
-          type="number"
-          step="100000"
-          v-model="tour.child_price"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
 
       <el-form-item label="Guide"
         ><el-select v-model="tour.tour_guide_id" placeholder="Select Guide">
@@ -114,6 +88,7 @@ import { getListPlace } from "@/api/place";
 import { getListCategory } from "@/api/category";
 import { getListTourGuide } from "@/api/tour_guide";
 
+
 export default {
   data() {
     return {
@@ -128,9 +103,6 @@ export default {
         hotel_star: 5,
         max_slot: 50,
         range: 5,
-        slot: 0,
-        adult_price: 0,
-        child_price: 0,
       },
       all_places: [],
       all_categories: [],
@@ -158,11 +130,8 @@ export default {
     },
 
     onSubmit() {
-      this.tour.places = this.convertNumber(this.tour.places);
-      this.tour.range = Number(this.tour.range);
-      this.tour.start_date = new Date(this.tour.start_date);
-      this.tour.dest = Number(this.tour.places[this.tour.places.length - 1]);
-
+    //   this.tour.places = this.convertNumber(this.tour.places);
+      //   this.tour.range = Number(this.tour.range);
       console.log(this.tour);
       createTour(this.tour).then((response) => {
         if (response.code === 0) {

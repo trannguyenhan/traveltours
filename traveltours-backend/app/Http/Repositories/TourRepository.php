@@ -28,6 +28,9 @@ class TourRepository extends BaseRepository
         }
         $modelDetail->places_detail = $listDetailPlace;
 
+
         return Helper::successResponse($modelDetail);
     }
+
+
 }
