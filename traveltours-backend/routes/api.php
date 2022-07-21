@@ -108,8 +108,8 @@ Route::group([
 
     Route::group(['prefix' => '/order'], function () {
         Route::get('/listing', [OrderController::class, 'listing']);
-        Route::post('/store', [OrderController::class, 'store'])
-            ->middleware(MID_ROLE_MEMBER);
+        Route::post('/store', [OrderController::class, 'store']);
+        // ->middleware(MID_ROLE_MEMBER);
         Route::post('/update', [OrderController::class, 'update'])
             ->middleware(MID_ROLE_MEMBER);
         Route::post('/delete', [OrderController::class, 'delete'])
@@ -130,5 +130,5 @@ Route::get('coupon/check/{couponCode}', [CouponsController::class, 'checkCouponC
 Route::get('order/check-book-tour/{tourId}/{userId}', [OrderController::class, 'checkBookTour']);
 
 Route::get('vietnam-address', function () {
-   return  response()->file("data.json");
+    return  response()->file("data.json");
 });

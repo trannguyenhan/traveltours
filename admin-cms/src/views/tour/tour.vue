@@ -73,6 +73,19 @@
         <el-form-item label="Name" prop="title">
           <el-input v-model="tour.name" />
         </el-form-item>
+        <el-form-item label="Category"
+          ><el-select
+            v-model="tour.categories"
+            multiple
+            placeholder="Select Category"
+          >
+            <el-option
+              v-for="item in this.all_categories"
+              :key="Number(item.id)"
+              :label="item.name"
+              :value="Number(item.id)"
+            /> </el-select
+        ></el-form-item>
         <el-form-item label="Range" prop="title">
           <el-input v-model="tour.range" type="number" label="Range" />
         </el-form-item>
@@ -87,6 +100,19 @@
         <el-form-item label="Remaining Slot" prop="title">
           <el-input v-model="tour.slot" type="number" step="1" label="" />
         </el-form-item>
+        <el-form-item label="Hotel Star" prop="title">
+          <el-input
+            v-model="tour.hotel_star"
+            type="number"
+            step="1"
+            :min="1"
+            :max="5"
+            label=""
+          />
+        </el-form-item>
+        <el-form-item label="Vehicle" prop="title">
+          <el-input v-model="tour.vehicle" />
+        </el-form-item>
         <el-form-item label="Start Date" prop="title">
           <el-input
             v-model="tour.start_date"
@@ -94,7 +120,6 @@
             type="date"
           />
         </el-form-item>
-        <div>{{ tour.start_date }}</div>
 
         <el-form-item label="Places"
           ><el-select
@@ -104,6 +129,16 @@
           >
             <el-option
               v-for="item in this.all_places"
+              :key="Number(item.id)"
+              :label="item.name"
+              :value="Number(item.id)"
+            /> </el-select
+        ></el-form-item>
+
+        <el-form-item label="Guide"
+          ><el-select v-model="tour.tour_guide_id" placeholder="Select Guide">
+            <el-option
+              v-for="item in this.all_guides"
               :key="Number(item.id)"
               :label="item.name"
               :value="Number(item.id)"
@@ -134,6 +169,8 @@
 <script>
 import { getListTour, updateTour, deleteTour, getDetailTour } from "@/api/tour";
 import { getListPlace } from "@/api/place";
+import { getListCategory } from "@/api/category";
+import { getListTourGuide } from "@/api/tour_guide";
 export default {
   filters: {
     statusFilter(status) {
@@ -153,6 +190,8 @@ export default {
       listLoading: true,
       places: [],
       all_places: [],
+      all_categories: [],
+      all_guides: [],
     };
   },
   created() {
@@ -190,6 +229,14 @@ export default {
       getListPlace().then((response) => {
         this.all_places = response.data;
       });
+
+      getListCategory().then((response) => {
+        this.all_categories = response.data;
+      });
+
+      getListTourGuide().then((response) => {
+        this.all_guides = response.data;
+      });
     },
 
     formatDate(dat) {
@@ -198,7 +245,7 @@ export default {
     },
 
     updateTour(tour) {
-      tour.dest = tour.dest.id;
+      tour.dest = Number(tour.places[tour.places.length - 1]);
       console.log(tour);
       updateTour(tour).then((response) => {
         if (response.code === 0) {
