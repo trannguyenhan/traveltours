@@ -46,9 +46,9 @@ class OrderRepository extends BaseRepository
     }
 
 
-    public function accept($tourId, $userId)
+    public function accept($id)
     {
-        $detail = $this->_model::where('tour_id', $tourId)->where('user_id', $userId)->update(['status' => 'active']);
+        $detail = $this->_model::find($id)->update(['status' => 'active']);
         if ($detail) {
             $model =  ($this->_model->query()->find($detail));
             return \App\Helper::successResponse($model);

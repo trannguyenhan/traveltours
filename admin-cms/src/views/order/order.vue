@@ -148,8 +148,7 @@ export default {
     accept(index) {
       this.list[index].status = "active";
       acceptOrder({
-        tour_id: this.list[index].tour_id,
-        user_id: this.list[index].user_id,
+        id: this.list[index].id,
       }).then((response) => {
         if (response.code === 0) {
           this.$notify({

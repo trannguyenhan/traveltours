@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\OrderRepository;
 use App\Http\Requests\Order\StoreOrderRequest;
-use App\Http\Requests\Order\AcceptOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\Base\IdRequest;
@@ -47,9 +46,9 @@ class OrderController extends BaseController
         return \App\Helper::errorResponse($checking);
     }
 
-    public function accept(AcceptOrderRequest $request)
+    public function accept(IdRequest $request)
     {
-        return $this->repository->accept($request->input('tour_id'), $request->input('user_id'));
+        return $this->repository->accept($request->input('id'));
     }
 
     public function delete(IdRequest $request)
