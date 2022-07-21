@@ -4,7 +4,7 @@ import { apiService } from './api';
 // eslint-disable-next-line func-names
 const backendQuerify = function (query) {
   // eslint-disable-next-line prefer-const
-  let { destinations, travelStyle, price, rating, duration, sort, page } = {
+  let { places, categories, price, rating, duration, sort, page } = {
     ...query,
   };
 
@@ -22,14 +22,14 @@ const backendQuerify = function (query) {
       lte: +duration[1] || undefined,
     };
 
-  if (destinations) destinations = { all: [...destinations] };
-  if (travelStyle) travelStyle = { all: [...travelStyle] };
+  if (places) places = { all: [...places] };
+  if (categories) categories = { all: [...categories] };
 
   const limit = APP_ITEMS_PER_PAGE;
 
   return {
-    destinations,
-    travelStyle,
+    places,
+    categories,
     price,
     rating,
     duration,

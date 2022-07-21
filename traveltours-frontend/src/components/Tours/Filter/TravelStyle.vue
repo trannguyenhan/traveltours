@@ -5,7 +5,7 @@
     hide-details
     multiple
     :items="categories"
-    item-text="value"
+    item-text="name"
     prepend-icon="mdi-hiking"
     label="Loại hình du lịch"
     :loading="isOptionListLoading"

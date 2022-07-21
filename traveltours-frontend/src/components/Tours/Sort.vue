@@ -4,7 +4,7 @@
     style="width: 250px"
     :items="sortBy"
     clearable
-    label="Sort By"
+    label="Sắp xếp theo"
     :menu-props="{ maxHeight: 400 }"
     class="trn-no-border text-center"
     hide-details
@@ -37,43 +37,37 @@
       sortBy: [
         {
           value: 'price',
-          label: 'Price',
+          label: 'Giá tiền',
           appendIcon: 'mdi-arrow-up',
           prependIcon: 'mdi-cash-usd-outline',
         },
         {
           value: '-price',
-          label: 'Price',
+          label: 'Giá tiền',
           appendIcon: 'mdi-arrow-down',
           prependIcon: 'mdi-cash-usd-outline',
         },
         {
           value: '-rating',
-          label: 'Rating',
+          label: 'Đánh giá',
           appendIcon: '',
           prependIcon: 'mdi-star-outline',
         },
         {
-          value: '-reviewsQuantity',
-          label: 'Reviews',
-          appendIcon: '',
-          prependIcon: 'mdi-account-check-outline',
-        },
-        {
           value: '-createAt',
-          label: 'New on Tourino',
+          label: 'Tour mới nhất',
           appendIcon: '',
           prependIcon: 'mdi-clock-check-outline',
         },
         {
           value: '-duration',
-          label: 'Duration',
+          label: 'Thời gian chuyến đi',
           appendIcon: 'mdi-arrow-down',
           prependIcon: 'mdi-calendar-clock',
         },
         {
           value: 'duration',
-          label: 'Duration',
+          label: 'Thời gian chuyến đi',
           appendIcon: 'mdi-arrow-up',
           prependIcon: 'mdi-calendar-clock',
         },

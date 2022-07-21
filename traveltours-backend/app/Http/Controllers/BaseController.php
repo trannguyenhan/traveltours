@@ -13,15 +13,15 @@ class BaseController extends Controller
      */
     public function listing(Request $request)
     {
-        $keyWord = $request->query('keyword');
+        $keyword = $request->query('keyword');
         $page = $this->getPage($request);
         $pageSize = $this->getPageSize($request);
         $orderType = $this->getOrderTypes($request);
         $orderBy = $this->getSortBy($request);
 
-        $filter = \App\Helper::getFilterParams($request);
+        $filter = [];
 
-        return $this->repository->doList($keyWord, $page, $pageSize, $orderBy, $orderType, $filter);
+        return $this->repository->doList($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 
     public function detail(Request $request, $id)
@@ -34,7 +34,7 @@ class BaseController extends Controller
      * @param $request
      * @return array
      */
-    private function getSortBy($request): array
+    protected function getSortBy($request): array
     {
         $orderBy = [];
         if ($request->query('sort_by') != null) {
@@ -53,7 +53,7 @@ class BaseController extends Controller
      * @param $request
      * @return array|string[]
      */
-    private function getOrderTypes($request): array
+    protected function getOrderTypes($request): array
     {
         $orderType = [];
         if ($request->query('desc') != null) {
@@ -73,7 +73,7 @@ class BaseController extends Controller
      * @param $request
      * @return int
      */
-    private function getPage($request): int
+    protected function getPage($request): int
     {
         $page = $request->query('page') != null ? intval($request->query('page')) : 1;
         if ($page < 1) {
@@ -87,7 +87,7 @@ class BaseController extends Controller
      * @param $request
      * @return int
      */
-    private function getPageSize($request): int
+    protected function getPageSize($request): int
     {
         return $request->query('page_size') != null ? intval($request->query('page_size')) : 10;
     }

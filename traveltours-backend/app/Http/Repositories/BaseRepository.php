@@ -51,8 +51,6 @@ abstract class BaseRepository
     {
         $query = (new $this->_model)->query(); // create new query
 
-        \App\Helper::filterFromParams($filter, $query);
-
         $query = $this->search($query, $keyword);
         $total = $query->count();
 
