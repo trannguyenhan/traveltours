@@ -6,6 +6,7 @@ use App\Http\Repositories\OrderRepository;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Base\IdRequest;
 
 class OrderController extends BaseController
 {
@@ -29,7 +30,8 @@ class OrderController extends BaseController
      * @param StoreOrderRequest $request
      * @return mixed
      */
-    public function store(StoreOrderRequest $request){
+    public function store(StoreOrderRequest $request)
+    {
         return $this->storeTemplate($request, Order::INSERT_FIELDS);
     }
 
@@ -44,7 +46,13 @@ class OrderController extends BaseController
         return \App\Helper::errorResponse($checking);
     }
 
-    public function accept($tourId){
+    public function accept(IdRequest $request)
+    {
+        return $this->repository->accept($request->input('id'));
+    }
 
+    public function delete(IdRequest $request)
+    {
+        return $this->deleteTemplate($request);
     }
 }
