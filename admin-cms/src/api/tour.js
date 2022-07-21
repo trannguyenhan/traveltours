@@ -8,6 +8,14 @@ export function getListTour(params) {
   })
 }
 
+export function createTour(params) {
+  return request({
+    url: '/tour/store',
+    method: 'post',
+    data: params
+  })
+}
+
 export function updateTour(params) {
   return request({
     url: '/tour/update',

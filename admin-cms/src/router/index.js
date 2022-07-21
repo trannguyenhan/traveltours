@@ -80,6 +80,12 @@ export const constantRoutes = [
         component: () => import('@/views/tour/tour_guide'),
         meta: { title: 'Tour Guides', icon: 'table' }
       },
+      {
+        path: 'add',
+        name: 'Add Tour',
+        component: () => import('@/views/tour/add_tour'),
+        meta: { title: 'Add Tour', icon: 'form' }
+      },
 
     ]
   },
