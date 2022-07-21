@@ -13,31 +13,6 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Name" width="200">
-        <template slot-scope="scope">
-          {{ scope.row.name }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Start Date">
-        <template slot-scope="scope">
-          <span>{{ formatDate(scope.row.start_date) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Range">
-        <template slot-scope="scope">
-          <span>{{ scope.row.range }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Max Slot">
-        <template slot-scope="scope">
-          <span>{{ scope.row.max_slot }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Remaining Slot">
-        <template slot-scope="scope">
-          <span>{{ scope.row.slot }}</span>
-        </template>
-      </el-table-column>
 
       <el-table-column
         label="Actions"
@@ -63,7 +38,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="Edit Tour" :visible.sync="dialogFormVisible">
+    <!-- <el-dialog title="Edit Tour" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
         :model="tour"
@@ -162,15 +137,12 @@
           Create
         </el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
-import { getListTour, updateTour, deleteTour, getDetailTour } from "@/api/tour";
-import { getListPlace } from "@/api/place";
-import { getListCategory } from "@/api/category";
-import { getListTourGuide } from "@/api/tour_guide";
+import { getListOrder, updateOrder } from "@/api/order";
 export default {
   filters: {
     statusFilter(status) {
@@ -186,41 +158,26 @@ export default {
       dialogFormVisible: false,
       dialogCreate: false,
       list: null,
-      tour: null,
+      order: null,
       listLoading: true,
-      places: [],
-      all_places: [],
-      all_categories: [],
-      all_guides: [],
     };
   },
   created() {
     this.fetchData();
   },
   methods: {
-    getDetailTour(id) {
-      return getDetailTour(id);
-    },
-    convertNumber(array) {
-      for (let i = 0; i < array.length; i++) {
-        array[i] = Number(array[i]);
-      }
-      return array;
-    },
     async fetchData() {
       this.listLoading = true;
 
-      getListTour().then((response) => {
+      getListOrder().then((response) => {
+        console.log(123);
         this.list = response.data;
+        console.log(this.list[0]);
         if (this.list.length > 0) {
-          getDetailTour(this.list[0].id).then((response) => {
-            this.tour = response.data;
-            console.log(this.tour);
-          });
+          this.order = this.list[0];
         } else {
-          this.tour = {
+          this.order = {
             name: "",
-            description: "",
           };
         }
         this.listLoading = false;
