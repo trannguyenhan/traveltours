@@ -175,7 +175,9 @@
                 this.children,
                 this.price_children,
                 this.adults,
-                this.price_adult
+                this.price_adult,
+                this.discount,
+                this.threshold
               ),
             })
             .then((response) => {
@@ -189,7 +191,8 @@
                 });
               }
             })
-            .catch(() => {
+            .catch((e) => {
+              console.log(this.data_send);
               Swal.fire({
                 text: 'Bạn chưa đăng nhập',
                 icon: 'error',

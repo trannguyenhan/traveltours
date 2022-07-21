@@ -1,5 +1,6 @@
 <template>
   <div>
+    <H3TSearch />
     <TrnFilter />
     <div v-if="isToursLoading" class="text-center TrnLoading mb-3">
       <H3TLoadingAnimation />
@@ -69,6 +70,7 @@
   import { mapGetters } from 'vuex';
   import { FETCH_TOURS } from '@/store/type/actions';
 
+  import H3TSearch from '@/components/Tours/Search.vue';
   import H3TSort from '@/components/Tours/Sort.vue';
   import H3TFilter from '@/components/Tours/Filter/Filter.vue';
   import H3TPagination from '@/components/Tours/Pagination.vue';
@@ -83,6 +85,7 @@
 
   export default {
     components: {
+      H3TSearch,
       H3TSort,
       TrnFilter: H3TFilter,
       Stack,
