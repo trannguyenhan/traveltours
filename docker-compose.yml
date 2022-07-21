@@ -32,7 +32,7 @@ services:
         ports: 
             - "9906:3306"
         volumes:
-            - ./db/traveltoursdb.sql:/docker-entrypoint-initdb.d/dump.sql
+            - ./db/:/docker-entrypoint-initdb.d/
         networks:
             - h3t
 
@@ -40,6 +40,12 @@ services:
         build: ./traveltours-frontend
         ports: 
             - 8080:8080
+        networks:
+            - h3t
+    admin:
+        build: ./admin-cms
+        ports: 
+            - 9528:9528
         networks:
             - h3t
 networks: 

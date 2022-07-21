@@ -136,7 +136,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +145,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (10,'2014_10_12_000000_create_users_table',1),(11,'2014_10_12_100000_create_password_resets_table',1),(12,'2019_08_19_000000_create_failed_jobs_table',1),(13,'2019_12_14_000001_create_personal_access_tokens_table',1),(14,'2022_04_19_133951_create_permission_tables',1),(15,'2022_04_24_150628_create_places_table',1),(16,'2022_04_24_151217_create_reviews_table',1),(17,'2022_04_24_151246_create_place_review_table',1),(18,'2022_04_24_151434_create_tours_table',1),(19,'2022_04_24_171558_add_status_column_to_users_table',2),(20,'2022_04_30_145323_create_categories_table',3),(21,'2022_04_30_171032_create_categories_table',4),(22,'2022_04_30_171340_create_tour_category_table',5),(23,'2022_05_01_082315_add_column_to_tours_table',6),(24,'2022_05_01_090910_add_place_id_column_to_reviews_table',7),(25,'2022_05_02_013645_add_avatar_column_to_users_table',8),(26,'2022_05_09_160411_add_display_name_column_to_roles_table',9),(27,'2022_06_17_120834_create_prices_table',9),(28,'2022_06_17_120954_create_tour_guides_table',9),(29,'2022_06_17_121142_create_coupons_table',9),(30,'2022_06_17_121559_alter_tours_table',10),(31,'2022_06_17_122405_create_category_tour_table',11),(32,'2022_06_17_122945_create_tour_review_table',12),(33,'2022_06_17_123153_create_place_review_2_table',13),(34,'2022_06_17_123237_create_orders_table',14),(35,'2022_06_17_130940_delele_tour_review_table',15),(36,'2022_06_17_131029_delele_place_review_table',16),(37,'2022_06_17_131453_alter_review_table',17),(38,'2022_07_04_153521_set_default_value_coupon_id_column_in_orders_table',18),(39,'2022_07_05_093146_add_name_to_tours',19),(40,'2022_07_05_103250_alter_table_tours_change_places',20);
+INSERT INTO `migrations` VALUES (10,'2014_10_12_000000_create_users_table',1),(11,'2014_10_12_100000_create_password_resets_table',1),(12,'2019_08_19_000000_create_failed_jobs_table',1),(13,'2019_12_14_000001_create_personal_access_tokens_table',1),(14,'2022_04_19_133951_create_permission_tables',1),(15,'2022_04_24_150628_create_places_table',1),(16,'2022_04_24_151217_create_reviews_table',1),(17,'2022_04_24_151246_create_place_review_table',1),(18,'2022_04_24_151434_create_tours_table',1),(19,'2022_04_24_171558_add_status_column_to_users_table',2),(20,'2022_04_30_145323_create_categories_table',3),(21,'2022_04_30_171032_create_categories_table',4),(22,'2022_04_30_171340_create_tour_category_table',5),(23,'2022_05_01_082315_add_column_to_tours_table',6),(24,'2022_05_01_090910_add_place_id_column_to_reviews_table',7),(25,'2022_05_02_013645_add_avatar_column_to_users_table',8),(26,'2022_05_09_160411_add_display_name_column_to_roles_table',9),(27,'2022_06_17_120834_create_prices_table',9),(28,'2022_06_17_120954_create_tour_guides_table',9),(29,'2022_06_17_121142_create_coupons_table',9),(30,'2022_06_17_121559_alter_tours_table',10),(31,'2022_06_17_122405_create_category_tour_table',11),(32,'2022_06_17_122945_create_tour_review_table',12),(33,'2022_06_17_123153_create_place_review_2_table',13),(34,'2022_06_17_123237_create_orders_table',14),(35,'2022_06_17_130940_delele_tour_review_table',15),(36,'2022_06_17_131029_delele_place_review_table',16),(37,'2022_06_17_131453_alter_review_table',17),(38,'2022_07_04_153521_set_default_value_coupon_id_column_in_orders_table',18),(39,'2022_07_05_093146_add_name_to_tours',19),(40,'2022_07_05_103250_alter_table_tours_change_places',20),(41,'2022_07_13_095535_add_ward_to_places_table',21);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -336,8 +336,9 @@ CREATE TABLE `places` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `images` json NOT NULL,
+  `ward` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -346,7 +347,7 @@ CREATE TABLE `places` (
 
 LOCK TABLES `places` WRITE;
 /*!40000 ALTER TABLE `places` DISABLE KEYS */;
-INSERT INTO `places` VALUES (1,'2022-07-08 06:17:22','2022-07-08 06:17:22','Bắc Giang','Sơn Động','Sơn Động, Bắc Giang','Tây Yên Tử','Khu du lịch sinh thái Tây Yên Tử','[\"https://pystravel.vn/uploads/posts/albums/3310/a56dd85372e8a4ece692cc7e7beb5521.jpg\"]'),(2,'2022-07-08 06:17:22','2022-07-08 06:17:22','Bắc Giang','Chũ','Chu, Luc Ngan, Bac Giang','Thị chấn Chũ','Trung tâm thị chấn ','[\"https://pystravel.vn/uploads/posts/albums/3310/a56dd85372e8a4ece692cc7e7beb5521.jpg\"]'),(3,'2022-07-08 06:17:22','2022-07-08 06:17:22','Tỉnh Bắc Kạn','Huyện Ngân Sơn','Tỉnh Bắc Kạn','Tỉnh Bắc Kạn','Tham quan tỉnh Bắc Kạn','[\"http://127.0.0.1:8000/uploads/place/62c82e621c2f2.jpg\"]');
+INSERT INTO `places` VALUES (1,'2022-07-08 06:17:22','2022-07-21 01:15:12','Tỉnh Bắc Giang','Huyện Sơn Động','Sơn Động, Bắc Giang','Tây Yên Tử','Khu du lịch sinh thái Tây Yên Tử','[\"https://pystravel.vn/uploads/posts/albums/3310/a56dd85372e8a4ece692cc7e7beb5521.jpg\"]','Thị trấn Tây Yên Tử'),(2,'2022-07-08 06:17:22','2022-07-21 01:12:24','Tỉnh Bắc Giang','Huyện Lục Ngạn','Chũ, Lục Ngạn, Bắc Giang','Thị chấn Chũ','Trung tâm thị chấn','[\"http://127.0.0.1:8000/uploads/place/62d90a6836bf2.jpg\"]','Thị trấn Chũ'),(3,'2022-07-08 06:17:22','2022-07-21 01:10:43','Tỉnh Bắc Kạn','Huyện Ngân Sơn','Tỉnh Bắc Kạn','Tỉnh Bắc Kạn','Trung tâm tỉnh Bắc Kạn','[\"http://127.0.0.1:8000/uploads/place/62c82e621c2f2.jpg\"]','Xã Trung Hoà'),(4,'2022-07-21 01:10:23','2022-07-21 01:10:23','Thành phố Hải Phòng','Huyện Cát Hải','Cát bà, Cát Hải, Hải Phòng','Vịnh Hạ Long','Vịnh Hạ Long tươi đẹp','[\"http://127.0.0.1:8000/uploads/place/62d909ef76139.jpg\"]','Thị trấn Cát Bà');
 /*!40000 ALTER TABLE `places` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +365,7 @@ CREATE TABLE `prices` (
   `child` double(8,2) DEFAULT NULL,
   `adult` double(8,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -373,7 +374,7 @@ CREATE TABLE `prices` (
 
 LOCK TABLES `prices` WRITE;
 /*!40000 ALTER TABLE `prices` DISABLE KEYS */;
-INSERT INTO `prices` VALUES (1,'2022-06-17 06:49:44','2022-06-17 06:49:44',12.00,13.00);
+INSERT INTO `prices` VALUES (1,'2022-06-17 06:49:44','2022-06-17 06:49:44',12.00,13.00),(2,'2022-06-17 06:49:44','2022-06-17 06:49:44',20.00,30.00);
 /*!40000 ALTER TABLE `prices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -510,7 +511,7 @@ CREATE TABLE `tour_guides` (
 
 LOCK TABLES `tour_guides` WRITE;
 /*!40000 ALTER TABLE `tour_guides` DISABLE KEYS */;
-INSERT INTO `tour_guides` VALUES (1,'2022-06-17 06:49:44','2022-06-17 06:49:44','Davies','09123123','Nui hieu, Quang Chau'),(2,'2022-06-17 06:49:44','2022-06-17 10:43:09','Jonny','12312321','Da Nang, Lam Dong'),(3,'2022-06-17 10:41:08','2022-06-17 10:43:02','Hoàng Ngọc Lâm','HDV tài năng','1234');
+INSERT INTO `tour_guides` VALUES (1,'2022-06-17 06:49:44','2022-07-21 01:19:40','Davies','09123123','Núi Hiểu, Quang Châu'),(2,'2022-06-17 06:49:44','2022-06-17 10:43:09','Jonny','12312321','Da Nang, Lam Dong'),(3,'2022-06-17 10:41:08','2022-06-17 10:43:02','Hoàng Ngọc Lâm','HDV tài năng','1234');
 /*!40000 ALTER TABLE `tour_guides` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -538,7 +539,7 @@ CREATE TABLE `tours` (
   `slot` int NOT NULL DEFAULT '0',
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -547,7 +548,7 @@ CREATE TABLE `tours` (
 
 LOCK TABLES `tours` WRITE;
 /*!40000 ALTER TABLE `tours` DISABLE KEYS */;
-INSERT INTO `tours` VALUES (1,'2022-06-17 06:49:44','2022-06-17 06:49:44',1,1,1,5,'2022-06-17 06:49:44','Ô tô 16 chỗ ngồi',4,'aa','[1, 2]',3,1,'Tham quan mùa xuân');
+INSERT INTO `tours` VALUES (1,'2022-06-17 06:49:44','2022-06-17 06:49:44',1,1,1,5,'2022-06-17 06:49:44','Ô tô 16 chỗ ngồi',4,'aa','[1, 2]',3,1,'Tham quan mùa xuân'),(2,'2022-06-17 06:49:44','2022-06-17 06:49:44',4,1,1,7,'2022-06-17 06:49:44','Ô tô 16 chỗ ngồi',5,'aa','[1, 4]',3,0,'Tham quan khu du lịch sinh thái Vịnh Hạ Long'),(3,'2022-06-17 06:49:44','2022-06-17 06:49:44',4,1,2,14,'2022-06-27 06:49:44','Ô tô 30 chỗ ngồi',5,'aa','[1, 4]',20,0,'Tham quan khu du lịch sinh thái Vịnh Hạ Long');
 /*!40000 ALTER TABLE `tours` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -594,4 +595,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-19 23:46:56
+-- Dump completed on 2022-07-21 15:56:39

@@ -176,7 +176,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+        path: 'http://localhost:8080/',
         meta: { title: 'View website', icon: 'link' }
       }
     ]
