@@ -17,6 +17,14 @@ export function updateOrder(params) {
     })
 }
 
+export function acceptOrder(params) {
+    return request({
+        url: '/order/accept',
+        method: 'post',
+        data: params
+    })
+}
+
 export function deleteOrder(params) {
     return request({
         url: '/order/delete',

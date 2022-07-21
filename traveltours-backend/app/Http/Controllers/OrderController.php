@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\OrderRepository;
 use App\Http\Requests\Order\StoreOrderRequest;
+use App\Http\Requests\Order\AcceptOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 
@@ -29,7 +30,8 @@ class OrderController extends BaseController
      * @param StoreOrderRequest $request
      * @return mixed
      */
-    public function store(StoreOrderRequest $request){
+    public function store(StoreOrderRequest $request)
+    {
         return $this->storeTemplate($request, Order::INSERT_FIELDS);
     }
 
@@ -44,7 +46,8 @@ class OrderController extends BaseController
         return \App\Helper::errorResponse($checking);
     }
 
-    public function accept($tourId){
-
+    public function accept(AcceptOrderRequest $request)
+    {
+        return $this->repository->accept($request->input('tour_id'), $request->input('user_id'));
     }
 }

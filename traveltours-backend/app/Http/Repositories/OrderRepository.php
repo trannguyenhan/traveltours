@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 class OrderRepository extends BaseRepository
 {
 
-    protected $_relationships = ['tour','user'];
+    protected $_relationships = ['tour', 'user'];
 
     public function getModel(): string
     {
@@ -26,7 +26,7 @@ class OrderRepository extends BaseRepository
     {
         $query = (new $this->_model)->query();
         $query = $this->relationships($query);
-        $query = $query->where('user_id', '=', $id)->orderBy('created_at','desc');
+        $query = $query->where('user_id', '=', $id)->orderBy('created_at', 'desc');
         $total = $query->count();
         $result = $this->modifyResult($query->get()->toArray());
 
@@ -36,12 +36,24 @@ class OrderRepository extends BaseRepository
     public function checkBookTour($tourId, $userId): bool
     {
         $query = (new $this->_model)->query();
-        $query = $query->where('user_id','=',$userId)->where('tour_id','=',$tourId)->where('status','=', Order::ACCEPT);
+        $query = $query->where('user_id', '=', $userId)->where('tour_id', '=', $tourId)->where('status', '=', Order::ACCEPT);
 
         $total = $query->count();
-        if($total>0){
+        if ($total > 0) {
             return true;
         }
         return false;
+    }
+
+
+    public function accept($tourId, $userId)
+    {
+        $detail = $this->_model::where('tour_id', $tourId)->where('user_id', $userId)->update(['status' => 'active']);
+        if ($detail) {
+            $model =  ($this->_model->query()->find($detail));
+            return \App\Helper::successResponse($model);
+        }
+
+        return \App\Helper::errorResponse("update fail!");
     }
 }

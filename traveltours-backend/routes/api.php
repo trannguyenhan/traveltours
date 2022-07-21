@@ -108,12 +108,14 @@ Route::group([
 
     Route::group(['prefix' => '/order'], function () {
         Route::get('/listing', [OrderController::class, 'listing']);
-        Route::post('/store', [OrderController::class, 'store']);
-        // ->middleware(MID_ROLE_MEMBER);
+        Route::post('/store', [OrderController::class, 'store'])
+            ->middleware(MID_ROLE_MEMBER);
         Route::post('/update', [OrderController::class, 'update'])
             ->middleware(MID_ROLE_MEMBER);
         Route::post('/delete', [OrderController::class, 'delete'])
             ->middleware(MID_ROLE_MEMBER);
+        Route::post('/accept', [OrderController::class, 'accept'])
+            ->middleware(MID_ROLE_ADMIN);
     });
 });
 
