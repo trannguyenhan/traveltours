@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 class OrderRepository extends BaseRepository
 {
 
-    protected $_relationships = ['tour'];
+    protected $_relationships = ['tour','user'];
 
     public function getModel(): string
     {
