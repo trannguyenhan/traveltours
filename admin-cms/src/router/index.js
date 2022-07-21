@@ -69,6 +69,12 @@ export const constantRoutes = [
         meta: { title: 'Tour', icon: 'table' }
       },
       {
+        path: 'coupon',
+        name: 'Coupon',
+        component: () => import('@/views/coupon/coupon'),
+        meta: { title: 'Coupon', icon: 'table' }
+      },
+      {
         path: 'categories',
         name: 'Categories',
         component: () => import('@/views/tour/category'),
@@ -85,8 +91,7 @@ export const constantRoutes = [
         name: 'Add Tour',
         component: () => import('@/views/tour/add_tour'),
         meta: { title: 'Add Tour', icon: 'form' }
-      },
-
+      }
     ]
   },
 
@@ -99,7 +104,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'listing',
-        name: "place",
+        name: 'place',
         component: () => import('@/views/place/place'),
         meta: { title: 'Place', icon: 'table' }
       },
@@ -153,40 +158,40 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'Example',
+  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'table',
+  //       name: 'Table',
+  //       component: () => import('@/views/table/index'),
+  //       meta: { title: 'Table', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'tree',
+  //       name: 'Tree',
+  //       component: () => import('@/views/tree/index'),
+  //       meta: { title: 'Tree', icon: 'tree' }
+  //     }
+  //   ]
+  // },
+  //
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'Form', icon: 'form' }
+  //     }
+  //   ]
+  // },
 
   {
     path: 'view-website',

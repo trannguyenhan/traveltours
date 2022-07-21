@@ -113,11 +113,18 @@ Route::group([
         Route::post('/delete', [OrderController::class, 'delete']);
         Route::post('/accept', [OrderController::class, 'accept']);
     });
+
+    Route::group(['prefix' => '/coupon', 'middleware' => MID_ROLE_ADMIN], function (){
+        Route::post('/store', [CouponsController::class, 'store']);
+        Route::post('/update', [CouponsController::class, 'update']);
+    });
 });
 
 Route::get('review/listing', [ReviewController::class, 'listing']);
 Route::get('tour/listing', [TourController::class, 'listing']);
 Route::get('place/listing', [PlaceController::class, 'listing']);
+Route::get('coupon/listing', [CouponsController::class, 'listing']);
+Route::get('coupon/detail/{id}', [CouponsController::class, 'detail']);
 Route::get('place/detail/{id}', [PlaceController::class, 'detail']);
 Route::get('category/listing', [CategoryController::class, 'listing']);
 Route::get('tour/detail/{id}', [TourController::class, 'detail']);

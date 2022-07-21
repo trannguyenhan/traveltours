@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\CouponsRepository;
+use App\Http\Requests\Base\IdRequest;
+use App\Http\Requests\Coupon\StoreRequest;
+use App\Http\Requests\Coupon\UpdateRequest;
 use App\Models\Coupon;
-use Illuminate\Http\Request;
 
-class CouponsController extends Controller
+class CouponsController extends BaseController
 {
     public function __construct(CouponsRepository $repository)
     {
@@ -17,4 +19,16 @@ class CouponsController extends Controller
         return $this->repository->checkCouponCode($couponCode);
     }
 
+    public function store(StoreRequest  $request){
+        return $this->storeTemplate($request, Coupon::INSERT_FIELDS);
+    }
+
+    public function update(UpdateRequest $request){
+        return $this->updateTemplate($request, Coupon::UPDATE_FIELDS);
+    }
+
+    public function delete(IdRequest $request)
+    {
+        return $this->deleteTemplate($request);
+    }
 }

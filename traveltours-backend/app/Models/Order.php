@@ -59,7 +59,6 @@ class Order extends Model
 
     const INSERT_FIELDS = [
         'tour_id',
-        'coupon_id',
         'user_id',
         'child_count',
         'adult_count',

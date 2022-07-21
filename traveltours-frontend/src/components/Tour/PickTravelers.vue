@@ -98,7 +98,6 @@
     },
     data: () => ({
       coupon: '',
-      coupon_id: '',
       discount: 0,
       threshold: 0,
       orderCode: 0,
@@ -112,7 +111,7 @@
         total_price: 0,
         tax: 10,
         payment_method: 'cod',
-        status: 'ok',
+        status: 'active',
       },
       dialog: false,
     }),
@@ -134,13 +133,9 @@
               icon: 'error',
             });
             this.coupon = '';
-            this.coupon_id = '';
           } else {
-            this.coupon_id = resp.data[0].id;
             this.threshold = resp.data[0].threshold;
             this.discount = resp.data[0].discount;
-            console.log(this.threshold)
-            console.log(this.discount)
             Swal.fire({
               text: 'Mã giảm giá đã được áp dụng cho chuyến đi của bạn',
               icon: 'success',
@@ -155,7 +150,7 @@
       },
       totalPrice(count1, price1, count2, price2, discountPercent, threshold) {
         const sum = count1 * price1 + count2 * price2;
-        if (this.coupon_id === '') {
+        if (this.coupon === '') {
           return sum;
         }
         return (sum * discountPercent) / 100 > threshold

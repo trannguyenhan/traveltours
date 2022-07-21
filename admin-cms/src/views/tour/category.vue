@@ -11,7 +11,7 @@
         Add
       </el-button>
     </div>
-    <br />
+    <br>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -100,88 +100,88 @@ import {
   getListCategory,
   updateCategory,
   deleteCategory,
-  createCategory,
-} from "@/api/category";
+  createCategory
+} from '@/api/category'
 
 export default {
   data() {
     return {
       list: null,
-      category: { name: "", category: "" },
+      category: { name: '', category: '' },
       listLoading: true,
       dialogFormVisible: false,
-      dialogCreate: false,
-    };
+      dialogCreate: false
+    }
   },
   created() {
-    this.fetchData();
+    this.fetchData()
   },
   methods: {
     fetchData() {
-      this.listLoading = true;
+      this.listLoading = true
       getListCategory().then((response) => {
-        this.list = response.data;
-        console.log(this.list[0]);
+        this.list = response.data
+        console.log(this.list[0])
         if (this.list.length > 0) {
-          this.category = this.list[0];
+          this.category = this.list[0]
         } else {
           this.category = {
-            name: "",
-            description: "",
-          };
+            name: '',
+            description: ''
+          }
         }
-        this.listLoading = false;
-      });
+        this.listLoading = false
+      })
     },
     updateCategory(category) {
       updateCategory(category).then((response) => {
         if (response.code === 0) {
           this.$notify({
-            message: "Update success",
-            type: "success",
-          });
-          this.dialogFormVisible = false;
+            message: 'Update success',
+            type: 'success'
+          })
+          this.dialogFormVisible = false
         }
-      });
+      })
     },
     createCategory(category) {
       createCategory(category).then((response) => {
         if (response.code === 0) {
           this.$notify({
-            message: "Create success",
-            type: "success",
-          });
-          this.dialogFormVisible = false;
-          this.fetchData();
+            message: 'Create success',
+            type: 'success'
+          })
+          this.dialogFormVisible = false
+          this.fetchData()
         }
-      });
+      })
     },
     handleUpdate(index) {
-      this.category = this.list[index];
-      this.dialogFormVisible = true;
-      this.dialogCreate = false;
+      this.category = this.list[index]
+      this.dialogFormVisible = true
+      this.dialogCreate = false
     },
     handleDelete(index) {
       deleteCategory({
-        id: this.list[index].id,
+        id: this.list[index].id
       }).then((response) => {
         if (response.code === 0) {
           this.$notify({
-            message: "Update success",
-            type: "success",
-          });
-          this.fetchData();
+            message: 'Update success',
+            type: 'success'
+          })
+          this.fetchData()
         }
-      });
+      })
     },
     handleCreate() {
       this.category = {
         name: null,
-        description: null,
-      };
-      this.dialogFormVisible = true;
-      this.dialogCreate = true;
-    },
-  },
-};
+        description: null
+      }
+      this.dialogFormVisible = true
+      this.dialogCreate = true
+    }
+  }
+}
 </script>

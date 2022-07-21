@@ -73,19 +73,19 @@
         <el-form-item label="Name" prop="title">
           <el-input v-model="tour.name" />
         </el-form-item>
-        <el-form-item label="Category"
-          ><el-select
-            v-model="tour.categories"
-            multiple
-            placeholder="Select Category"
-          >
-            <el-option
-              v-for="item in this.all_categories"
-              :key="Number(item.id)"
-              :label="item.name"
-              :value="Number(item.id)"
-            /> </el-select
-        ></el-form-item>
+        <el-form-item
+          label="Category"
+        ><el-select
+          v-model="tour.categories"
+          multiple
+          placeholder="Select Category"
+        >
+          <el-option
+            v-for="item in this.all_categories"
+            :key="Number(item.id)"
+            :label="item.name"
+            :value="Number(item.id)"
+          /> </el-select></el-form-item>
         <el-form-item label="Range" prop="title">
           <el-input v-model="tour.range" type="number" label="Range" />
         </el-form-item>
@@ -121,29 +121,27 @@
           />
         </el-form-item>
 
-        <el-form-item label="Places"
-          ><el-select
-            v-model="tour.places"
-            multiple
-            placeholder="Select Places"
-          >
-            <el-option
-              v-for="item in this.all_places"
-              :key="Number(item.id)"
-              :label="item.name"
-              :value="Number(item.id)"
-            /> </el-select
-        ></el-form-item>
+        <el-form-item
+          label="Places"
+        ><el-select
+          v-model="tour.places"
+          multiple
+          placeholder="Select Places"
+        >
+          <el-option
+            v-for="item in this.all_places"
+            :key="Number(item.id)"
+            :label="item.name"
+            :value="Number(item.id)"
+          /> </el-select></el-form-item>
 
-        <el-form-item label="Guide"
-          ><el-select v-model="tour.tour_guide_id" placeholder="Select Guide">
-            <el-option
-              v-for="item in this.all_guides"
-              :key="Number(item.id)"
-              :label="item.name"
-              :value="Number(item.id)"
-            /> </el-select
-        ></el-form-item>
+        <el-form-item label="Guide"><el-select v-model="tour.tour_guide_id" placeholder="Select Guide">
+          <el-option
+            v-for="item in this.all_guides"
+            :key="Number(item.id)"
+            :label="item.name"
+            :value="Number(item.id)"
+          /> </el-select></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
@@ -167,19 +165,19 @@
 </template>
 
 <script>
-import { getListTour, updateTour, deleteTour, getDetailTour } from "@/api/tour";
-import { getListPlace } from "@/api/place";
-import { getListCategory } from "@/api/category";
-import { getListTourGuide } from "@/api/tour_guide";
+import { getListTour, updateTour, deleteTour, getDetailTour } from '@/api/tour'
+import { getListPlace } from '@/api/place'
+import { getListCategory } from '@/api/category'
+import { getListTourGuide } from '@/api/tour_guide'
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        active: "success",
-        locked: "danger",
-      };
-      return statusMap[status];
-    },
+        active: 'success',
+        locked: 'danger'
+      }
+      return statusMap[status]
+    }
   },
   data() {
     return {
@@ -191,97 +189,97 @@ export default {
       places: [],
       all_places: [],
       all_categories: [],
-      all_guides: [],
-    };
+      all_guides: []
+    }
   },
   created() {
-    this.fetchData();
+    this.fetchData()
   },
   methods: {
     getDetailTour(id) {
-      return getDetailTour(id);
+      return getDetailTour(id)
     },
     convertNumber(array) {
       for (let i = 0; i < array.length; i++) {
-        array[i] = Number(array[i]);
+        array[i] = Number(array[i])
       }
-      return array;
+      return array
     },
     async fetchData() {
-      this.listLoading = true;
+      this.listLoading = true
 
       getListTour().then((response) => {
-        this.list = response.data;
+        this.list = response.data
         if (this.list.length > 0) {
           getDetailTour(this.list[0].id).then((response) => {
-            this.tour = response.data;
-            console.log(this.tour);
-          });
+            this.tour = response.data
+            console.log(this.tour)
+          })
         } else {
           this.tour = {
-            name: "",
-            description: "",
-          };
+            name: '',
+            description: ''
+          }
         }
-        this.listLoading = false;
-      });
+        this.listLoading = false
+      })
 
       getListPlace().then((response) => {
-        this.all_places = response.data;
-      });
+        this.all_places = response.data
+      })
 
       getListCategory().then((response) => {
-        this.all_categories = response.data;
-      });
+        this.all_categories = response.data
+      })
 
       getListTourGuide().then((response) => {
-        this.all_guides = response.data;
-      });
+        this.all_guides = response.data
+      })
     },
 
     formatDate(dat) {
-      const date = new Date(dat);
-      return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+      const date = new Date(dat)
+      return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
     },
 
     updateTour(tour) {
-      tour.dest = Number(tour.places[tour.places.length - 1]);
-      console.log(tour);
+      tour.dest = Number(tour.places[tour.places.length - 1])
+      console.log(tour)
       updateTour(tour).then((response) => {
         if (response.code === 0) {
           this.$notify({
-            message: "Update success",
-            type: "success",
-          });
-          this.dialogFormVisible = false;
+            message: 'Update success',
+            type: 'success'
+          })
+          this.dialogFormVisible = false
         }
-      });
+      })
     },
     handleUpdate(index) {
-      this.tour = this.list[index];
-      console.log(this.tour);
+      this.tour = this.list[index]
+      console.log(this.tour)
       getDetailTour(this.list[index].id).then((response) => {
         // this.tour = response.data;
-        this.tour.places = this.convertNumber(this.tour.places);
-        console.log(this.tour);
-      });
-      this.dialogFormVisible = true;
-      this.dialogCreate = false;
+        this.tour.places = this.convertNumber(this.tour.places)
+        console.log(this.tour)
+      })
+      this.dialogFormVisible = true
+      this.dialogCreate = false
     },
 
     handleDelete(index) {
       deleteTour({ id: this.list[index].id }).then((response) => {
         if (response.code === 0) {
           this.$notify({
-            message: "Update success",
-            type: "success",
-          });
-          this.fetchData();
+            message: 'Update success',
+            type: 'success'
+          })
+          this.fetchData()
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .user-avatar {
