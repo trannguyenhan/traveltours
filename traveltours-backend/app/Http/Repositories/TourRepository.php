@@ -95,7 +95,12 @@ class TourRepository extends BaseRepository
         }
 
         $total = count($result);
-        $result = $result->forPage($page - 1, $pageSize);
+        $newResult = [];
+
+        foreach ($result->forPage($page - 1, $pageSize) as $item){
+            $newResult[] = $item;
+        }
+        $result = $newResult;
 
         return \App\Helper::successResponseList($result, $total);
     }

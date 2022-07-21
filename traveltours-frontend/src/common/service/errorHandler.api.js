@@ -11,15 +11,27 @@ export default function errorResponseHandler(error) {
   }
 
   if (error.response) {
-    const errorMessage =
-      error.response.data.message || 'Sorry! Something went wrong!';
+    const errorsObject = error.response.data.errors;
+
+    let errorMessage = '';
+    // eslint-disable-next-line guard-for-in,no-restricted-syntax
+    for (const obj in errorsObject) {
+      errorMessage += errorsObject[obj][0];
+    }
+
+    if (errorMessage === '') {
+      errorMessage = error.response.data.error;
+      if (errorMessage !== 'Unauthorized') {
+        errorMessage = 'Sorry! Something went wrong!';
+      }
+    }
 
     store.dispatch(SET_ERROR, {
-      message: `[Tourino]: ${errorMessage}`,
+      message: `[Errors]: ${errorMessage}`,
     });
   } else if (error.request) {
     store.dispatch(SET_ERROR, {
-      message: '[Tourino]: Network Error! Please try again later!',
+      message: '[Errors]: Network Error! Please try again later!',
     });
   } else {
     // Something happened in setting up the request that triggered an Error
