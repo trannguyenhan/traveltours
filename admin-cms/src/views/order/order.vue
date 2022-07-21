@@ -82,7 +82,12 @@
 </template>
 
 <script>
-import { getListOrder, updateOrder, acceptOrder } from "@/api/order";
+import {
+  getListOrder,
+  updateOrder,
+  acceptOrder,
+  deleteOrder,
+} from "@/api/order";
 export default {
   filters: {
     statusFilter(status) {
@@ -134,19 +139,6 @@ export default {
       return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
     },
 
-    updateTo(tour) {
-      tour.dest = Number(tour.places[tour.places.length - 1]);
-      console.log(tour);
-      updateTour(tour).then((response) => {
-        if (response.code === 0) {
-          this.$notify({
-            message: "Update success",
-            type: "success",
-          });
-          this.dialogFormVisible = false;
-        }
-      });
-    },
     detail(index) {
       this.order = this.list[index];
       this.dialogFormVisible = true;
@@ -170,7 +162,7 @@ export default {
     },
 
     handleDelete(index) {
-      deleteTour({ id: this.list[index].id }).then((response) => {
+      deleteOrder({ id: this.list[index].id }).then((response) => {
         if (response.code === 0) {
           this.$notify({
             message: "Update success",

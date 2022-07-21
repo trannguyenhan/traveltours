@@ -106,16 +106,12 @@ Route::group([
             ->middleware(MID_ROLE_ADMIN);
     });
 
-    Route::group(['prefix' => '/order'], function () {
+    Route::group(['prefix' => '/order', 'middleware' => 'auth'], function () {
         Route::get('/listing', [OrderController::class, 'listing']);
-        Route::post('/store', [OrderController::class, 'store'])
-            ->middleware(MID_ROLE_MEMBER);
-        Route::post('/update', [OrderController::class, 'update'])
-            ->middleware(MID_ROLE_MEMBER);
-        Route::post('/delete', [OrderController::class, 'delete'])
-            ->middleware(MID_ROLE_MEMBER);
-        Route::post('/accept', [OrderController::class, 'accept'])
-            ->middleware(MID_ROLE_ADMIN);
+        Route::post('/store', [OrderController::class, 'store']);
+        Route::post('/update', [OrderController::class, 'update']);
+        Route::post('/delete', [OrderController::class, 'delete']);
+        Route::post('/accept', [OrderController::class, 'accept']);
     });
 });
 

@@ -7,6 +7,7 @@ use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Requests\Order\AcceptOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Base\IdRequest;
 
 class OrderController extends BaseController
 {
@@ -49,5 +50,10 @@ class OrderController extends BaseController
     public function accept(AcceptOrderRequest $request)
     {
         return $this->repository->accept($request->input('tour_id'), $request->input('user_id'));
+    }
+
+    public function delete(IdRequest $request)
+    {
+        return $this->deleteTemplate($request);
     }
 }
