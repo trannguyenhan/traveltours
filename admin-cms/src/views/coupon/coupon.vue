@@ -1,5 +1,17 @@
 <template>
   <div class="app-container">
+    <div class="header-container">
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px"
+        type="primary"
+        icon="el-icon-edit"
+        @click="handleCreate()"
+      >
+        Add
+      </el-button>
+    </div>
+    <br>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -118,8 +130,7 @@
 
 <script>
 
-import { getListCoupon, updateCoupon, deleteCoupon } from '@/api/coupon'
-import { createCategory } from '@/api/category'
+import { getListCoupon, updateCoupon, deleteCoupon, createCoupon } from '@/api/coupon'
 
 export default {
   filters: {
@@ -187,7 +198,7 @@ export default {
       })
     },
     createCoupon(coupon) {
-      createCategory(coupon).then((response) => {
+      createCoupon(coupon).then((response) => {
         if (response.code === 0) {
           this.$notify({
             message: 'Create success',
@@ -199,9 +210,12 @@ export default {
       })
     },
     handleCreate() {
-      this.category = {
-        name: null,
-        description: null
+      this.coupon = {
+        code: null,
+        discount: 0,
+        threshold: 0,
+        start_date: null,
+        end_date: null
       }
       this.dialogFormVisible = true
       this.dialogCreate = true

@@ -39,3 +39,11 @@ export function deleteCoupon(params) {
   })
 }
 
+export function createCoupon(params) {
+  return request({
+    url: '/coupon/store',
+    method: 'post',
+    data: params
+  })
+}
+

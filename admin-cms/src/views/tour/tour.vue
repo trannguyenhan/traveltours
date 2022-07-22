@@ -106,25 +106,7 @@
             type="number"
             step="1"
             :min="1"
-            label=""
-          />
-        </el-form-item>
-        <el-form-item label="Adult Price" prop="title">
-          <el-input
-            v-model="tour.price.adult"
-            type="number"
-            step="1"
-            :min="1"
             :max="5"
-            label=""
-          />
-        </el-form-item>
-        <el-form-item label="Child Price" prop="title">
-          <el-input
-            v-model="tour.price.child"
-            type="number"
-            step="1"
-            :min="1"
             label=""
           />
         </el-form-item>
@@ -179,7 +161,6 @@
         </el-button>
       </div>
     </el-dialog>
-    <pageable :page="page" :num-pages="numPages" :page-size="pageSize" @change-num-page="changeNumPage" />
   </div>
 </template>
 
@@ -188,10 +169,7 @@ import { getListTour, updateTour, deleteTour, getDetailTour } from '@/api/tour'
 import { getListPlace } from '@/api/place'
 import { getListCategory } from '@/api/category'
 import { getListTourGuide } from '@/api/tour_guide'
-import Pageable from '@/components/Pageable'
-
 export default {
-  components: { Pageable },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -211,19 +189,15 @@ export default {
       places: [],
       all_places: [],
       all_categories: [],
-      all_guides: [],
-      page: 1,
-      pageSize: 15,
-      numPages: 10
+      all_guides: []
     }
   },
   created() {
     this.fetchData()
   },
   methods: {
-    changeNumPage(numPage) {
-      this.page = numPage
-      this.fetchData()
+    getDetailTour(id) {
+      return getDetailTour(id)
     },
     convertNumber(array) {
       for (let i = 0; i < array.length; i++) {
@@ -234,13 +208,12 @@ export default {
     async fetchData() {
       this.listLoading = true
 
-      getListTour({ page: this.page + 1, page_size: this.pageSize }).then((response) => {
+      getListTour().then((response) => {
         this.list = response.data
-        this.numPages = parseInt((response.total / this.pageSize).toFixed()) + 2
-
         if (this.list.length > 0) {
           getDetailTour(this.list[0].id).then((response) => {
             this.tour = response.data
+            console.log(this.tour)
           })
         } else {
           this.tour = {
@@ -271,9 +244,7 @@ export default {
 
     updateTour(tour) {
       tour.dest = Number(tour.places[tour.places.length - 1])
-      tour.adult_price = this.tour.price.adult
-      tour.child_price = this.tour.price.child
-
+      console.log(tour)
       updateTour(tour).then((response) => {
         if (response.code === 0) {
           this.$notify({
@@ -290,6 +261,7 @@ export default {
       getDetailTour(this.list[index].id).then((response) => {
         // this.tour = response.data;
         this.tour.places = this.convertNumber(this.tour.places)
+        console.log(this.tour)
       })
       this.dialogFormVisible = true
       this.dialogCreate = false

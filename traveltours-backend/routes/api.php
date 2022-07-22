@@ -117,6 +117,7 @@ Route::group([
     Route::group(['prefix' => '/coupon', 'middleware' => MID_ROLE_ADMIN], function (){
         Route::post('/store', [CouponsController::class, 'store']);
         Route::post('/update', [CouponsController::class, 'update']);
+        Route::post('/delete', [CouponsController::class, 'delete']);
     });
 });
 
