@@ -126,5 +126,5 @@ class Tour extends Model
         return $this->belongsTo(TourGuide::class, 'tour_guide_id');
     }
 
- 
+
 }

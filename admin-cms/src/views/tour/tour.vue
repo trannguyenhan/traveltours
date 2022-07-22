@@ -110,6 +110,21 @@
             label=""
           />
         </el-form-item>
+        <el-form-item label="Gía vé người lớn" prop="title">
+          <el-input
+            v-model="tour.price.adult"
+            type="number"
+            step="1"
+            :min="1"
+          />
+        </el-form-item>
+        <el-form-item label="Giá vé trẻ em" prop="title">
+          <el-input
+            v-model="tour.price.child"
+            type="number"
+            step="1"
+          />
+        </el-form-item>
         <el-form-item label="Vehicle" prop="title">
           <el-input v-model="tour.vehicle" />
         </el-form-item>
@@ -244,7 +259,9 @@ export default {
 
     updateTour(tour) {
       tour.dest = Number(tour.places[tour.places.length - 1])
-      console.log(tour)
+      tour.adult_price = this.tour.price.adult
+      tour.child_price = this.tour.price.child
+
       updateTour(tour).then((response) => {
         if (response.code === 0) {
           this.$notify({

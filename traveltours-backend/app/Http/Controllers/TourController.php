@@ -102,7 +102,7 @@ class TourController extends BaseController
             foreach ($request->input('categories') as $category) {
                 DB::table('tour_category')->insert([
                     'tour_id' => $tourId,
-                    'category_id' => $category
+                    'category_id' => $category['id']
                 ]);
             }
         }

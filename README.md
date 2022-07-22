@@ -50,3 +50,8 @@ cp .env.example .env
 ```bash
 docker-compose up
 ```
+
+## Refer
+
+- Admin template cms: [https://github.com/PanJiaChen/vue-admin-template/](https://github.com/PanJiaChen/vue-admin-template/)
+- Frontend client template (Tourino): [https://github.com/thinh105/Tourino-Frontend-VueJS](https://github.com/thinh105/Tourino-Frontend-VueJS)
