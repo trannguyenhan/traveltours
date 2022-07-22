@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import H3TSearch from './Search';
+  import H3TSearch from './SearchTours';
   import H3TDestinations from './Destinations';
   import H3TTravelStyle from './TravelStyle';
   import H3TPrice from './Price';

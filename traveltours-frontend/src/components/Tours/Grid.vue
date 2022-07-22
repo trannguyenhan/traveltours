@@ -70,7 +70,7 @@
   import { FETCH_TOURS } from '@/store/type/actions';
 
   import H3TSort from '@/components/Tours/Sort.vue';
-  import H3TFilter from '@/components/Tours/Filter/Filter.vue';
+  import H3TFilter from '@/components/Tours/Filter/FilterTours.vue';
   import H3TPagination from '@/components/Tours/Pagination.vue';
   import H3TCard from '@/components/Tours/Card/Card.vue';
   import { Stack, StackItem } from 'vue-stack-grid';

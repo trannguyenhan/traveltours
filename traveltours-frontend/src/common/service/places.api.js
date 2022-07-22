@@ -4,7 +4,7 @@ import { apiService } from './api';
 // eslint-disable-next-line func-names
 const backendQuerify = function (query) {
   // eslint-disable-next-line prefer-const
-  let { destinations, travelStyle, price, rating, duration, sort, page } = {
+  let { destinations, travelStyle, price, rating, duration, sort, page, keyword } = {
     ...query,
   };
 
@@ -36,6 +36,7 @@ const backendQuerify = function (query) {
     sort,
     limit,
     page,
+    keyword
   };
 };
 
