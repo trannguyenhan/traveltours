@@ -43,6 +43,9 @@ Route::group([
     Route::group(['prefix' => '/user'], function () {
         Route::post('assign', [UserController::class, 'assignAccount'])->name('assign')
             ->middleware(MID_ROLE_ADMIN);
+        Route::post('assignSellerRole', [UserController::class, 'assignSellerRole'])->name('assignSellerRole')
+            ->middleware(MID_ROLE_ADMIN);
+
         Route::post('lock', [UserController::class, 'lockUser'])->name('lock')
             ->middleware(MID_ROLE_ADMIN);
         Route::post('unlock', [UserController::class, 'unlockUser'])->name('unlock')
