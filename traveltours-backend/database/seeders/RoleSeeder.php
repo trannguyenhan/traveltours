@@ -17,7 +17,8 @@ class RoleSeeder extends Seeder
     {
         DB::table('roles')->insert([
             ['id' => 1, 'name' => 'admin', 'guard_name' => 'api', 'display_name' => 'Quản trị viên'],
-            ['id' => 2, 'name' => 'member', 'guard_name' => 'api', 'display_name' => 'Thành viên']
+            ['id' => 2, 'name' => 'member', 'guard_name' => 'api', 'display_name' => 'Thành viên'],
+            ['id' => 3, 'name' => 'seller', 'guard_name' => 'api', 'display_name' => 'Người bán tour']
         ]);
     }
 }
