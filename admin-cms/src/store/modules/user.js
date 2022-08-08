@@ -57,9 +57,17 @@ const actions = {
 
         const { name, avatar, roles } = data
 
+        let lroles = [];
+        for (let i = 0; i < roles.length; i++) {
+          lroles.push(roles[i].pivot.role_id);
+        }
+        if (lroles.includes(1)) commit('SET_ROLE', 1)
+        if (lroles.includes(3)) commit('SET_ROLE', 3)
+
+
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
-        commit('SET_ROLE', roles)
+
         resolve(data)
       }).catch(error => {
         reject(error)

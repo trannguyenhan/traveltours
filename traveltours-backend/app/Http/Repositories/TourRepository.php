@@ -100,7 +100,6 @@ class TourRepository extends BaseRepository
                 return $item->created_by == $created_by;
             });
         }
-
         $total = count($result);
         $newResult = [];
 
@@ -108,7 +107,6 @@ class TourRepository extends BaseRepository
             $newResult[] = $item;
         }
         $result = $newResult;
-
         return \App\Helper::successResponseList($result, $total);
     }
 }

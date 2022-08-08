@@ -37,10 +37,16 @@ export default {
     routes() {
       let listRoutes = this.$router.options.routes;
       console.log(listRoutes);
-      if (this.filterAdminSeller(this.roles) == "admin") {
-        return [listRoutes[0], listRoutes[1], listRoutes[6], listRoutes[8]];
+      if (this.roles == 1) {
+        return [
+          listRoutes[0],
+          listRoutes[1],
+          listRoutes[5],
+          listRoutes[7],
+          listRoutes[8],
+        ];
       }
-      if (this.filterAdminSeller(this.roles) == "seller") {
+      if (this.roles == 3) {
         return [
           listRoutes[0],
           listRoutes[1],

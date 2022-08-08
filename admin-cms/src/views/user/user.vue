@@ -114,6 +114,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { getListUser, updateUser, deleteUser } from "@/api/user";
 import { getAddressDetail } from "@/api/data";
 // import "bootstrap/dist/js/bootstrap.js";
@@ -140,22 +141,27 @@ export default {
   created() {
     this.fetchData();
   },
+  computed: {
+    ...mapGetters(["roles"]),
+  },
   methods: {
     async fetchData() {
       this.listLoading = true;
-      getListUser().then((response) => {
-        this.list = response.data;
-        console.log(this.list);
-        if (this.list.length > 0) {
-          this.user = this.list[0];
-        } else {
-          this.user = {
-            name: "",
-            description: "",
-          };
-        }
-        this.listLoading = false;
-      });
+      if (this.roles == 1) {
+        getListUser().then((response) => {
+          this.list = response.data;
+          console.log(this.list);
+          if (this.list.length > 0) {
+            this.user = this.list[0];
+          } else {
+            this.user = {
+              name: "",
+              description: "",
+            };
+          }
+          this.listLoading = false;
+        });
+      }
 
       getAddressDetail().then((response) => {
         console.log(response);

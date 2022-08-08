@@ -1,77 +1,96 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">ADMIN Travel Tour</div>
-    <br>
+    <br />
     <div class="cards">
-      <div class="card">
+      <div class="card" v-if="this.roles == 3">
         <div class="icon">
           <i class="fa fa-users" />
         </div>
         <div class="num">{{ countTour }}</div>
         <h3>Tours</h3>
       </div>
-      <div class="card">
+      <div class="card" v-if="this.roles == 3">
         <div class="icon">
           <i class="fa fa-copy" />
         </div>
         <div class="num">{{ countPlace }}</div>
         <h3>Places</h3>
       </div>
-      <div class="card">
+      <div class="card" v-if="this.roles == 1">
         <div class="icon">
           <i class="fa fa-shopping-bag" />
         </div>
         <div class="num">{{ countUser }}</div>
         <h3>Users</h3>
       </div>
+      <div class="card" v-if="this.roles == 1">
+        <div class="icon">
+          <i class="fa fa-shopping-bag" />
+        </div>
+        <div class="num">{{ countCategory }}</div>
+        <h3>Category</h3>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { getListPlace } from '@/api/place'
-import { getListTour } from '@/api/tour'
-import { getListUser } from '@/api/user'
+import { mapGetters } from "vuex";
+import { getListPlace } from "@/api/place";
+import { getListTour } from "@/api/tour";
+import { getListUser } from "@/api/user";
+import { getListCategory } from "@/api/category";
 
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
   computed: {
-    ...mapGetters([
-      'name'
-    ])
+    ...mapGetters(["name", "roles"]),
   },
   data() {
     return {
       countPlace: 0,
       countTour: 0,
-      countUser: 0
-    }
+      countUser: 0,
+      countCategory: 0,
+    };
   },
   mounted() {
-    this.getListPlace()
-    this.getListTour()
-    this.getListUser()
+    if (this.roles == 3) {
+      this.getListPlace();
+      this.getListTour();
+    }
+
+    if (this.roles == 1) {
+      this.getListUser();
+      this.getListCategory();
+    }
   },
   methods: {
     getListPlace() {
-      getListPlace().then(response => {
-        this.countPlace = response.data.length
-      })
+      getListPlace().then((response) => {
+        this.countPlace = response.data.length;
+      });
     },
     getListTour() {
-      getListTour().then(response => {
-        this.countTour = response.data.length
-      })
+      getListTour().then((response) => {
+        this.countTour = response.data.length;
+      });
     },
 
     getListUser() {
-      getListUser().then(response => {
-        this.countUser = response.data.length
-      })
-    }
-  }
-}
+      getListUser().then((response) => {
+        this.countUser = response.data.length;
+      });
+    },
+
+    getListCategory() {
+      getListCategory().then((response) => {
+        this.countCategory = response.data.length;
+      });
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .dashboard {
@@ -84,17 +103,17 @@ export default {
   }
 }
 
-.cards{
+.cards {
   flex: 1 1 34%;
   flex-wrap: wrap;
 }
-.card{
+.card {
   border-radius: 6px;
   border: 1px solid #deebfd;
-  box-shadow: 0 3px 10px rgba(62,85,120,.045);
+  box-shadow: 0 3px 10px rgba(62, 85, 120, 0.045);
   margin: 0 8px 10px;
   position: relative;
-  background-color: #5CAD8A;
+  background-color: #5cad8a;
   height: 120px;
   padding: 20px;
 }
@@ -112,7 +131,8 @@ export default {
   padding: 0;
   vertical-align: bottom;
 }
-.card .num, .card h3{
+.card .num,
+.card h3 {
   position: relative;
   color: #fff;
   z-index: 5;
@@ -123,18 +143,19 @@ export default {
   font-size: 50px;
   font-weight: bold;
 }
-.card h3{
+.card h3 {
   font-size: 20px;
   margin-left: 5px;
 }
 @media only screen and (max-width: 768px) {
-  .cards{
+  .cards {
     flex: 1 1 100%;
   }
   .card .icon {
     z-index: 0;
   }
-  .card .num, .card h3 {
+  .card .num,
+  .card h3 {
     z-index: 0;
   }
 }
