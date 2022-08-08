@@ -67,11 +67,11 @@ Route::group([
 
     Route::group(['prefix' => '/place'], function () {
         Route::post('/store', [PlaceController::class, 'store'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/update', [PlaceController::class, 'update'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/delete', [PlaceController::class, 'delete'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
     });
 
     Route::group(['prefix' => '/review'], function () {
