@@ -50,8 +50,8 @@ class TourController extends BaseController
         if ($categories != null) {
             $categories = explode(",", $categories['all']);
         }
-
-        $filter = [$minRating, $price, $duration, $places, $categories];
+        $created_by = null;
+        $filter = [$minRating, $price, $duration, $places, $categories, $created_by];
         return $this->repository->doList($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 

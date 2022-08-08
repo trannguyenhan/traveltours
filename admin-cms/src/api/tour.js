@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getListTour(params) {
   return request({
-    url: '/tour/listing',
+    url: '/tour/seller/listing',
     method: 'get',
     params
   })

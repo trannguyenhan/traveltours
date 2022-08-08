@@ -24,6 +24,8 @@ class BaseController extends Controller
         return $this->repository->doList($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 
+    
+
     public function detail(Request $request, $id)
     {
         return $this->repository->detail($id);

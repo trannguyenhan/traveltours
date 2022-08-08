@@ -53,6 +53,7 @@ class UserRepository extends BaseRepository
         }
 
         return Helper::errorResponse();
+
     }
 
     /**

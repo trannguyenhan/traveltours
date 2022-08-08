@@ -34,6 +34,7 @@
           </a>
           <el-dropdown-item divided @click.native="logout">
             <span style="display: block">Log Out</span>
+            <span>{{ roles }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -52,7 +53,7 @@ export default {
     Hamburger,
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar"]),
+    ...mapGetters(["sidebar", "avatar", "roles"]),
   },
   methods: {
     toggleSideBar() {

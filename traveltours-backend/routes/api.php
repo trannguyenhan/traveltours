@@ -113,6 +113,7 @@ Route::group([
 
     Route::group(['prefix' => '/order', 'middleware' => 'auth'], function () {
         Route::get('/listing', [OrderController::class, 'listing']);
+        Route::get('/seller/listing', [OrderController::class, 'sellerListing']);
         Route::post('/store', [OrderController::class, 'store']);
         Route::post('/update', [OrderController::class, 'update']);
         Route::post('/delete', [OrderController::class, 'delete']);

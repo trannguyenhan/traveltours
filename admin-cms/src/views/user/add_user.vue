@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { assignUser } from '@/api/user'
+import { assignUser } from "@/api/user";
 
 export default {
   data() {
@@ -31,42 +31,48 @@ export default {
         name: null,
         username: null,
         email: null,
-        password: null
+        password: null,
       },
-      form: null
-    }
+      form: null,
+    };
   },
   created() {
-    this.form = Object.assign({}, this.defaultForm)
+    this.form = Object.assign({}, this.defaultForm);
   },
   methods: {
     onSubmit() {
-      assignUser(this.form).then(
-        response => {
+      assignUser(this.form)
+        .then((response) => {
           if (response.code === 0) {
             this.$notify({
-              message: 'Create success',
-              type: 'success'
-            })
-            this.form = Object.assign({}, this.defaultForm)
-            this.$router.push('/user/listing')
+              message: "Create success",
+              type: "success",
+            });
+            this.form = Object.assign({}, this.defaultForm);
+            this.$router.push("/user/listing");
           }
         })
+        .catch((error) => {
+          console.log(error.response);
+          this.$notify({
+            message: "Tài khoản đã tồn tại",
+            type: "error",
+          });
+        });
     },
     onCancel() {
-      this.form = Object.assign({}, this.defaultForm)
+      this.form = Object.assign({}, this.defaultForm);
       this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
-    }
-  }
-}
+        message: "cancel!",
+        type: "warning",
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-.line{
+.line {
   text-align: center;
 }
 </style>
-
