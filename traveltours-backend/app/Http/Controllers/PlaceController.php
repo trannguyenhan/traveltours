@@ -8,12 +8,25 @@ use App\Http\Requests\Place\StoreRequest;
 use App\Http\Requests\Place\UpdateRequest;
 use App\Models\Place;
 use \App\Helper;
+use Illuminate\Http\Request;
 
 class PlaceController extends BaseController
 {
     public function __construct(PlaceRepository $repository)
     {
         $this->repository = $repository;
+    }
+
+    public function sellerListing(Request $request)
+    {
+        $listPlaces = $this->listing($request)->getData()->data;
+        $created_by = auth()->id();
+        $detail = [];
+        foreach ($listPlaces as $key => $value) {
+            if ($value->created_by == $created_by)
+                $detail[] = $value;
+        }
+        return Helper::successResponse($detail);
     }
 
     public function store(StoreRequest $request)
@@ -29,7 +42,7 @@ class PlaceController extends BaseController
                 }
             }
 
-
+            $request->created_by = auth()->id();
             $request->images = $listImg;
         }
 
@@ -53,6 +66,7 @@ class PlaceController extends BaseController
 
 
             $request->images = $listImg;
+            $request->created_by = auth()->id();
         }
         return $this->updateTemplate($request, Place::UPDATE_FIELDS);
     }

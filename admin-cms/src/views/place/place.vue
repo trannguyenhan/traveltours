@@ -1,19 +1,12 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index + 1}}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Name" width="200">
+      <el-table-column align="center" label="Name" width="400">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
@@ -28,126 +21,55 @@
           {{ scope.row.ward }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Địa điểm cụ thể" width="200">
+      <el-table-column align="center" label="Địa điểm cụ thể" width="400">
         <template slot-scope="scope">
           {{ scope.row.address_detail }}
         </template>
       </el-table-column>
-
-      <el-table-column
-        label="Actions"
-        align="center"
-        width="300"
-        class-name="small-padding fixed-width"
-      >
+      <el-table-column label="Actions" align="center"  class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(scope.$index)"
-          >
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.$index)">
             Edit
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index)"
-          >
+          <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">
             Delete
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog title="Edit Place" :visible.sync="dialogFormVisible">
-      <el-form
-        ref="dataForm"
-        :model="place"
-        label-position="left"
-        style="width: 400px; margin-left: 50px"
-      >
+      <el-form ref="dataForm" :model="place" label-position="left" style="width: 400px; margin-left: 50px">
         <el-form-item label="Tên địa điểm" prop="title">
-          <el-input
-            style="width: 400px; margin-left: 5px"
-            v-model="place.name"
-          />
+          <el-input style="width: 400px; margin-left: 5px" v-model="place.name" />
         </el-form-item>
         <el-form-item label="Chọn Tỉnh/Thành phố" prop="title">
           <br />
-          <el-select
-            v-model="place.province"
-            class="m-2"
-            placeholder="Tỉnh/Thành phố"
-            size="large"
-            style="width: 400px"
-          >
-            <el-option
-              v-for="item in addressData"
-              :key="item.Name"
-              :label="item.Name"
-              :value="item.Name"
-            />
+          <el-select v-model="place.province" class="m-2" placeholder="Tỉnh/Thành phố" size="large"
+            style="width: 400px">
+            <el-option v-for="item in addressData" :key="item.Name" :label="item.Name" :value="item.Name" />
           </el-select>
         </el-form-item>
         <el-form-item label="Chọn Quận/Huyện" prop="title">
-          <el-select
-            v-model="place.district"
-            class="m-2"
-            placeholder="Quận/Huyện"
-            size="large"
-            style="width: 400px"
-          >
-            <el-option
-              v-for="item in listDistrict()"
-              :key="item.Id"
-              :label="item.Name"
-              :value="item.Name"
-            />
+          <el-select v-model="place.district" class="m-2" placeholder="Quận/Huyện" size="large" style="width: 400px">
+            <el-option v-for="item in listDistrict()" :key="item.Id" :label="item.Name" :value="item.Name" />
           </el-select>
         </el-form-item>
         <el-form-item label="Chọn Phường/Xã">
-          <el-select
-            v-model="place.ward"
-            class="m-2"
-            placeholder="Phường/Xã"
-            size="large"
-            style="width: 400px"
-          >
-            <el-option
-              v-for="item in listWard()"
-              :key="item.Id"
-              :label="item.Name"
-              :value="item.Name"
-            />
+          <el-select v-model="place.ward" class="m-2" placeholder="Phường/Xã" size="large" style="width: 400px">
+            <el-option v-for="item in listWard()" :key="item.Id" :label="item.Name" :value="item.Name" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="Địa điểm cụ thể" prop="title">
-          <el-input
-            v-model="place.address_detail"
-            autosize
-            type="textarea"
-            placeholder="Địa điểm cụ thể"
-            style="width: 400px"
-          />
+          <el-input v-model="place.address_detail" autosize type="textarea" placeholder="Địa điểm cụ thể"
+            style="width: 400px" />
         </el-form-item>
 
         <el-form-item label="Mô tả" prop="title">
-          <el-input
-            v-model="place.description"
-            autosize
-            type="textarea"
-            multiple="multiple"
-            placeholder="Mô tả"
-            style="width: 400px"
-          />
+          <el-input v-model="place.description" autosize type="textarea" multiple="multiple" placeholder="Mô tả"
+            style="width: 400px" />
         </el-form-item>
-        <input
-          id="update-images"
-          accept="image/*"
-          type="file"
-          @change="previewFiles($event)"
-          multiple
-        />
+        <input id="update-images" accept="image/*" type="file" @change="previewFiles($event)" multiple />
         <ul>
           <li v-for="image in this.list_images">
             <img style="width: 200px" :src="image" alt="picture text" />
@@ -159,18 +81,10 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
-        <el-button
-          v-if="!dialogCreate"
-          type="primary"
-          @click="updatePlace(place)"
-        >
+        <el-button v-if="!dialogCreate" type="primary" @click="updatePlace(place)">
           Update
         </el-button>
-        <el-button
-          v-if="dialogCreate"
-          type="primary"
-          @click="createCategory(category)"
-        >
+        <el-button v-if="dialogCreate" type="primary" @click="createCategory(category)">
           Create
         </el-button>
       </div>
@@ -327,6 +241,7 @@ export default {
   height: 60px;
   border-radius: 10px;
 }
+
 .table {
   text-align: center;
 }

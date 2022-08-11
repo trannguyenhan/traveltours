@@ -66,6 +66,8 @@ Route::group([
     });
 
     Route::group(['prefix' => '/place'], function () {
+        Route::get('/sellerListing', [PlaceController::class, 'sellerListing'])
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/store', [PlaceController::class, 'store'])
             ->middleware(MID_ROLE_SELLER);
         Route::post('/update', [PlaceController::class, 'update'])
@@ -103,12 +105,13 @@ Route::group([
     });
 
     Route::group(['prefix' => '/tour-guide'], function () {
+        Route::get('/sellerlisting', [TourGuideController::class, 'listing']);
         Route::post('/store', [TourGuideController::class, 'store'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/update', [TourGuideController::class, 'update'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/delete', [TourGuideController::class, 'delete'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
     });
 
     Route::group(['prefix' => '/order', 'middleware' => 'auth'], function () {

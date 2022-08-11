@@ -14,6 +14,7 @@ class UpdateRequest extends BaseRequest
         'address_detail' => 'required|string|max:500',
         'name' => 'required||string|max:255',
         'description' => 'required|string',
-        'images' => 'array'
+        'images' => 'array',
+
     ];
 }

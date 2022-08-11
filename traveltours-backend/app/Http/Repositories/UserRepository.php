@@ -48,12 +48,11 @@ class UserRepository extends BaseRepository
         $model['status'] = User::ACTIVE; // status active
 
         if ($model->save()) {
-            $model->assignRole(ROLE_MEMBER);
+            $model->assignRole($request->input("role"));
             return Helper::successResponse($model);
         }
 
         return Helper::errorResponse();
-
     }
 
     /**

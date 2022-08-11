@@ -1,87 +1,44 @@
 <template>
   <div class="container">
-    <el-form
-      ref="dataForm"
-      :model="place"
-      label-position="left"
-      style="width: 500px; margin-left: 250px"
-    >
+    <el-form ref="dataForm" :model="place" label-position="left" style="width: 500px; margin-left: 250px"
+      @submit="checkForm">
       <el-form-item label="Tên địa điểm" prop="title">
-        <el-input v-model="place.name" type="textarea" autosize />
+        <el-input v-model="place.name" type="textarea" autosize required />
       </el-form-item>
       <el-form-item label="Chọn Tỉnh/Thành phố" prop="title">
-        <el-select
-          v-model="place.province"
-          class="m-2"
-          placeholder="Tỉnh/Thành phố"
-          size="large"
-        >
-          <el-option
-            v-for="item in addressData"
-            :key="item.Name"
-            :label="item.Name"
-            :value="item.Name"
-          />
+        <el-select v-model="place.province" class="m-2" placeholder="Tỉnh/Thành phố" size="large">
+          <el-option v-for="item in addressData" :key="item.Name" :label="item.Name" :value="item.Name" />
         </el-select>
       </el-form-item>
       <el-form-item label="Chọn Quận/Huyện" prop="title">
-        <el-select
-          v-model="place.district"
-          class="m-2"
-          placeholder="Quận/Huyện"
-          size="large"
-        >
-          <el-option
-            v-for="item in listDistrict()"
-            :key="item.Id"
-            :label="item.Name"
-            :value="item.Name"
-          />
+        <el-select v-model="place.district" class="m-2" placeholder="Quận/Huyện" size="large">
+          <el-option v-for="item in listDistrict()" :key="item.Id" :label="item.Name" :value="item.Name" />
         </el-select>
       </el-form-item>
       <el-form-item label="Chọn Phường/Xã">
-        <el-select
-          v-model="place.ward"
-          class="m-2"
-          placeholder="Phường/Xã"
-          size="large"
-        >
-          <el-option
-            v-for="item in listWard()"
-            :key="item.Id"
-            :label="item.Name"
-            :value="item.Name"
-          />
+        <el-select v-model="place.ward" class="m-2" placeholder="Phường/Xã" size="large">
+          <el-option v-for="item in listWard()" :key="item.Id" :label="item.Name" :value="item.Name" />
         </el-select>
       </el-form-item>
 
       <el-form-item label="Địa điểm cụ thể" prop="title">
-        <el-input
-          v-model="place.address_detail"
-          autosize
-          type="textarea"
-          placeholder="Địa điểm cụ thể"
-        />
+        <el-input v-model="place.address_detail" autosize type="textarea" placeholder="Địa điểm cụ thể" required />
       </el-form-item>
 
       <el-form-item label="Mô tả" prop="title">
-        <el-input
-          v-model="place.description"
-          autosize
-          type="textarea"
-          multiple="multiple"
-          placeholder="Mô tả"
-        />
+        <el-input v-model="place.description" autosize type="textarea" multiple="multiple" placeholder="Mô tả"
+          required />
       </el-form-item>
 
-      <input id="update-images" type="file" multiple="multiple" />
+      <input id="update-images" type="file" multiple="multiple" required />
 
       <br /><br />
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button type="primary" @click="checkForm">Create</el-button>
         <el-button @click="onCancel">Cancel</el-button>
       </el-form-item>
     </el-form>
+
   </div>
 </template>
 
@@ -92,6 +49,7 @@ import { createPlace } from "@/api/place";
 export default {
   data() {
     return {
+      errors: [],
       place: {
         name: null,
         province: null,
@@ -110,6 +68,41 @@ export default {
     this.fetchData();
   },
   methods: {
+    checkForm: function (e) {
+      this.errors = []
+
+      if (!this.place.name) {
+        this.errors.push("Chưa có tên địa điểm");
+      }
+      if (!this.place.province) {
+        this.errors.push("Chưa chọn thành phố")
+      }
+      if (!this.place.district) {
+        this.errors.push("Chưa chọn quận/huyện")
+      }
+      if (!this.place.ward) {
+        this.errors.push("Chưa chọn xã/phường")
+      }
+      if (!this.place.address_detail) {
+        this.errors.push("Chưa có địa điểm cụ thể")
+      }
+      if (!this.place.description) {
+        this.errors.push("Chưa có mô tả")
+      }
+      let listImages = document.querySelector("#update-images");
+      let len = listImages.files.length;
+      if (len == 0) {
+        this.errors.push("Chưa có ảnh mô tả địa điểm")
+      }
+      this.$notify({
+        message: this.errors[0],
+        type: 'error'
+      })
+
+      if (this.errors.length == 0) {
+        this.onSubmit()
+      }
+    },
     listDistrict() {
       for (let i = 0; i < this.addressData.length; i++) {
         if (this.addressData[i].Name == this.place.province) {
@@ -170,9 +163,11 @@ export default {
 .line {
   text-align: center;
 }
+
 .m-2 {
   width: 500px;
 }
+
 a {
   text-decoration: none;
 }

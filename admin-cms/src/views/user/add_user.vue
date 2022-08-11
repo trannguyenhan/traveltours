@@ -14,7 +14,13 @@
         <el-input v-model="form.password" type="password" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button type="primary" @click="createMember(['member'])"
+          >Create Member</el-button
+        >
+        <el-button type="primary" @click="createMember(['seller', 'member'])"
+          >Create Seller</el-button
+        >
+
         <el-button @click="onCancel">Cancel</el-button>
       </el-form-item>
     </el-form>
@@ -40,7 +46,8 @@ export default {
     this.form = Object.assign({}, this.defaultForm);
   },
   methods: {
-    onSubmit() {
+    createMember(roleArray) {
+      this.form.role = roleArray;
       assignUser(this.form)
         .then((response) => {
           if (response.code === 0) {

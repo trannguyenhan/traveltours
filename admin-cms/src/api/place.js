@@ -9,7 +9,7 @@ export function createPlace(params) {
 }
 export function getListPlace(params) {
   return request({
-    url: '/place/listing',
+    url: '/place/sellerListing',
     method: 'get',
     params
   })

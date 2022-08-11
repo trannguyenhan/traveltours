@@ -165,6 +165,7 @@ export default {
 
       console.log(this.tour);
       createTour(this.tour).then((response) => {
+        console.log(response);
         if (response.code === 0) {
           this.$notify({
             message: "Create success",
