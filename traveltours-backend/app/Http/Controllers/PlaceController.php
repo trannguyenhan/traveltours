@@ -19,14 +19,14 @@ class PlaceController extends BaseController
 
     public function sellerListing(Request $request)
     {
-        $listPlaces = $this->listing($request)->getData()->data;
+        $keyword = $request->query('keyword');
+        $page = $this->getPage($request);
+        $pageSize = $this->getPageSize($request);
+        $orderBy = ['created_at'];
+        $orderType = ['desc'];
         $created_by = auth()->id();
-        $detail = [];
-        foreach ($listPlaces as $key => $value) {
-            if ($value->created_by == $created_by)
-                $detail[] = $value;
-        }
-        return Helper::successResponse($detail);
+        $filter = [$created_by];
+        return $this->repository->doList($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 
     public function store(StoreRequest $request)

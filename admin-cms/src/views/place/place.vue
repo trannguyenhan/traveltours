@@ -1,9 +1,11 @@
 <template>
   <div class="app-container">
+    <input type="text" v-model="placeName" placeholder="Search Places..." />
+    <el-button @click="fetchData()">Search</el-button>
     <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index + 1}}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Name" width="400">
@@ -26,7 +28,7 @@
           {{ scope.row.address_detail }}
         </template>
       </el-table-column>
-      <el-table-column label="Actions" align="center"  class-name="small-padding fixed-width">
+      <el-table-column label="Actions" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.$index)">
             Edit
@@ -37,6 +39,23 @@
         </template>
       </el-table-column>
     </el-table>
+    <p class="nextprev">
+      <el-button class="paginate" @click="prevPage">
+        Previous
+      </el-button>
+
+      <el-button class="paginate1">
+        page {{ this.currentPage }} of {{ this.pageNumber }}
+      </el-button>
+      <el-button class="paginate" @click="nextPage">
+        Next
+      </el-button>
+    </p>
+
+
+
+
+
     <el-dialog title="Edit Place" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="place" label-position="left" style="width: 400px; margin-left: 50px">
         <el-form-item label="Tên địa điểm" prop="title">
@@ -89,6 +108,7 @@
         </el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -120,6 +140,10 @@ export default {
       formData: null,
       isUpdateImage: false,
       index: null,
+      currentPage: 1,
+      total: 0,
+      pageNumber: 0,
+      placeName: ''
     };
   },
   created() {
@@ -129,7 +153,9 @@ export default {
     async fetchData() {
       this.listLoading = true;
       this.formData = new FormData();
-      getListPlace().then((response) => {
+      getListPlace(this.currentPage, this.placeName).then((response) => {
+        this.total = response.total;
+        this.pageNumber = (this.total - (this.total % 10)) / 10 + 1;
         this.list = response.data;
         if (this.list.length > 0) {
           this.place = this.list[0];
@@ -231,10 +257,24 @@ export default {
         }
       }
     },
+
+    nextPage() {
+      if (this.currentPage + 1 <= this.pageNumber) {
+        this.currentPage += 1;
+        this.fetchData()
+      }
+    },
+
+    prevPage() {
+      if (this.currentPage - 1 >= 1) {
+        this.currentPage -= 1;
+        this.fetchData();
+      }
+    }
   },
 };
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .user-avatar {
   cursor: pointer;
   width: 60px;
@@ -244,5 +284,15 @@ export default {
 
 .table {
   text-align: center;
+}
+
+
+
+.nextprev {
+  position: fixed;
+  left: 900px;
+  display: inline-block;
+  bottom: 100px;
+
 }
 </style>
