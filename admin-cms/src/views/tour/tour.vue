@@ -1,13 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
           {{ scope.$index }}
@@ -39,139 +32,73 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        label="Actions"
-        align="center"
-        width="300"
-        class-name="small-padding fixed-width"
-      >
+      <el-table-column label="Actions" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(scope.$index)"
-          >
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.$index)">
             Edit
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index)"
-          >
+          <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">
             Delete
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog title="Edit Tour" :visible.sync="dialogFormVisible">
-      <el-form
-        ref="dataForm"
-        :model="tour"
-        label-position="left"
-        style="width: 400px; margin-left: 50px"
-      >
+      <el-form ref="dataForm" :model="tour" label-position="left" style="width: 400px; margin-left: 50px">
         <el-form-item label="Name" prop="title">
           <el-input v-model="tour.name" />
         </el-form-item>
-        <el-form-item
-          label="Category"
-        ><el-select
-          v-model="tour.categories"
-          multiple
-          placeholder="Select Category"
-        >
-          <el-option
-            v-for="item in this.all_categories"
-            :key="Number(item.id)"
-            :label="item.name"
-            :value="Number(item.id)"
-          /> </el-select></el-form-item>
+        <el-form-item label="Category">
+          <br>
+          <li v-for="item in tour.categories">
+            {{ item.name }}
+          </li>
+        </el-form-item>
         <el-form-item label="Range" prop="title">
           <el-input v-model="tour.range" type="number" label="Range" />
         </el-form-item>
         <el-form-item label="Max Slot" prop="title">
-          <el-input
-            v-model="tour.max_slot"
-            type="number"
-            step="1"
-            label="Range"
-          />
+          <el-input v-model="tour.max_slot" type="number" step="1" label="Range" />
         </el-form-item>
         <el-form-item label="Remaining Slot" prop="title">
           <el-input v-model="tour.slot" type="number" step="1" label="" />
         </el-form-item>
         <el-form-item label="Hotel Star" prop="title">
-          <el-input
-            v-model="tour.hotel_star"
-            type="number"
-            step="1"
-            :min="1"
-            :max="5"
-            label=""
-          />
+          <el-input v-model="tour.hotel_star" type="number" step="1" :min="1" :max="5" label="" />
         </el-form-item>
         <el-form-item label="Gía vé người lớn" prop="title">
-          <el-input
-            v-model="tour.price.adult"
-            type="number"
-            step="1"
-            :min="1"
-          />
+          <el-input v-model="tour.price.adult" type="number" step="1" :min="1" />
         </el-form-item>
         <el-form-item label="Giá vé trẻ em" prop="title">
-          <el-input
-            v-model="tour.price.child"
-            type="number"
-            step="1"
-          />
+          <el-input v-model="tour.price.child" type="number" step="1" />
         </el-form-item>
         <el-form-item label="Vehicle" prop="title">
           <el-input v-model="tour.vehicle" />
         </el-form-item>
         <el-form-item label="Start Date" prop="title">
-          <el-input
-            v-model="tour.start_date"
-            placeholder="Pick a date"
-            type="date"
-          />
+          <el-input v-model="tour.start_date" placeholder="Pick a date" type="date" />
         </el-form-item>
 
-        <el-form-item
-          label="Places"
-        ><el-select
-          v-model="tour.places"
-          multiple
-          placeholder="Select Places"
-        >
-          <el-option
-            v-for="item in this.all_places"
-            :key="Number(item.id)"
-            :label="item.name"
-            :value="Number(item.id)"
-          /> </el-select></el-form-item>
+        <el-form-item label="Places">
+          <el-select v-model="tour.places" multiple placeholder="Select Places">
+            <el-option v-for="item in this.all_places" :key="Number(item.id)" :label="item.name"
+              :value="Number(item.id)" />
+          </el-select>
+        </el-form-item>
 
-        <el-form-item label="Guide"><el-select v-model="tour.tour_guide_id" placeholder="Select Guide">
-          <el-option
-            v-for="item in this.all_guides"
-            :key="Number(item.id)"
-            :label="item.name"
-            :value="Number(item.id)"
-          /> </el-select></el-form-item>
+        <el-form-item label="Guide">
+          <el-select v-model="tour.tour_guide_id" placeholder="Select Guide">
+            <el-option v-for="item in this.all_guides" :key="Number(item.id)" :label="item.name"
+              :value="Number(item.id)" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
-        <el-button
-          v-if="!dialogCreate"
-          type="primary"
-          @click="updateTour(tour)"
-        >
+        <el-button v-if="!dialogCreate" type="primary" @click="updateTour(tour)">
           Update
         </el-button>
-        <el-button
-          v-if="dialogCreate"
-          type="primary"
-          @click="createCategory(category)"
-        >
+        <el-button v-if="dialogCreate" type="primary" @click="createCategory(category)">
           Create
         </el-button>
       </div>
@@ -181,7 +108,7 @@
 
 <script>
 import { getListTour, updateTour, deleteTour, getDetailTour } from '@/api/tour'
-import { getListPlace } from '@/api/place'
+import { getAllPlace } from '@/api/place'
 import { getListCategory } from '@/api/category'
 import { getListTourGuide } from '@/api/tour_guide'
 export default {
@@ -196,6 +123,7 @@ export default {
   },
   data() {
     return {
+      list: [0, 1],
       dialogFormVisible: false,
       dialogCreate: false,
       list: null,
@@ -228,6 +156,8 @@ export default {
         if (this.list.length > 0) {
           getDetailTour(this.list[0].id).then((response) => {
             this.tour = response.data
+            this.tour.start_date = this.tour.start_date.slice(0, 10)
+            console.log(this.tour.start_date.slice(0, 10));
             console.log(this.tour)
           })
         } else {
@@ -239,7 +169,7 @@ export default {
         this.listLoading = false
       })
 
-      getListPlace().then((response) => {
+      getAllPlace().then((response) => {
         this.all_places = response.data
       })
 
@@ -274,11 +204,11 @@ export default {
     },
     handleUpdate(index) {
       this.tour = this.list[index]
-      console.log(this.tour)
+      console.log(777, this.tour)
       getDetailTour(this.list[index].id).then((response) => {
         // this.tour = response.data;
         this.tour.places = this.convertNumber(this.tour.places)
-        console.log(this.tour)
+        this.tour.start_date = this.tour.start_date.slice(0, 10)
       })
       this.dialogFormVisible = true
       this.dialogCreate = false

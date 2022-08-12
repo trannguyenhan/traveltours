@@ -46,7 +46,7 @@ class TourRepository extends BaseRepository
         if (Schema::hasColumn($this->_model->getTable(), $orderBy)) {
             $query = $query->orderBy($orderBy, $orderType);
         }
-        
+
 
         if ($price != null) {
             $query = $query->whereHas('price', function ($q) use ($price) {
@@ -103,7 +103,7 @@ class TourRepository extends BaseRepository
         $total = count($result);
         $newResult = [];
 
-        foreach ($result->forPage($page , $pageSize) as $item) {
+        foreach ($result->forPage($page, $pageSize) as $item) {
             $newResult[] = $item;
         }
         $result = $newResult;

@@ -15,6 +15,13 @@ export function getListPlace(page, keyWord) {
   })
 }
 
+export function getAllPlace(page, keyWord) {
+  return request({
+    url: '/place/allSellerListing',
+    method: 'get',
+  })
+}
+
 export function updatePlace(params) {
   return request({
     url: '/place/update',

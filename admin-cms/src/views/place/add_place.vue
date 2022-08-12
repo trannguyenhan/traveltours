@@ -94,10 +94,13 @@ export default {
       if (len == 0) {
         this.errors.push("Chưa có ảnh mô tả địa điểm")
       }
-      this.$notify({
-        message: this.errors[0],
-        type: 'error'
-      })
+      if (this.errors.length > 0) {
+        this.$notify({
+          message: this.errors[0],
+          type: 'error'
+        })
+      }
+
 
       if (this.errors.length == 0) {
         this.onSubmit()

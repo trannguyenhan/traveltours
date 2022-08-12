@@ -37,7 +37,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getListPlace } from "@/api/place";
+import { getListPlace, getAllPlace } from "@/api/place";
 import { getListTour } from "@/api/tour";
 import { getListUser } from "@/api/user";
 import { getListCategory } from "@/api/category";
@@ -57,7 +57,7 @@ export default {
   },
   mounted() {
     if (this.roles == 3) {
-      this.getListPlace();
+      this.getAllPlace();
       this.getListTour();
     }
 
@@ -67,14 +67,14 @@ export default {
     }
   },
   methods: {
-    getListPlace() {
-      getListPlace().then((response) => {
-        this.countPlace = response.data.length;
+    getAllPlace() {
+      getAllPlace().then((response) => {
+        this.countPlace = response.total;
       });
     },
     getListTour() {
-      getListTour().then((response) => {
-        this.countTour = response.data.length;
+      getListTour(1, '').then((response) => {
+        this.countTour = response.total;
       });
     },
 
@@ -97,6 +97,7 @@ export default {
   &-container {
     margin: 30px;
   }
+
   &-text {
     font-size: 30px;
     line-height: 46px;
@@ -107,6 +108,7 @@ export default {
   flex: 1 1 34%;
   flex-wrap: wrap;
 }
+
 .card {
   border-radius: 6px;
   border: 1px solid #deebfd;
@@ -117,6 +119,7 @@ export default {
   height: 120px;
   padding: 20px;
 }
+
 .card .icon {
   color: rgba(0, 0, 0, 0.1);
   position: absolute;
@@ -124,6 +127,7 @@ export default {
   bottom: 69px;
   z-index: 1;
 }
+
 .card .icon i {
   font-size: 100px;
   line-height: 0;
@@ -131,6 +135,7 @@ export default {
   padding: 0;
   vertical-align: bottom;
 }
+
 .card .num,
 .card h3 {
   position: relative;
@@ -139,21 +144,26 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 .card .num {
   font-size: 50px;
   font-weight: bold;
 }
+
 .card h3 {
   font-size: 20px;
   margin-left: 5px;
 }
+
 @media only screen and (max-width: 768px) {
   .cards {
     flex: 1 1 100%;
   }
+
   .card .icon {
     z-index: 0;
   }
+
   .card .num,
   .card h3 {
     z-index: 0;

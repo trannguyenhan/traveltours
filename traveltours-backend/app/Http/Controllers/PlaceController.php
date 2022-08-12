@@ -29,6 +29,21 @@ class PlaceController extends BaseController
         return $this->repository->doList($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 
+    public function allSellerListing()
+    {
+        $query = Place::query(); // create new query
+        // dd($query->count());
+        $result = $query->get()->toArray();
+        $list = [];
+        $id = auth()->id();
+        foreach ($result as $key => $value) {
+            if ($value['created_by'] == $id) {
+                $list[] = $value;
+            }
+        }
+        return \App\Helper::successResponse($list);
+    }
+
     public function store(StoreRequest $request)
     {
         if ($request->hasFile('images')) {

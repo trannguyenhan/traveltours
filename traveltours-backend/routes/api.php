@@ -68,6 +68,8 @@ Route::group([
     Route::group(['prefix' => '/place'], function () {
         Route::get('/sellerListing', [PlaceController::class, 'sellerListing'])
             ->middleware(MID_ROLE_SELLER);
+        Route::get('/allSellerListing', [PlaceController::class, 'allSellerListing'])
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/store', [PlaceController::class, 'store'])
             ->middleware(MID_ROLE_SELLER);
         Route::post('/update', [PlaceController::class, 'update'])

@@ -108,6 +108,7 @@ class Tour extends Model
         return $this->belongsToMany(Category::class, 'tour_category', 'tour_id', 'category_id');
     }
 
+
     public function dest(): BelongsTo
     {
         return $this->belongsTo(Place::class, 'dest');
