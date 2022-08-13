@@ -145,7 +145,7 @@ Route::get('tour/detail/{id}', [TourController::class, 'detail']);
 Route::get('tour-guide/listing', [TourGuideController::class, 'listing']);
 Route::get('order/detail/{id}', [OrderController::class, 'detail']);
 Route::get('order/all/{id}', [OrderController::class, 'all']);
-Route::get('coupon/check/{couponCode}', [CouponsController::class, 'checkCouponCode']);
+Route::get('coupon/check/{couponCode}/{tour_id}/{seller_id}', [CouponsController::class, 'checkCouponCode']);
 Route::get('order/check-book-tour/{tourId}/{userId}', [OrderController::class, 'checkBookTour']);
 
 Route::get('vietnam-address', function () {

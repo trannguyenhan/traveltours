@@ -18,11 +18,15 @@ class CouponsRepository extends BaseRepository
         return parent::doStore($arr);
     }
 
-    public function checkCouponCode($couponCode)
+    public function checkCouponCode($couponCode, $tour_id, $seller_id)
     {
         $query = (new $this->_model)->query();
         $today = date("Y-m-d");
-        $query = $query->where('code', '=', $couponCode)->where('end_date', '>=', $today);
+        $query = $query->where('code', '=', $couponCode)
+            ->where('end_date', '>=', $today)
+            ->where('start_date', '<=', $today)
+            ->where('tour_id', '=', $tour_id)
+            ->where('created_by', '=', $seller_id);
 
         $total = $query->count();
         if ($total > 0) {

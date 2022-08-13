@@ -15,15 +15,19 @@ class CouponsController extends BaseController
         $this->repository = $repository;
     }
 
-    public function checkCouponCode($couponCode){
-        return $this->repository->checkCouponCode($couponCode);
+    public function checkCouponCode($couponCode, $tour_id, $seller_id)
+
+    {
+        return $this->repository->checkCouponCode($couponCode, $tour_id, $seller_id);
     }
 
-    public function store(StoreRequest  $request){
+    public function store(StoreRequest  $request)
+    {
         return $this->storeTemplate($request, Coupon::INSERT_FIELDS);
     }
 
-    public function update(UpdateRequest $request){
+    public function update(UpdateRequest $request)
+    {
         return $this->updateTemplate($request, Coupon::UPDATE_FIELDS);
     }
 
