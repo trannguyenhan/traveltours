@@ -93,6 +93,12 @@ class TourController extends BaseController
         return $this->repository->doList($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 
+    public function allSellerListing(Request $request)
+    {
+        $filter = [null, null, null, null, null, auth()->id()];
+        return $this->repository->doList('', -1, 10, 'created_at', 'desc', $filter);
+    }
+
     public function getSort(Request $request): array
     {
         $value = $request->query('sort');

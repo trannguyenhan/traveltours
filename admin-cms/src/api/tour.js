@@ -8,6 +8,14 @@ export function getListTour(params) {
   })
 }
 
+export function getAllTours(params) {
+  return request({
+    url: '/tour/seller/listing/all',
+    method: 'get',
+    params
+  })
+}
+
 export function createTour(params) {
   return request({
     url: '/tour/store',

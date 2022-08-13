@@ -101,6 +101,13 @@ class TourRepository extends BaseRepository
             });
         }
         $total = count($result);
+        if ($page == -1) {
+            $re = [];
+            foreach ($result as $item) {
+                $re[] = $item;
+            }
+            return \App\Helper::successResponseList($re, $total);
+        }
         $newResult = [];
 
         foreach ($result->forPage($page, $pageSize) as $item) {

@@ -91,6 +91,8 @@ Route::group([
             ->middleware(MID_ROLE_SELLER);
         Route::get('/seller/listing', [TourController::class, 'sellerListing'])
             ->middleware(MID_ROLE_SELLER);
+        Route::get('/seller/listing/all', [TourController::class, 'allSellerListing'])
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/update', [TourController::class, 'update'])
             ->middleware(MID_ROLE_SELLER);
         Route::post('/delete', [TourController::class, 'delete'])
@@ -125,7 +127,7 @@ Route::group([
         Route::post('/accept', [OrderController::class, 'accept']);
     });
 
-    Route::group(['prefix' => '/coupon', 'middleware' => MID_ROLE_ADMIN], function () {
+    Route::group(['prefix' => '/coupon', 'middleware' => MID_ROLE_SELLER], function () {
         Route::post('/store', [CouponsController::class, 'store']);
         Route::post('/update', [CouponsController::class, 'update']);
         Route::post('/delete', [CouponsController::class, 'delete']);
