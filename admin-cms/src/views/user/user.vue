@@ -137,8 +137,9 @@ export default {
         getListUser(this.currentPage, this.userName).then((response) => {
           this.list = response.data;
           this.total = response.total;
-          this.pageNumber = (this.total - (this.total % 6)) / 6 + 1;
-          console.log(this.pageNumber);
+          let pageSize = 6;
+          if (this.total % pageSize == 0) this.pageNumber = this.total / pageSize;
+          else this.pageNumber = (this.total - (this.total % pageSize)) / pageSize + 1;
           if (this.list.length > 0) {
             this.user = this.list[0];
           } else {

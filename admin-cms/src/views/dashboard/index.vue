@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">ADMIN Travel Tour</div>
+    <div class="dashboard-text"><span v-if="this.roles == 3">{{ this.name }}</span><span v-if="this.roles == 1">Admin
+        Travel Tour</span></div>
     <br />
     <div class="cards">
       <div class="card" v-if="this.roles == 3">

@@ -23,8 +23,10 @@
           <div class="text-h4">Thông tin về tour</div>
           <H3TPrivateTourBlock :item="tour" />
 
-          <div class="text-h4">Lịch trình</div>
+          <div class="text-h4">Các địa điểm đi qua</div>
           <H3TItinerary :timeline="tour.places_detail" />
+          <div class="text-h4">Lịch trình cụ thể</div>
+          <div>{{ tour.schedule }}</div>
 
           <v-row class="justify-center">
             <v-btn class="text-h5 justify-center btnComment" @click="checkAuth">Comment</v-btn>
@@ -59,7 +61,9 @@
         <v-col cols="12" md="4">
           <H3TCheckAvailability :start-date="
             new Date(tour.start_date).toISOString().substring(0, 10)
-          " :range="tour.range" :price_adult="tour.price.adult" :price_children="tour.price.child" />
+          " :range="tour.range" :price_adult="tour.price.adult" :price_children="tour.price.child" :tour_id="tour.id"
+            :created_by="tour.created_by" />
+
         </v-col>
       </v-row>
     </v-container>
@@ -131,6 +135,7 @@ export default {
   },
   methods: {
     async fetchTours() {
+
       await this.$store.dispatch(FETCH_TOUR, this.tour.id);
     },
     async checkAuth() {

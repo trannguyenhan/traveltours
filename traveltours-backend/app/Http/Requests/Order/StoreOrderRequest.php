@@ -12,7 +12,7 @@ class StoreOrderRequest extends BaseRequest
         // 'user_id' => 'required|exists:users,id',
         'child_count' => 'required|numeric',
         'adult_count' => 'required|numeric',
-        'total_price' => 'required|numeric',
+        'total_price' => 'required|string',
         'tax' => 'required|numeric',
         'payment_method' => 'in:cod',
     ];

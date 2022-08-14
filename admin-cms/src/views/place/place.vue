@@ -155,7 +155,10 @@ export default {
       this.formData = new FormData();
       getListPlace(this.currentPage, this.placeName).then((response) => {
         this.total = response.total;
-        this.pageNumber = (this.total - (this.total % 10)) / 10 + 1;
+        let pageSize = 12;
+        if (this.total % pageSize == 0) this.pageNumber = this.total / pageSize;
+        else this.pageNumber = (this.total - (this.total % pageSize)) / pageSize + 1;
+
         this.list = response.data;
         if (this.list.length > 0) {
           this.place = this.list[0];
@@ -292,7 +295,7 @@ export default {
   position: fixed;
   left: 900px;
   display: inline-block;
-  bottom: 50px;
+  bottom: 20px;
 
 }
 </style>

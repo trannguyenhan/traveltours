@@ -46,6 +46,7 @@ class UserRepository extends BaseRepository
         $model->fill($arr);
         $model['password'] = bcrypt($model['password']); // crypt password
         $model['status'] = User::ACTIVE; // status active
+        $model['avatar'] = 'http://localhost:8000/uploads/user\avatardefault.png';
 
         if ($model->save()) {
             $model->assignRole($request->input("role"));

@@ -16,6 +16,7 @@ class StoreRequest extends BaseRequest
         'hotel_star' => 'numeric',
         'categories' => 'array',
         'categories.*' => 'numeric',
-        'places' => 'array'
+        'places' => 'array',
+        'schedule' => 'required'
     ];
 }

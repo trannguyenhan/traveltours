@@ -15,7 +15,7 @@
       </el-table-column>
       <el-table-column align="center" label="Start Date">
         <template slot-scope="scope">
-          <span>{{ formatDate(scope.row.start_date) }}</span>
+          <span>{{ scope.row.start_date }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Range">
@@ -28,7 +28,7 @@
           <span>{{ scope.row.max_slot }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Remaining Slot">
+      <el-table-column align="center" label="Slot">
         <template slot-scope="scope">
           <span>{{ scope.row.slot }}</span>
         </template>
@@ -94,6 +94,9 @@
         <el-form-item label="Start Date" prop="title">
           <el-input v-model="tour.start_date" placeholder="Pick a date" type="date" />
         </el-form-item>
+        <el-form-item label="Schedule" prop="title">
+          <el-input v-model="tour.schedule" autosize type="textarea" multiple="multiple" placeholder="Lịch trình" />
+        </el-form-item>
 
         <el-form-item label="Places">
           <el-select v-model="tour.places" multiple placeholder="Select Places">
@@ -152,7 +155,8 @@ export default {
       currentPage: 1,
       total: 0,
       pageNumber: 0,
-      tourName: ''
+      tourName: '',
+
     }
   },
   created() {
@@ -173,7 +177,9 @@ export default {
 
       getListTour(this.currentPage, this.tourName).then((response) => {
         this.total = response.total;
-        this.pageNumber = (this.total - (this.total % 10)) / 10 + 1;
+        let pageSize = 12;
+        if (this.total % pageSize == 0) this.pageNumber = this.total / pageSize;
+        else this.pageNumber = (this.total - (this.total % pageSize)) / pageSize + 1;
         this.list = response.data
         if (this.list.length > 0) {
           getDetailTour(this.list[0].id).then((response) => {
@@ -226,7 +232,6 @@ export default {
     },
     handleUpdate(index) {
       this.tour = this.list[index]
-      console.log(777, this.tour)
       getDetailTour(this.list[index].id).then((response) => {
         // this.tour = response.data;
         this.tour.places = this.convertNumber(this.tour.places)
@@ -246,6 +251,50 @@ export default {
           this.fetchData()
         }
       })
+    },
+    checkForm() {
+      this.errors = []
+
+      if (!this.tour.name) {
+        this.errors.push("Chưa có tên tour");
+      }
+
+      if (!this.tour.categories.length) {
+        this.errors.push("Chưa có category");
+      }
+      if (this.tour.range <= 0) {
+        this.errors.push("Số ngày của tour không hợp lệ");
+      }
+      if (this.tour.max_slot <= 0) {
+        this.errors.push("Số khách tối đa không hợp lệ");
+      }
+      if (!this.tour.start_date) {
+        this.errors.push("Chưa chọn ngày bắt đầu");
+      }
+      if (!this.tour.schedule) {
+        this.errors.push("Chưa có lịch trình");
+      }
+      if (!this.tour.places.length) {
+        this.errors.push("Chưa có địa điểm sẽ đi qua");
+      }
+      if (this.tour.adult_price <= 0) {
+        this.errors.push("Giá vé người lớn không hợp lệ");
+      }
+      if (this.tour.child_price <= 0) {
+        this.errors.push("Giá vé trẻ em không hợp lệ");
+      }
+      if (!this.tour.tour_guide_id) {
+        this.errors.push("Chưa chọn hướng dẫn viên");
+      }
+      if (this.errors.length > 0) {
+        this.$notify({
+          message: this.errors[0],
+          type: 'error'
+        })
+        return true
+      }
+
+      return false
     },
 
     nextPage() {
@@ -280,7 +329,7 @@ export default {
   position: fixed;
   left: 900px;
   display: inline-block;
-  bottom: 50px;
+  bottom: 20px;
 
 }
 </style>

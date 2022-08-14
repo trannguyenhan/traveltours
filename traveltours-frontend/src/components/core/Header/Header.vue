@@ -58,7 +58,7 @@
         },
         {
           icon: 'mdi-map-marker',
-          text: 'Destinations',
+          text: 'Places',
           route: '/places',
         },
       ],

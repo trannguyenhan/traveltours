@@ -12,7 +12,7 @@ class StoreRequest extends BaseRequest
         'ward' => 'required|string|max:255',
         'address_detail' => 'required|string|max:500',
         'name' => 'required||string|max:255',
-        'description' => 'required|string',
+        'description' => 'required',
         'images' => 'array',
 
     ];

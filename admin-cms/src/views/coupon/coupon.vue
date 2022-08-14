@@ -155,7 +155,10 @@ export default {
       this.listLoading = true
       getListCoupon(this.currentPage, this.tourName).then(response => {
         this.total = response.total;
-        this.pageNumber = (this.total - (this.total % 10)) / 10 + 1;
+        let pageSize = 12;
+        if (this.total % pageSize == 0) this.pageNumber = this.total / pageSize;
+        else this.pageNumber = (this.total - (this.total % pageSize)) / pageSize + 1;
+
         this.list = response.data
         for (let i = 0; i < this.list.length; i++) {
           this.list[i].start_date = new Date(this.list[i].start_date).toISOString().slice(0, 10)
@@ -304,7 +307,7 @@ export default {
   position: fixed;
   left: 900px;
   display: inline-block;
-  bottom: 50px;
+  bottom: 20px;
 
 }
 </style>

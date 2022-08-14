@@ -51,7 +51,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="checkForm">Create</el-button>
+        <el-button type="primary" @click="onSubmit">Create</el-button>
         <el-button @click="onCancel">Cancel</el-button>
       </el-form-item>
     </el-form>
@@ -93,7 +93,7 @@ export default {
     this.fetchData();
   },
   methods: {
-    checkForm: function (e) {
+    checkForm() {
       this.errors = []
 
       if (!this.tour.name) {
@@ -127,14 +127,15 @@ export default {
       if (!this.tour.tour_guide_id) {
         this.errors.push("Chưa chọn hướng dẫn viên");
       }
-      this.$notify({
-        message: this.errors[0],
-        type: 'error'
-      })
-
-      if (this.errors.length == 0) {
-        this.onSubmit()
+      if (this.errors.length > 0) {
+        this.$notify({
+          message: this.errors[0],
+          type: 'error'
+        })
+        return false
       }
+
+      return true
     },
 
     async fetchData() {
@@ -153,22 +154,25 @@ export default {
     },
 
     onSubmit() {
-      this.tour.places = this.convertNumber(this.tour.places);
-      this.tour.range = Number(this.tour.range);
-      this.tour.start_date = new Date(this.tour.start_date);
-      this.tour.dest = Number(this.tour.places[this.tour.places.length - 1]);
+      if (this.checkForm()) {
+        console.log(99);
+        this.tour.places = this.convertNumber(this.tour.places);
+        this.tour.range = Number(this.tour.range);
+        this.tour.start_date = new Date(this.tour.start_date);
+        this.tour.dest = Number(this.tour.places[this.tour.places.length - 1]);
 
-      console.log(123, this.tour);
-      createTour(this.tour).then((response) => {
-        console.log(response);
-        if (response.code === 0) {
-          this.$notify({
-            message: "Create success",
-            type: "success",
-          });
-          this.$router.push("/tour/listing");
-        }
-      });
+        createTour(this.tour).then((response) => {
+          console.log(response);
+          if (response.code === 0) {
+            this.$notify({
+              message: "Create success",
+              type: "success",
+            });
+            this.$router.push("/tour/listing");
+          }
+        });
+      }
+
     },
 
     onCancel() {

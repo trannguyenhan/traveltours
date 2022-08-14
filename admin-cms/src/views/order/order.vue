@@ -34,11 +34,7 @@
           {{ scope.row.total_price }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Tax">
-        <template slot-scope="scope">
-          {{ scope.row.tax }}
-        </template>
-      </el-table-column>
+
       <el-table-column align="center" label="Total Price">
         <template slot-scope="scope">
           {{ convertPayment(scope.row.payment_method) }}
@@ -126,7 +122,10 @@ export default {
 
       getListOrder(this.currentPage, this.tourName).then((response) => {
         this.total = response.total;
-        this.pageNumber = (this.total - (this.total % 10)) / 10 + 1;
+        let pageSize = 12;
+        if (this.total % pageSize == 0) this.pageNumber = this.total / pageSize;
+        else this.pageNumber = (this.total - (this.total % pageSize)) / pageSize + 1;
+
         this.list = response.data;
         console.log(this.list[0]);
         if (this.list.length > 0) {
@@ -177,6 +176,19 @@ export default {
         }
       });
     },
+    nextPage() {
+      if (this.currentPage + 1 <= this.pageNumber) {
+        this.currentPage += 1;
+        this.fetchData()
+      }
+    },
+
+    prevPage() {
+      if (this.currentPage - 1 >= 1) {
+        this.currentPage -= 1;
+        this.fetchData();
+      }
+    }
   },
 };
 </script>
@@ -196,6 +208,6 @@ export default {
   position: fixed;
   left: 900px;
   display: inline-block;
-  bottom: 50px;
+  bottom: 20px;
 }
 </style>

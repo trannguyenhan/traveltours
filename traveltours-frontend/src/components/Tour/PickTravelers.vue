@@ -79,6 +79,15 @@ export default {
       type: Number,
       required: true,
     },
+    tour_id: {
+      type: Number,
+      required: true
+    },
+    created_by: {
+      type: Number,
+      required: true
+    }
+
   },
   data: () => ({
     coupon: '',
@@ -110,7 +119,9 @@ export default {
   },
   methods: {
     async applyCoupon() {
-      await this.checkValidCouponCode(this.coupon).then((resp) => {
+      console.log(this.created_by);
+      await this.checkValidCouponCode(this.coupon, this.tour_id, this.created_by).then((resp) => {
+
         if (resp.data === 'not exist') {
           Swal.fire({
             text: 'Mã giảm giá không tồn tại hoặc đã hết số lượt sử dụng',
@@ -127,9 +138,8 @@ export default {
         }
       });
     },
-    async checkValidCouponCode(couponCode) {
-      const data = await orderApi.checkValidCouponCode(couponCode);
-      console.log(data);
+    async checkValidCouponCode(couponCode, tour_id, created_by) {
+      const data = await orderApi.checkValidCouponCode(couponCode, tour_id, created_by);
       return data;
     },
     totalPrice(count1, price1, count2, price2, discountPercent, threshold) {
@@ -146,18 +156,18 @@ export default {
         await orderApi
           .bookTour({
             ...this.data_send,
-            tour_id: this.$route.params.id,
+            tour_id: Number(this.$route.params.id),
             user_id: this.currentUser.id,
             child_count: this.children,
             adult_count: this.adults,
-            total_price: this.totalPrice(
+            total_price: String(this.totalPrice(
               this.children,
               this.price_children,
               this.adults,
               this.price_adult,
               this.discount,
               this.threshold
-            ),
+            )),
           })
           .then((response) => {
             if (response.status === 200) {

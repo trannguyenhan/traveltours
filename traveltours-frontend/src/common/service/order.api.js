@@ -28,7 +28,7 @@ export default {
   checkBookTour: (tourId, userId) => {
     return apiService.get(`order/check-book-tour/${tourId}/${userId}`);
   },
-  checkValidCouponCode: (couponCode) => {
-    return apiService.get(`coupon/check/${couponCode}`);
+  checkValidCouponCode: (couponCode, tourId, created_by) => {
+    return apiService.get(`coupon/check/${couponCode}/${tourId}/${created_by}`);
   },
 };

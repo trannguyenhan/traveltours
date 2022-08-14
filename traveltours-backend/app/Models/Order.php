@@ -41,7 +41,7 @@ class Order extends Model
 		'user_id' => 'int',
 		'child_count' => 'int',
 		'adult_count' => 'int',
-		'total_price' => 'float',
+		'total_price' => 'string',
 		'tax' => 'float'
 	];
 
