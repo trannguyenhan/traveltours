@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Helper;
 use App\Models\Coupon;
 use Illuminate\Http\JsonResponse;
 
@@ -16,6 +17,17 @@ class CouponsRepository extends BaseRepository
     {
         $arr['created_by'] = auth()->id();
         return parent::doStore($arr);
+    }
+    public function doList($keyword, $page, $pageSize, $orderBy = ['created_at'], $orderType = ['desc'], $filter): JsonResponse
+    {
+        $couponList = Coupon::all();
+        $result = [];
+        foreach ($couponList as $key => $coupon) {
+            if (str_contains(strtolower($coupon->tour->name), strtolower($keyword))) {
+                $result[] = $coupon;
+            }
+        }
+        return Helper::successResponse($result);
     }
 
     public function checkCouponCode($couponCode, $tour_id, $seller_id)

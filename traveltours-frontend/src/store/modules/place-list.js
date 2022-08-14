@@ -23,7 +23,7 @@ const actions = {
   [FETCH_PLACES]: async ({ commit }, query) => {
     commit(FETCH_START);
     const response = await PlacesService.getPlace(query);
-    console.log(response);
+    console.log(999, response);
 
     // set state: tours, totalPlace
     if (response) commit(FETCH_PLACE_END, response.data);

@@ -9,13 +9,8 @@
         <span class="secondary--text text--darken-1">${{ price_adult }}</span>
       </v-col>
       <v-col>
-        <TrnPickNumber
-          ref="adults"
-          v-model="adults"
-          :num="adults"
-          v-on="$listeners"
-          @changeValue="(value) => (adults = value)"
-        />
+        <TrnPickNumber ref="adults" v-model="adults" :num="adults" v-on="$listeners"
+          @changeValue="(value) => (adults = value)" />
       </v-col>
     </v-row>
 
@@ -27,27 +22,16 @@
       <v-col>
         <span class="pr-2">x</span>
         <span class="secondary--text text--darken-1">
-          ${{ price_children }}</span
-        >
+          ${{ price_children }}</span>
       </v-col>
       <v-col>
-        <TrnPickNumber
-          ref="childrens"
-          v-model="children"
-          :num="children"
-          v-on="$listeners"
-          @changeValue="(value) => (children = value)"
-        />
+        <TrnPickNumber ref="childrens" v-model="children" :num="children" v-on="$listeners"
+          @changeValue="(value) => (children = value)" />
       </v-col>
     </v-row>
     <v-row class="justify-center">
       <div style="display: flex">
-        <v-text-field
-          v-model="coupon"
-          style="margin: 0 15px"
-          hide-details="auto"
-          label="Coupon Code"
-        />
+        <v-text-field v-model="coupon" style="margin: 0 15px" hide-details="auto" label="Coupon Code" />
         <v-btn class="btnBookTour" @click="applyCoupon">Apply</v-btn>
       </div>
     </v-row>
@@ -76,139 +60,147 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-  import pluralize from '@/common/pluralize.js';
-  import orderApi from '@/common/service/order.api';
-  import Swal from 'sweetalert2';
-  import TrnPickNumber from './PickNumber';
+import { mapGetters } from 'vuex';
+import pluralize from '@/common/pluralize.js';
+import orderApi from '@/common/service/order.api';
+import Swal from 'sweetalert2';
+import TrnPickNumber from './PickNumber';
 
-  export default {
-    components: {
-      TrnPickNumber,
+export default {
+  components: {
+    TrnPickNumber,
+  },
+  props: {
+    price_adult: {
+      type: Number,
+      required: true,
     },
-    props: {
-      price_adult: {
-        type: Number,
-        required: true,
-      },
-      price_children: {
-        type: Number,
-        required: true,
-      },
+    price_children: {
+      type: Number,
+      required: true,
     },
-    data: () => ({
-      coupon: '',
-      discount: 0,
-      threshold: 0,
-      orderCode: 0,
-      adults: 1,
-      children: 0,
-      data_send: {
-        tour_id: 1,
-        user_id: 1,
-        child_count: 0,
-        adult_count: 0,
-        total_price: 0,
-        tax: 10,
-        payment_method: 'cod',
-        status: 'active',
-      },
-      dialog: false,
-    }),
-    computed: {
-      adultsQuantity() {
-        return pluralize(this.adults, 'Adult');
-      },
-      childrenQuantity() {
-        return pluralize(this.children, 'Child', 'Children');
-      },
-      ...mapGetters(['currentUser']),
+  },
+  data: () => ({
+    coupon: '',
+    discount: 0,
+    threshold: 0,
+    orderCode: 0,
+    adults: 1,
+    children: 0,
+    data_send: {
+      tour_id: 1,
+      user_id: 1,
+      child_count: 0,
+      adult_count: 0,
+      total_price: 0,
+      tax: 10,
+      payment_method: 'cod',
+      status: 'active',
     },
-    methods: {
-      async applyCoupon() {
-        await this.checkValidCouponCode(this.coupon).then((resp) => {
-          if (resp.data === 'not exist') {
-            Swal.fire({
-              text: 'Mã giảm giá không tồn tại hoặc đã hết số lượt sử dụng',
-              icon: 'error',
-            });
-            this.coupon = '';
-          } else {
-            this.threshold = resp.data[0].threshold;
-            this.discount = resp.data[0].discount;
-            Swal.fire({
-              text: 'Mã giảm giá đã được áp dụng cho chuyến đi của bạn',
-              icon: 'success',
-            });
-          }
-        });
-      },
-      async checkValidCouponCode(couponCode) {
-        const data = await orderApi.checkValidCouponCode(couponCode);
-        console.log(data);
-        return data;
-      },
-      totalPrice(count1, price1, count2, price2, discountPercent, threshold) {
-        const sum = count1 * price1 + count2 * price2;
-        if (this.coupon === '') {
-          return sum;
-        }
-        return (sum * discountPercent) / 100 > threshold
-          ? sum - threshold
-          : sum - (sum * discountPercent) / 100;
-      },
-      async bookTour() {
-        if (this.currentUser != null) {
-          await orderApi
-            .bookTour({
-              ...this.data_send,
-              tour_id: this.$route.params.id,
-              user_id: this.currentUser.id,
-              child_count: this.children,
-              adult_count: this.adults,
-              total_price: this.totalPrice(
-                this.children,
-                this.price_children,
-                this.adults,
-                this.price_adult,
-                this.discount,
-                this.threshold
-              ),
-            })
-            .then((response) => {
-              if (response.status === 200) {
-                this.dialog = true;
-                this.orderCode = response.data.data.id;
-              } else if (response.status === 422) {
-                Swal.fire({
-                  text: 'Bạn cần điền đầy đủ thông tin',
-                  icon: 'error',
-                });
-              }
-            })
-            .catch((e) => {
-              console.log(this.data_send);
-              Swal.fire({
-                text: 'Bạn chưa đăng nhập',
-                icon: 'error',
-              });
-            });
-        } else {
-          await Swal.fire({
-            text: 'Bạn chưa đăng nhập',
+    dialog: false,
+  }),
+  computed: {
+    adultsQuantity() {
+      return pluralize(this.adults, 'Adult');
+    },
+    childrenQuantity() {
+      return pluralize(this.children, 'Child', 'Children');
+    },
+    ...mapGetters(['currentUser']),
+  },
+  methods: {
+    async applyCoupon() {
+      await this.checkValidCouponCode(this.coupon).then((resp) => {
+        if (resp.data === 'not exist') {
+          Swal.fire({
+            text: 'Mã giảm giá không tồn tại hoặc đã hết số lượt sử dụng',
             icon: 'error',
           });
+          this.coupon = '';
+        } else {
+          this.threshold = resp.data[0].threshold;
+          this.discount = resp.data[0].discount;
+          Swal.fire({
+            text: 'Mã giảm giá đã được áp dụng cho chuyến đi của bạn',
+            icon: 'success',
+          });
         }
-      },
+      });
     },
-  };
+    async checkValidCouponCode(couponCode) {
+      const data = await orderApi.checkValidCouponCode(couponCode);
+      console.log(data);
+      return data;
+    },
+    totalPrice(count1, price1, count2, price2, discountPercent, threshold) {
+      const sum = count1 * price1 + count2 * price2;
+      if (this.coupon === '') {
+        return sum;
+      }
+      return (sum * discountPercent) / 100 > threshold
+        ? sum - threshold
+        : sum - (sum * discountPercent) / 100;
+    },
+    async bookTour() {
+      if (this.currentUser != null) {
+        await orderApi
+          .bookTour({
+            ...this.data_send,
+            tour_id: this.$route.params.id,
+            user_id: this.currentUser.id,
+            child_count: this.children,
+            adult_count: this.adults,
+            total_price: this.totalPrice(
+              this.children,
+              this.price_children,
+              this.adults,
+              this.price_adult,
+              this.discount,
+              this.threshold
+            ),
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              if (response.data.code == 1) {
+                Swal.fire({
+                  text: response.data.message,
+                  icon: 'error',
+                });
+              } else {
+                this.dialog = true;
+                this.orderCode = response.data.data.id;
+              }
+
+            } else if (response.status === 422) {
+              Swal.fire({
+                text: 'Bạn cần điền đầy đủ thông tin',
+                icon: 'error',
+              });
+            }
+          })
+          .catch((e) => {
+            console.log(this.data_send);
+            Swal.fire({
+              text: 'Bạn chưa đăng nhập',
+              icon: 'error',
+            });
+          });
+      } else {
+        await Swal.fire({
+          text: 'Bạn chưa đăng nhập',
+          icon: 'error',
+        });
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
-  .btnBookTour {
-    background-color: #ff9800 !important;
-    color: #ffffff;
-    border-radius: 4px;
-    margin: 10px 0;
-  }
+.btnBookTour {
+  background-color: #ff9800 !important;
+  color: #ffffff;
+  border-radius: 4px;
+  margin: 10px 0;
+}
 </style>

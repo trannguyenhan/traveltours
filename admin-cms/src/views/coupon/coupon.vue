@@ -1,5 +1,7 @@
 <template>
   <div class="app-container">
+    <input type="text" v-model="tourName" placeholder="Search Tour..." />
+    <el-button @click="fetchData()">Search</el-button>
     <div class="header-container">
       <el-button class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-edit"
         @click="handleCreate()">
@@ -25,7 +27,12 @@
       </el-table-column>
       <el-table-column label="Discount" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.discount }}</span>
+          <span>{{ scope.row.discount }}%</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Threshold" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.threshold }} VNĐ</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="Start Date" width="200">
@@ -51,6 +58,19 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <p class="nextprev">
+      <el-button class="paginate" @click="prevPage">
+        Previous
+      </el-button>
+
+      <el-button class="paginate1">
+        page {{ this.currentPage }} of {{ this.pageNumber }}
+      </el-button>
+      <el-button class="paginate" @click="nextPage">
+        Next
+      </el-button>
+    </p>
     <el-dialog title="Edit Tour" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="coupon" label-position="left" style="width: 400px; margin-left: 50px">
         <el-form-item label="Tour">
@@ -106,6 +126,7 @@ export default {
   },
   data() {
     return {
+      errors: [],
       list: null,
       listLoading: true,
       dialogFormVisible: false,
@@ -120,6 +141,10 @@ export default {
         tour_id: null
       },
       allTours: [],
+      currentPage: 1,
+      total: 0,
+      pageNumber: 0,
+      tourName: ''
     }
   },
   created() {
@@ -128,13 +153,18 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getListCoupon().then(response => {
+      getListCoupon(this.currentPage, this.tourName).then(response => {
+        this.total = response.total;
+        this.pageNumber = (this.total - (this.total % 10)) / 10 + 1;
         this.list = response.data
+        for (let i = 0; i < this.list.length; i++) {
+          this.list[i].start_date = new Date(this.list[i].start_date).toISOString().slice(0, 10)
+          this.list[i].end_date = new Date(this.list[i].end_date).toISOString().slice(0, 10)
+        }
         this.listLoading = false
       })
       getAllTours().then(res => {
         this.allTours = res.data
-        console.log(789, this.allTours);
       })
     },
     handleUpdate(index) {
@@ -154,39 +184,92 @@ export default {
         }
       })
     },
-    updateCoupon(coupon) {
-      updateCoupon(coupon).then((response) => {
-        if (response.code === 0) {
+    checkForm() {
+      this.errors = []
 
-          // this.coupon.tour.name = this.allTours[response.data.tour_id].name
-          // console.log(response.data.tour_id, this.allTours);
-          for (let i = 0; i < this.allTours.length; i++) {
-            if (this.allTours[i].id == response.data.tour_id) {
-              this.coupon.tour.name = this.allTours[i].name
-
-            }
-          }
-          // console.log(111, this.coupon.tour.name);
-          // console.log(this.coupon.tour.name);
-          this.$notify({
-            message: 'Update success',
-            type: 'success'
-          })
-          this.dialogFormVisible = false
+      if (!this.coupon.tour_id) {
+        this.errors.push("Chưa chọn tour");
+      }
+      if (!this.coupon.code) {
+        this.errors.push("Chưa nhập mã code")
+      } else {
+        if (this.coupon.code.length < 6) {
+          this.errors.push("Mã code tối thiểu 6 kí tự")
         }
-      })
+      }
+
+      if (!this.coupon.discount) {
+        this.errors.push("Chưa có discount")
+      }
+      if (this.coupon.discount > 100) {
+        this.errors.push("Giảm giá tối đa 100%")
+      }
+      if (!this.coupon.threshold) {
+        this.errors.push("Chưa chọn ngưỡng giảm giá tối đa")
+      }
+      if (!this.coupon.start_date) {
+        this.errors.push("Chưa chọn ngày bắt đầu")
+      }
+      if (!this.coupon.end_date) {
+        this.errors.push("Chưa chọn ngày hết hạn");
+      }
+      if (this.coupon.start_date > this.coupon.end_date) {
+        this.errors.push("Ngày kết hạn phải sau ngày bắt đầu");
+      }
+
+      if (this.errors.length > 0) {
+        this.$notify({
+          message: this.errors[0],
+          type: 'error'
+        })
+        return false
+      }
+      return true
+
+
+      // if (this.errors.length == 0) {
+      //   this.createCoupon(this.coupon)
+      // }
+    },
+    updateCoupon(coupon) {
+      if (this.checkForm()) {
+        updateCoupon(coupon).then((response) => {
+          if (response.code === 0) {
+
+            // this.coupon.tour.name = this.allTours[response.data.tour_id].name
+            // console.log(response.data.tour_id, this.allTours);
+            for (let i = 0; i < this.allTours.length; i++) {
+              if (this.allTours[i].id == response.data.tour_id) {
+                this.coupon.tour.name = this.allTours[i].name
+
+              }
+            }
+            // console.log(111, this.coupon.tour.name);
+            // console.log(this.coupon.tour.name);
+            this.$notify({
+              message: 'Update success',
+              type: 'success'
+            })
+            this.dialogFormVisible = false
+          }
+        })
+      }
+
     },
     createCoupon(coupon) {
-      createCoupon(coupon).then((response) => {
-        if (response.code === 0) {
-          this.$notify({
-            message: 'Create success',
-            type: 'success'
-          })
-          this.dialogFormVisible = false
-          this.fetchData()
-        }
-      })
+      if (this.checkForm()) {
+        createCoupon(coupon).then((response) => {
+          if (response.code === 0) {
+            this.$notify({
+              message: 'Create success',
+              type: 'success'
+            })
+            this.dialogFormVisible = false
+            this.fetchData()
+          }
+        })
+      }
+
     },
     handleCreate() {
       this.coupon = {
@@ -198,7 +281,30 @@ export default {
       }
       this.dialogFormVisible = true
       this.dialogCreate = true
+    },
+    nextPage() {
+      if (this.currentPage + 1 <= this.pageNumber) {
+        this.currentPage += 1;
+        this.fetchData()
+      }
+    },
+
+    prevPage() {
+      if (this.currentPage - 1 >= 1) {
+        this.currentPage -= 1;
+        this.fetchData();
+      }
     }
+
   }
 }
 </script>
+<style scoped>
+.nextprev {
+  position: fixed;
+  left: 900px;
+  display: inline-block;
+  bottom: 50px;
+
+}
+</style>

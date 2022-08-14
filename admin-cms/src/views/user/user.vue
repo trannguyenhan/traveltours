@@ -1,13 +1,8 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
+    <input type="text" v-model="userName" placeholder="Search Users..." />
+    <el-button @click="fetchData()">Search</el-button>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
           {{ scope.$index + 1 }}
@@ -47,37 +42,32 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        label="Actions"
-        align="center"
-        width="300"
-        class-name="small-padding fixed-width"
-      >
+      <el-table-column label="Actions" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(scope.$index)"
-          >
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.$index)">
             Edit
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index)"
-          >
+          <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">
             Delete
           </el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <p class="nextprev">
+      <el-button class="paginate" @click="prevPage">
+        Previous
+      </el-button>
+
+      <el-button class="paginate1">
+        page {{ this.currentPage }} of {{ this.pageNumber }}
+      </el-button>
+      <el-button class="paginate" @click="nextPage">
+        Next
+      </el-button>
+    </p>
     <el-dialog title="Edit User" :visible.sync="dialogFormVisible">
-      <el-form
-        ref="dataForm"
-        :model="user"
-        label-position="left"
-        style="width: 400px; margin-left: 50px"
-      >
+      <el-form ref="dataForm" :model="user" label-position="left" style="width: 400px; margin-left: 50px">
         <el-form-item label="username" prop="title">
           <el-input v-model="user.username" disabled="true" />
         </el-form-item>
@@ -94,18 +84,10 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
-        <el-button
-          v-if="!dialogCreate"
-          type="primary"
-          @click="updateUser(user)"
-        >
+        <el-button v-if="!dialogCreate" type="primary" @click="updateUser(user)">
           Update
         </el-button>
-        <el-button
-          v-if="dialogCreate"
-          type="primary"
-          @click="createCategory(category)"
-        >
+        <el-button v-if="dialogCreate" type="primary" @click="createCategory(category)">
           Create
         </el-button>
       </div>
@@ -136,6 +118,10 @@ export default {
       list: null,
       user: null,
       listLoading: true,
+      currentPage: 1,
+      total: 0,
+      pageNumber: 0,
+      userName: ''
     };
   },
   created() {
@@ -148,9 +134,11 @@ export default {
     async fetchData() {
       this.listLoading = true;
       if (this.roles == 1) {
-        getListUser().then((response) => {
+        getListUser(this.currentPage, this.userName).then((response) => {
           this.list = response.data;
-          console.log(this.list);
+          this.total = response.total;
+          this.pageNumber = (this.total - (this.total % 6)) / 6 + 1;
+          console.log(this.pageNumber);
           if (this.list.length > 0) {
             this.user = this.list[0];
           } else {
@@ -213,6 +201,19 @@ export default {
       if (currentStatus == "active") currentStatus = "locked";
       else currentStatus = "active";
     },
+    nextPage() {
+      if (this.currentPage + 1 <= this.pageNumber) {
+        this.currentPage += 1;
+        this.fetchData()
+      }
+    },
+
+    prevPage() {
+      if (this.currentPage - 1 >= 1) {
+        this.currentPage -= 1;
+        this.fetchData();
+      }
+    }
   },
 };
 </script>
@@ -222,5 +223,13 @@ export default {
   width: 60px;
   height: 60px;
   border-radius: 10px;
+}
+
+.nextprev {
+  position: fixed;
+  left: 900px;
+  display: inline-block;
+  bottom: 50px;
+
 }
 </style>

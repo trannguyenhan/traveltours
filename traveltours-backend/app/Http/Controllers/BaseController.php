@@ -24,7 +24,7 @@ class BaseController extends Controller
         return $this->repository->doList($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 
-    
+
 
     public function detail(Request $request, $id)
     {
@@ -91,6 +91,6 @@ class BaseController extends Controller
      */
     protected function getPageSize($request): int
     {
-        return $request->query('page_size') != null ? intval($request->query('page_size')) : 10;
+        return $request->query('page_size') != null ? intval($request->query('page_size')) : 12;
     }
 }

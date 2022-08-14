@@ -16,7 +16,7 @@ class PlaceRepository extends BaseRepository
         return Place::class;
     }
 
-    public function doList($keyword, $page, $pageSize, $orderBy = ['created_at'], $orderType = ['desc'], $filter): JsonResponse
+    public function doListSeller($keyword, $page, $pageSize, $orderBy = ['created_at'], $orderType = ['desc'], $filter): JsonResponse
     {
 
         $query = Place::query();

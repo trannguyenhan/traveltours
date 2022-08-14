@@ -26,7 +26,7 @@ class PlaceController extends BaseController
         $orderType = ['desc'];
         $created_by = auth()->id();
         $filter = [$created_by];
-        return $this->repository->doList($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
+        return $this->repository->doListSeller($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
     }
 
     public function allSellerListing()

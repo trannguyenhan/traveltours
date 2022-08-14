@@ -25,11 +25,12 @@ export function logout() {
   })
 }
 
-export function getListUser(params) {
+export function getListUser(page, keyWord) {
+  if (keyWord !== '') page += '&keyword=' + keyWord
   return request({
-    url: '/user/listing',
+    url: '/user/listing?page_size=6&page=' + page,
     method: 'get',
-    params
+
   })
 }
 

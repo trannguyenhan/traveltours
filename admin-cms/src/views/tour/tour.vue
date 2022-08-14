@@ -1,9 +1,11 @@
 <template>
   <div class="app-container">
+    <input type="text" v-model="tourName" placeholder="Search Places..." />
+    <el-button @click="fetchData()">Search</el-button>
     <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Name" width="200">
@@ -43,6 +45,20 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <p class="nextprev">
+      <el-button class="paginate" @click="prevPage">
+        Previous
+      </el-button>
+
+      <el-button class="paginate1">
+        page {{ this.currentPage }} of {{ this.pageNumber }}
+      </el-button>
+      <el-button class="paginate" @click="nextPage">
+        Next
+      </el-button>
+    </p>
+
     <el-dialog title="Edit Tour" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="tour" label-position="left" style="width: 400px; margin-left: 50px">
         <el-form-item label="Name" prop="title">
@@ -132,7 +148,11 @@ export default {
       places: [],
       all_places: [],
       all_categories: [],
-      all_guides: []
+      all_guides: [],
+      currentPage: 1,
+      total: 0,
+      pageNumber: 0,
+      tourName: ''
     }
   },
   created() {
@@ -151,7 +171,9 @@ export default {
     async fetchData() {
       this.listLoading = true
 
-      getListTour().then((response) => {
+      getListTour(this.currentPage, this.tourName).then((response) => {
+        this.total = response.total;
+        this.pageNumber = (this.total - (this.total % 10)) / 10 + 1;
         this.list = response.data
         if (this.list.length > 0) {
           getDetailTour(this.list[0].id).then((response) => {
@@ -224,6 +246,20 @@ export default {
           this.fetchData()
         }
       })
+    },
+
+    nextPage() {
+      if (this.currentPage + 1 <= this.pageNumber) {
+        this.currentPage += 1;
+        this.fetchData()
+      }
+    },
+
+    prevPage() {
+      if (this.currentPage - 1 >= 1) {
+        this.currentPage -= 1;
+        this.fetchData();
+      }
     }
   }
 }
@@ -238,5 +274,13 @@ export default {
 
 .table {
   text-align: center;
+}
+
+.nextprev {
+  position: fixed;
+  left: 900px;
+  display: inline-block;
+  bottom: 50px;
+
 }
 </style>

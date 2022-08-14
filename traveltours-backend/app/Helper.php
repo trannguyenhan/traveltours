@@ -131,7 +131,9 @@ class Helper
                 $baseUrl = URL::to("/");
                 $avatar = str_replace($baseUrl, '', $avatar);
                 if (File::exists(public_path($avatar))) {
-                    File::delete(public_path($avatar));
+                    if ($avatar != "http://localhost:8000/uploads/user\avatardefault.png") {
+                        File::delete(public_path($avatar));
+                    }
                 }
             }
         }

@@ -1,10 +1,11 @@
 import request from '@/utils/request'
 
-export function getListOrder(params) {
+export function getListOrder(page, keyWord) {
+  if (keyWord !== '') page += '&keyword=' + keyWord
   return request({
-    url: '/order/listing',
+    url: '/order/seller/listing?page=' + page,
     method: 'get',
-    params
+
   })
 }
 

@@ -79,14 +79,14 @@ export default {
     },
 
     getListUser() {
-      getListUser().then((response) => {
-        this.countUser = response.data.length;
+      getListUser(1, '').then((response) => {
+        this.countUser = response.total;
       });
     },
 
     getListCategory() {
-      getListCategory().then((response) => {
-        this.countCategory = response.data.length;
+      getListCategory(1, '').then((response) => {
+        this.countCategory = response.total;
       });
     },
   },

@@ -1,10 +1,11 @@
 import request from '@/utils/request'
 
-export function getListCoupon(params) {
+export function getListCoupon(page, keyWord) {
+  if (keyWord !== '') page += '&keyword=' + keyWord
   return request({
-    url: '/coupon/listing',
+    url: '/coupon/listing?page=' + page,
     method: 'get',
-    params
+
   })
 }
 

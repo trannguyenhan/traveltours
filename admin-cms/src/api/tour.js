@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function getListTour(params) {
+export function getListTour(page, keyWord) {
+  if (keyWord !== '') page += '&keyword=' + keyWord
   return request({
-    url: '/tour/seller/listing',
+    url: '/tour/seller/listing?page=' + page,
     method: 'get',
-    params
   })
 }
 

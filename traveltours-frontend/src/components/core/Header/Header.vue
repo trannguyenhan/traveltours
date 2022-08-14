@@ -11,7 +11,7 @@
           <v-img
             :class="$vuetify.breakpoint.xs ? 'TrnLogoMobile' : 'TrnLogo'"
             alt="tourino logo"
-            :src="require('@/assets/H3T.png')"
+            :src="require('@/assets/logo.png')"
           />
         </router-link>
 

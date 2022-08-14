@@ -17,13 +17,13 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['username', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json([
                 'error' => 'Unauthorized'
             ], 401);
         }
 
-        if(auth()->user()->status != User::ACTIVE){
+        if (auth()->user()->status != User::ACTIVE) {
             return response()->json([
                 'code' => CODE_ERROR,
                 'message' => "Tài khoản đã bị xóa hoặc bị khóa"
@@ -46,7 +46,7 @@ class AuthController extends Controller
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
                 'status' => User::ACTIVE,
-                'avatar' => $request->input('avatar')
+                'avatar' => $request->input('avatar') ?? 'http://localhost:8000/uploads/user\avatardefault.png'
             ]
         );
 

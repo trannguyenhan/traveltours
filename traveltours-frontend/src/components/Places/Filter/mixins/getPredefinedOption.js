@@ -1,5 +1,5 @@
 import { mapActions, mapGetters } from 'vuex';
-import { FETCH_TOURS } from '@/store/type/actions.js';
+import { FETCH_PLACES } from '@/store/type/actions.js';
 
 import { multipleSelection } from './selection';
 
@@ -15,7 +15,7 @@ export default function (field, fetchFieldAction) {
     },
 
     methods: {
-      ...mapActions([FETCH_TOURS, fetchFieldAction]),
+      ...mapActions([FETCH_PLACES, fetchFieldAction]),
 
       async getOptionList() {
         if (!this[field].length) {

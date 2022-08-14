@@ -292,7 +292,7 @@ export default {
   position: fixed;
   left: 900px;
   display: inline-block;
-  bottom: 100px;
+  bottom: 50px;
 
 }
 </style>
