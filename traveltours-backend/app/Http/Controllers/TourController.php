@@ -8,9 +8,13 @@ use App\Http\Requests\Tour\StoreRequest;
 use App\Http\Requests\Tour\UpdateRequest;
 use App\Models\Tour;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Price;
+use App\Models\Order;
+use App\Helper;
+use App\Models\Category;
 
 class TourController extends BaseController
 {
@@ -160,5 +164,128 @@ class TourController extends BaseController
     public function delete(IdRequest $request)
     {
         return $this->deleteTemplate($request);
+    }
+    public function total($tour_id)
+    {
+        $query = Order::query();
+        $listOrders = $query->where('status', '=', 'accept')->where('tour_id', '=', $tour_id)->get();
+
+        $total = 0;
+        foreach ($listOrders as $key => $value) {
+            $total += (int) $value->total_price;
+        }
+        return Helper::successResponse($total);
+    }
+
+    public function totalHelper($year, $month)
+    {
+        $seller_id = auth()->id();
+        $listTours = Tour::query()->get();
+        $array = [];
+        foreach ($listTours as $key => $value) {
+            if ($value->created_by == $seller_id) {
+                $array[] = (int)$value->id;
+            }
+        }
+        $query = Order::query();
+        $listOrders = $query->where('status', '=', 'accept')->get();
+        $total = 0;
+        foreach ($listOrders as $key => $value) {
+            if ($value->created_at->format('m') == (string)$month and $value->created_at->format('Y') == (string)$year and in_array($value->tour_id, $array)) {
+                $total += (int)$value->total_price;
+            }
+        }
+        return $total;
+    }
+
+    public function convertTime($time)
+    {
+        return json_decode(json_encode(['year' => $time->format("y"), 'month' => $time->format("m")]));
+    }
+
+    public function qtourInTime($year, $month)
+    {
+        $listTours = Tour::query()->get();
+        $tours = [];
+        foreach ($listTours as $key => $tour) {
+            $time = $tour->start_date->addDays($tour->range);
+            $yearCheck = $time->year;
+            $monthCheck = $time->month;
+            if ($yearCheck == $year and $monthCheck == $month) {
+                $tours[] = $tour;
+            }
+        }
+        return $tours;
+    }
+
+    public function tourInTime($year, $month)
+    {
+        return Helper::successResponse(self::qtourInTime($year, $month));
+    }
+
+    public function turnoverInTime($year, $month)
+    {
+        $result = [];
+        $toursInTime = self::qtourInTime($year, $month);
+        $totalMonth = 0;
+        foreach ($toursInTime as $key => $tour) {
+            $tour_id = $tour->id;
+            $query = Order::query();
+            $listOrders = $query->where('status', '=', 'accept')->where('tour_id', '=', $tour_id)->get();
+            $total = 0;
+
+            foreach ($listOrders as $key => $order) {
+                $total += $order->total_price;
+                $totalMonth += $order->total_price;
+            }
+            $tour->total = $total;
+            $result[] = $tour;
+        }
+        return json_decode(json_encode(['total_month' => $totalMonth, 'detail' => $result, 'len' => count($result)]));
+    }
+
+    public function thuNhapMoiThang($year, $month)
+    {
+        return Helper::successResponse(self::turnoverInTime($year, $month));
+    }
+
+    public function totalMonth($year, $month)
+    {
+
+        return Helper::successResponse(self::totalHelper($year, $month));
+    }
+
+    public function totalYear()
+    {
+        $result = [];
+        $now =  Carbon::now();
+
+        for ($i = 1; $i < 13; $i++) {
+            $year = $now->format('Y');
+            $month = $now->format('m');
+
+            $result[] = json_decode(json_encode(['time' => $now->format("Y-m"), 'total' => self::turnoverInTime($year, $month)]));
+            $now = $now->subMonth();
+        }
+        return Helper::successResponse($result);
+    }
+
+    public function totalCategory()
+    {
+        $allTours = Tour::query()->get()[0];
+        $allCategory = Category::query()->get();
+        $arrCategory = [];
+        foreach ($allCategory as $key => $cate) {
+            $arrCategory[] = json_decode(json_encode(['id' => $cate->id, 'name' => $cate->name, 'count' => 0]));
+        }
+        $results = DB::select('select category_id from tour_category category ');
+        foreach ($results as $key => $item) {
+            foreach ($arrCategory as $key => $category) {
+                if ($item->category_id == $category->id) {
+                    $category->count++;
+                }
+            }
+        }
+        return Helper::successResponse($arrCategory);
     }
 }

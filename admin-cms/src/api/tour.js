@@ -16,6 +16,29 @@ export function getAllTours(params) {
   })
 }
 
+export function getAllCategories(params) {
+  return request({
+    url: 'totalcategory/',
+    method: 'get',
+    params
+  })
+}
+
+export function getDetailTurnover(year, month) {
+
+  return request({
+    url: `turnoverintime/${year}/${month}/`,
+    method: 'get',
+  })
+}
+
+export function getTurnover(params) {
+  return request({
+    url: '/totalYear',
+    method: 'get',
+    params
+  })
+}
 export function createTour(params) {
   return request({
     url: '/tour/store',

@@ -135,6 +135,11 @@ Route::group([
 });
 
 Route::get('review/listing', [ReviewController::class, 'listing']);
+Route::get('/totalmonth/{year}/{month}', [TourController::class, 'totalMonth']);
+Route::get('/tourintime/{year}/{month}', [TourController::class, 'tourInTime']);
+Route::get('/turnoverintime/{year}/{month}', [TourController::class, 'thuNhapMoiThang']);
+Route::get('/totalcategory', [TourController::class, 'totalCategory']);
+Route::get('/totalYear', [TourController::class, 'totalYear']);
 Route::get('tour/listing', [TourController::class, 'listing']);
 Route::get('place/listing', [PlaceController::class, 'listing']);
 Route::get('coupon/listing', [CouponsController::class, 'listing']);

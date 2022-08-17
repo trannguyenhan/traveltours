@@ -126,14 +126,21 @@ export const constantRoutes = [
     }]
   },
   {
-    path: '/',
+    path: '/order',
     component: Layout,
-    redirect: '/order',
+    name: 'Order Management',
+    meta: { title: 'Order Management', icon: 'el-icon-location' },
     children: [{
       path: 'order',
       name: 'order',
       component: () => import('@/views/order/order'),
       meta: { title: 'Order', icon: 'dashboard' }
+    },
+    {
+      path: 'thongke',
+      name: 'thongke1',
+      component: () => import('@/views/order/thongke'),
+      meta: { title: 'Thống kê', icon: 'dashboard' }
     }]
   },
 
