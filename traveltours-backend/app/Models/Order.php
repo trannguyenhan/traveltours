@@ -29,33 +29,35 @@ class Order extends Model
 {
     use HasFactory;
 
-	protected $table = 'orders';
+    protected $table = 'orders';
 
     const PENNING = 'penning';
     const ACCEPT = 'accept';
     const REJECT = 'reject';
 
-	protected $casts = [
-		'tour_id' => 'int',
-		'coupon_id' => 'int',
-		'user_id' => 'int',
-		'child_count' => 'int',
-		'adult_count' => 'int',
-		'total_price' => 'string',
-		'tax' => 'float'
-	];
+    protected $casts = [
+        'tour_id' => 'int',
+        'coupon_id' => 'int',
+        'user_id' => 'int',
+        'child_count' => 'int',
+        'adult_count' => 'int',
+        'total_price' => 'string',
+        'tax' => 'float',
+        'phone_number' => 'string'
+    ];
 
-	protected $fillable = [
-		'tour_id',
-		'coupon_id',
-		'user_id',
-		'child_count',
-		'adult_count',
-		'total_price',
-		'tax',
-		'payment_method',
-		'status'
-	];
+    protected $fillable = [
+        'tour_id',
+        'coupon_id',
+        'user_id',
+        'child_count',
+        'adult_count',
+        'total_price',
+        'tax',
+        'payment_method',
+        'status',
+        'phone_number'
+    ];
 
     const INSERT_FIELDS = [
         'tour_id',
@@ -65,7 +67,8 @@ class Order extends Model
         'total_price',
         'tax',
         'payment_method',
-        'status'
+        'status',
+        'phone_number'
     ];
 
     const UPDATE_FIELDS = [
@@ -78,7 +81,8 @@ class Order extends Model
         'total_price',
         'tax',
         'payment_method',
-        'status'
+        'status',
+        'phone_number'
     ];
 
     public function user(): BelongsTo

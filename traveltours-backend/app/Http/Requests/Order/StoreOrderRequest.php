@@ -15,5 +15,6 @@ class StoreOrderRequest extends BaseRequest
         'total_price' => 'required|string',
         'tax' => 'required|numeric',
         'payment_method' => 'in:cod',
+        'phone_number' => 'required'
     ];
 }

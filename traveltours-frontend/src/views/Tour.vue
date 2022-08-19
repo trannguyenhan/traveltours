@@ -26,7 +26,7 @@
           <div class="text-h4">Các địa điểm đi qua</div>
           <H3TItinerary :timeline="tour.places_detail" />
           <div class="text-h4">Lịch trình cụ thể</div>
-          <div>{{ tour.schedule }}</div>
+          <pre>{{ tour.schedule }}</pre>
 
           <v-row class="justify-center">
             <v-btn class="text-h5 justify-center btnComment" @click="checkAuth">Comment</v-btn>

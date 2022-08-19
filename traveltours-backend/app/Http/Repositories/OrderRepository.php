@@ -126,7 +126,9 @@ class OrderRepository extends BaseRepository
 
         if ($created_by != null) {
             $result = $result->filter(function ($item) use ($created_by) {
-                return $item->tour->created_by == $created_by;
+                if ($item->tour != null) {
+                    return $item->tour->created_by == $created_by;
+                }
             });
         }
 

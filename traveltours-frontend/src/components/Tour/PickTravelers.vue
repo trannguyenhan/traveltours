@@ -6,7 +6,7 @@
       </v-col>
       <v-col>
         <span class="pr-2">x</span>
-        <span class="secondary--text text--darken-1">${{ price_adult }}</span>
+        <span class="secondary--text text--darken-1">{{ price_adult }}VNĐ</span>
       </v-col>
       <v-col>
         <TrnPickNumber ref="adults" v-model="adults" :num="adults" v-on="$listeners"
@@ -21,8 +21,7 @@
 
       <v-col>
         <span class="pr-2">x</span>
-        <span class="secondary--text text--darken-1">
-          ${{ price_children }}</span>
+        <span class="secondary--text text--darken-1">{{ price_children }}VNĐ</span>
       </v-col>
       <v-col>
         <TrnPickNumber ref="childrens" v-model="children" :num="children" v-on="$listeners"
@@ -36,6 +35,11 @@
       </div>
     </v-row>
     <v-row class="justify-center">
+      <v-form>
+        <v-text-field v-model="phone_number" label="Nhập số điện thoại" required hide-details="auto"></v-text-field>
+      </v-form>
+    </v-row>
+    <v-row class="justify-center">
       <v-btn class="btnBookTour" @click="bookTour">Book Tour</v-btn>
     </v-row>
     <v-dialog v-model="dialog" width="500">
@@ -43,6 +47,7 @@
         <v-card-title class="text-h5 grey lighten-2"> Thông báo </v-card-title>
 
         <v-card-text>
+          <p>Xác nhận đặt tour với số điện thoại đặt hàng {{ phone_number }}</p>
           Bạn đã đặt tour thành công với mã đặt hàng {{ orderCode }}.
         </v-card-text>
 
@@ -56,6 +61,10 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+
+
+
   </div>
 </template>
 
@@ -90,6 +99,7 @@ export default {
 
   },
   data: () => ({
+    phone_number: '',
     coupon: '',
     discount: 0,
     threshold: 0,
@@ -160,6 +170,7 @@ export default {
             user_id: this.currentUser.id,
             child_count: this.children,
             adult_count: this.adults,
+            phone_number: this.phone_number,
             total_price: String(this.totalPrice(
               this.children,
               this.price_children,
