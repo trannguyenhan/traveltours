@@ -35,9 +35,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Total Price">
+      <el-table-column align="center" label="Payment Method">
         <template slot-scope="scope">
           {{ convertPayment(scope.row.payment_method) }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="Phone Number">
+        <template slot-scope="scope">
+          {{ scope.row.phone_number }}
         </template>
       </el-table-column>
 
