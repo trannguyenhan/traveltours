@@ -24,12 +24,18 @@ class UserRepository extends BaseRepository
         $model = $this->_model->query()->find($id);
         $model['status'] = User::ACTIVE;
 
-        if($model->save()){
+        if ($model->save()) {
             $model->assignRole('editor');
             return Helper::successResponse($model);
         }
 
         return Helper::errorResponse();
+    }
+    public function updateSeller($request): JsonResponse
+    {
+        $user = User::find($request->input('id'));
+        $user->assignRole(ROLE_SELLER, ROLE_MEMBER);
+        return Helper::successResponse($user);
     }
 
     public function doAssign($request): JsonResponse
@@ -40,9 +46,10 @@ class UserRepository extends BaseRepository
         $model->fill($arr);
         $model['password'] = bcrypt($model['password']); // crypt password
         $model['status'] = User::ACTIVE; // status active
+        $model['avatar'] = 'http://localhost:8000/uploads/user\avatardefault.png';
 
-        if($model->save()){
-            $model->assignRole(ROLE_MEMBER);
+        if ($model->save()) {
+            $model->assignRole($request->input("role"));
             return Helper::successResponse($model);
         }
 
@@ -54,21 +61,21 @@ class UserRepository extends BaseRepository
      */
     public function doChangePassword($user, $password, $newPassword): JsonResponse
     {
-        if($user != null){
-            if(!Hash::check($password, $user->password)){
+        if ($user != null) {
+            if (!Hash::check($password, $user->password)) {
                 throw ValidationException::withMessages([
                     'password' => "Mật khẩu hiện tại không đúng"
                 ]);
             }
 
-            if(Hash::check($newPassword, $user->password)){
+            if (Hash::check($newPassword, $user->password)) {
                 throw ValidationException::withMessages([
                     'new_password' => "Mật khẩu mới không được trùng với mật khẩu cũ"
                 ]);
             }
 
             $user->password = bcrypt($newPassword);
-            if($user->save()){
+            if ($user->save()) {
                 return Helper::successResponse("Change password success!");
             }
         }
@@ -81,7 +88,7 @@ class UserRepository extends BaseRepository
      */
     public function doLock($id): JsonResponse
     {
-        if($id === auth()->id()){
+        if ($id === auth()->id()) {
             throw ValidationException::withMessages([
                 'message' => 'Không thể tự khóa tài khoản của mình'
             ]);
@@ -89,13 +96,13 @@ class UserRepository extends BaseRepository
 
         $user = User::query()->find($id);
 
-        if($user){
+        if ($user) {
             // only lock user active, don't lock user penning
-            if($user->status == User::ACTIVE){
+            if ($user->status == User::ACTIVE) {
                 $user->status = User::LOCKED;
             }
 
-            if($user->save()){
+            if ($user->save()) {
                 return Helper::successResponse("Lock success!");
             } else {
                 return Helper::errorResponse("error");
@@ -109,12 +116,12 @@ class UserRepository extends BaseRepository
     {
         $user = User::query()->find($id);
 
-        if($user){
-            if($user->status == User::LOCKED){
+        if ($user) {
+            if ($user->status == User::LOCKED) {
                 $user->status = User::ACTIVE;
             }
 
-            if($user->save()){
+            if ($user->save()) {
                 return Helper::successResponse("Unlock success!");
             } else {
                 return Helper::errorResponse("error");
@@ -128,9 +135,9 @@ class UserRepository extends BaseRepository
     {
         $model = User::query()->find($arr['id']);
 
-        if($model != null){
+        if ($model != null) {
             $model->fill($arr);
-            if($model->save()){
+            if ($model->save()) {
                 return Helper::successResponse($model);
             }
         }

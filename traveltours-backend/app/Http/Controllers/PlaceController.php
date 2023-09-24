@@ -8,12 +8,40 @@ use App\Http\Requests\Place\StoreRequest;
 use App\Http\Requests\Place\UpdateRequest;
 use App\Models\Place;
 use \App\Helper;
+use Illuminate\Http\Request;
 
 class PlaceController extends BaseController
 {
     public function __construct(PlaceRepository $repository)
     {
         $this->repository = $repository;
+    }
+
+    public function sellerListing(Request $request)
+    {
+        $keyword = $request->query('keyword');
+        $page = $this->getPage($request);
+        $pageSize = $this->getPageSize($request);
+        $orderBy = ['created_at'];
+        $orderType = ['desc'];
+        $created_by = auth()->id();
+        $filter = [$created_by];
+        return $this->repository->doListSeller($keyword, $page, $pageSize, $orderBy, $orderType, $filter);
+    }
+
+    public function allSellerListing()
+    {
+        $query = Place::query(); // create new query
+        // dd($query->count());
+        $result = $query->get()->toArray();
+        $list = [];
+        $id = auth()->id();
+        foreach ($result as $key => $value) {
+            if ($value['created_by'] == $id) {
+                $list[] = $value;
+            }
+        }
+        return \App\Helper::successResponse($list);
     }
 
     public function store(StoreRequest $request)
@@ -29,7 +57,7 @@ class PlaceController extends BaseController
                 }
             }
 
-
+            $request->created_by = auth()->id();
             $request->images = $listImg;
         }
 
@@ -53,6 +81,7 @@ class PlaceController extends BaseController
 
 
             $request->images = $listImg;
+            $request->created_by = auth()->id();
         }
         return $this->updateTemplate($request, Place::UPDATE_FIELDS);
     }

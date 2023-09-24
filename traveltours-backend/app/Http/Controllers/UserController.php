@@ -29,6 +29,11 @@ class UserController extends BaseController
         return $this->repository->doAssign($request);
     }
 
+    public function assignSellerRole(Request $request): JsonResponse
+    {
+        return $this->repository->updateSeller($request);
+    }
+
     /**
      * @param ChangePasswordRequest $request
      * @return JsonResponse

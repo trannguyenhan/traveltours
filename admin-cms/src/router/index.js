@@ -75,12 +75,6 @@ export const constantRoutes = [
         meta: { title: 'Coupon', icon: 'table' }
       },
       {
-        path: 'categories',
-        name: 'Categories',
-        component: () => import('@/views/tour/category'),
-        meta: { title: 'Category', icon: 'table' }
-      },
-      {
         path: 'tour-guides',
         name: 'Tour Guides',
         component: () => import('@/views/tour/tour_guide'),
@@ -98,6 +92,7 @@ export const constantRoutes = [
   {
     path: '/place',
     component: Layout,
+
     // redirect: '/tour/categories',
     name: 'Place Management',
     meta: { title: 'Place Management', icon: 'el-icon-location' },
@@ -118,15 +113,34 @@ export const constantRoutes = [
 
     ]
   },
+
   {
     path: '/',
     component: Layout,
-    redirect: '/order',
+    redirect: '/category',
+    children: [{
+      path: 'category',
+      name: 'category',
+      component: () => import('@/views/tour/category'),
+      meta: { title: 'Category', icon: 'table' }
+    }]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    name: 'Order Management',
+    meta: { title: 'Order Management', icon: 'el-icon-location' },
     children: [{
       path: 'order',
       name: 'order',
       component: () => import('@/views/order/order'),
       meta: { title: 'Order', icon: 'dashboard' }
+    },
+    {
+      path: 'thongke',
+      name: 'thongke1',
+      component: () => import('@/views/order/thongke'),
+      meta: { title: 'Thống kê', icon: 'dashboard' }
     }]
   },
 

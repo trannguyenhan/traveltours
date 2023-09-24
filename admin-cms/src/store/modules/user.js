@@ -24,6 +24,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLE: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -52,10 +55,19 @@ const actions = {
           return reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
+        const { name, avatar, roles } = data
+
+        let lroles = [];
+        for (let i = 0; i < roles.length; i++) {
+          lroles.push(roles[i].pivot.role_id);
+        }
+        if (lroles.includes(1)) commit('SET_ROLE', 1)
+        if (lroles.includes(3)) commit('SET_ROLE', 3)
+
 
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
+
         resolve(data)
       }).catch(error => {
         reject(error)

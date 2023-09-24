@@ -39,7 +39,8 @@ class Place extends Model
         'address_detail',
         'name',
         'description',
-        'images'
+        'images',
+        'created_by'
     ];
 
     const INSERT_FIELDS = [
@@ -49,7 +50,8 @@ class Place extends Model
         'address_detail',
         'name',
         'description',
-        'images'
+        'images',
+        'created_by'
     ];
 
     const UPDATE_FIELDS = [

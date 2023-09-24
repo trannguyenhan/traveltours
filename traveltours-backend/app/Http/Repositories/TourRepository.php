@@ -38,45 +38,47 @@ class TourRepository extends BaseRepository
     {
         $query = Tour::query();
 
-        [$minRating, $price, $duration, $places, $categories] = $filter;
+
+        [$minRating, $price, $duration, $places, $categories, $created_by] = $filter;
         $query = $this->search($query, $keyword);
         $query = $this->relationships($query);
 
-        if(Schema::hasColumn($this->_model->getTable(), $orderBy)){
+        if (Schema::hasColumn($this->_model->getTable(), $orderBy)) {
             $query = $query->orderBy($orderBy, $orderType);
         }
 
-        if($price != null){
-            $query = $query->whereHas('price', function($q) use ($price){
+
+        if ($price != null) {
+            $query = $query->whereHas('price', function ($q) use ($price) {
                 $q->where('adult', '>', $price[0])
                     ->where('adult', '<', $price[1]);
             });
         }
 
-        if($duration != null){
+        if ($duration != null) {
             $query = $query->whereBetween('range', [$duration[0], $duration[1]]);
         }
 
-        if($places != null){
+        if ($places != null) {
             $queryPlaces = Place::query();
-            foreach ($places as $place){
+            foreach ($places as $place) {
                 $queryPlaces = $queryPlaces->orWhere('name', 'LIKE', "%$place%");
             }
             $places = $queryPlaces->get()->pluck('id')->toArray();
 
-            foreach ($places as $place){
+            foreach ($places as $place) {
                 $query = $query->orWhereRaw("JSON_CONTAINS(places, '$place', '$')");
             }
         }
 
         $result = $query->get();
 
-        if($categories != null){
-            $result = $result->filter(function($item) use ($categories){
-                foreach ($categories as $category){
+        if ($categories != null) {
+            $result = $result->filter(function ($item) use ($categories) {
+                foreach ($categories as $category) {
                     $lst = $item->categories;
-                    foreach ($lst as $itm){
-                        if($itm->name == $category){
+                    foreach ($lst as $itm) {
+                        if ($itm->name == $category) {
                             return true;
                         }
                     }
@@ -84,24 +86,34 @@ class TourRepository extends BaseRepository
 
                 return false;
             });
-
         }
 
-        if($minRating != null){
-            $result = $result->filter(function ($item) use ($minRating){
+        if ($minRating != null) {
+            $result = $result->filter(function ($item) use ($minRating) {
                 $avgRating = $item->reviews->avg('star');
                 return $avgRating > $minRating;
             });
         }
 
+        if ($created_by != null) {
+            $result = $result->filter(function ($item) use ($created_by) {
+                return $item->created_by == $created_by;
+            });
+        }
         $total = count($result);
+        if ($page == -1) {
+            $re = [];
+            foreach ($result as $item) {
+                $re[] = $item;
+            }
+            return \App\Helper::successResponseList($re, $total);
+        }
         $newResult = [];
 
-        foreach ($result->forPage($page - 1, $pageSize) as $item){
+        foreach ($result->forPage($page, $pageSize) as $item) {
             $newResult[] = $item;
         }
         $result = $newResult;
-
         return \App\Helper::successResponseList($result, $total);
     }
 }

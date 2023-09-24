@@ -48,6 +48,7 @@ class Tour extends Model
         'max_slot' => 'int',
         'slot' => 'int',
         'places' => 'array',
+        'created_by' => 'int'
     ];
 
     protected $dates = [
@@ -66,7 +67,8 @@ class Tour extends Model
         'places',
         'max_slot',
         'slot',
-        'name'
+        'name',
+        'created_by'
     ];
 
     const INSERT_FIELDS = [
@@ -81,7 +83,8 @@ class Tour extends Model
         'places',
         'max_slot',
         'slot',
-        'name'
+        'name',
+        'created_by'
     ];
 
     const UPDATE_FIELDS = [
@@ -105,6 +108,7 @@ class Tour extends Model
         return $this->belongsToMany(Category::class, 'tour_category', 'tour_id', 'category_id');
     }
 
+
     public function dest(): BelongsTo
     {
         return $this->belongsTo(Place::class, 'dest');
@@ -125,6 +129,4 @@ class Tour extends Model
     {
         return $this->belongsTo(TourGuide::class, 'tour_guide_id');
     }
-
-
 }

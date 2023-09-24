@@ -43,6 +43,9 @@ Route::group([
     Route::group(['prefix' => '/user'], function () {
         Route::post('assign', [UserController::class, 'assignAccount'])->name('assign')
             ->middleware(MID_ROLE_ADMIN);
+        Route::post('assignSellerRole', [UserController::class, 'assignSellerRole'])->name('assignSellerRole')
+            ->middleware(MID_ROLE_ADMIN);
+
         Route::post('lock', [UserController::class, 'lockUser'])->name('lock')
             ->middleware(MID_ROLE_ADMIN);
         Route::post('unlock', [UserController::class, 'unlockUser'])->name('unlock')
@@ -63,12 +66,16 @@ Route::group([
     });
 
     Route::group(['prefix' => '/place'], function () {
+        Route::get('/sellerListing', [PlaceController::class, 'sellerListing'])
+            ->middleware(MID_ROLE_SELLER);
+        Route::get('/allSellerListing', [PlaceController::class, 'allSellerListing'])
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/store', [PlaceController::class, 'store'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/update', [PlaceController::class, 'update'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/delete', [PlaceController::class, 'delete'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
     });
 
     Route::group(['prefix' => '/review'], function () {
@@ -81,11 +88,15 @@ Route::group([
 
     Route::group(['prefix' => '/tour'], function () {
         Route::post('/store', [TourController::class, 'store'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
+        Route::get('/seller/listing', [TourController::class, 'sellerListing'])
+            ->middleware(MID_ROLE_SELLER);
+        Route::get('/seller/listing/all', [TourController::class, 'allSellerListing'])
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/update', [TourController::class, 'update'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/delete', [TourController::class, 'delete'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
     });
 
     Route::group(['prefix' => '/category'], function () {
@@ -98,23 +109,25 @@ Route::group([
     });
 
     Route::group(['prefix' => '/tour-guide'], function () {
+        Route::get('/sellerlisting', [TourGuideController::class, 'listing']);
         Route::post('/store', [TourGuideController::class, 'store'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/update', [TourGuideController::class, 'update'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
         Route::post('/delete', [TourGuideController::class, 'delete'])
-            ->middleware(MID_ROLE_ADMIN);
+            ->middleware(MID_ROLE_SELLER);
     });
 
     Route::group(['prefix' => '/order', 'middleware' => 'auth'], function () {
         Route::get('/listing', [OrderController::class, 'listing']);
+        Route::get('/seller/listing', [OrderController::class, 'sellerListing']);
         Route::post('/store', [OrderController::class, 'store']);
         Route::post('/update', [OrderController::class, 'update']);
         Route::post('/delete', [OrderController::class, 'delete']);
         Route::post('/accept', [OrderController::class, 'accept']);
     });
 
-    Route::group(['prefix' => '/coupon', 'middleware' => MID_ROLE_ADMIN], function (){
+    Route::group(['prefix' => '/coupon', 'middleware' => MID_ROLE_SELLER], function () {
         Route::post('/store', [CouponsController::class, 'store']);
         Route::post('/update', [CouponsController::class, 'update']);
         Route::post('/delete', [CouponsController::class, 'delete']);
@@ -122,6 +135,11 @@ Route::group([
 });
 
 Route::get('review/listing', [ReviewController::class, 'listing']);
+Route::get('/totalmonth/{year}/{month}', [TourController::class, 'totalMonth']);
+Route::get('/tourintime/{year}/{month}', [TourController::class, 'tourInTime']);
+Route::get('/turnoverintime/{year}/{month}', [TourController::class, 'thuNhapMoiThang']);
+Route::get('/totalcategory', [TourController::class, 'totalCategory']);
+Route::get('/totalYear', [TourController::class, 'totalYear']);
 Route::get('tour/listing', [TourController::class, 'listing']);
 Route::get('place/listing', [PlaceController::class, 'listing']);
 Route::get('coupon/listing', [CouponsController::class, 'listing']);
@@ -132,7 +150,7 @@ Route::get('tour/detail/{id}', [TourController::class, 'detail']);
 Route::get('tour-guide/listing', [TourGuideController::class, 'listing']);
 Route::get('order/detail/{id}', [OrderController::class, 'detail']);
 Route::get('order/all/{id}', [OrderController::class, 'all']);
-Route::get('coupon/check/{couponCode}', [CouponsController::class, 'checkCouponCode']);
+Route::get('coupon/check/{couponCode}/{tour_id}/{seller_id}', [CouponsController::class, 'checkCouponCode']);
 Route::get('order/check-book-tour/{tourId}/{userId}', [OrderController::class, 'checkBookTour']);
 
 Route::get('vietnam-address', function () {

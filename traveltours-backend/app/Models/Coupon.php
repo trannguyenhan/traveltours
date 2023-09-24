@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Coupon
@@ -25,32 +26,36 @@ class Coupon extends Model
 {
     use HasFactory;
 
-	protected $table = 'coupons';
+    protected $table = 'coupons';
 
-	protected $casts = [
-		'discount' => 'float',
-		'threshold' => 'float'
-	];
+    protected $casts = [
+        'discount' => 'float',
+        'threshold' => 'float'
+    ];
 
-	protected $dates = [
-		'start_date',
-		'end_date'
-	];
+    protected $dates = [
+        'start_date',
+        'end_date'
+    ];
 
-	protected $fillable = [
-		'code',
-		'discount',
-		'start_date',
-		'end_date',
-		'threshold'
-	];
+    protected $fillable = [
+        'code',
+        'discount',
+        'start_date',
+        'end_date',
+        'threshold',
+        'tour_id',
+        'created_by'
+    ];
 
     const INSERT_FIELDS = [
         'code',
         'discount',
         'start_date',
         'end_date',
-        'threshold'
+        'threshold',
+        'tour_id',
+        'created_by'
     ];
 
     const UPDATE_FIELDS = [
@@ -59,11 +64,18 @@ class Coupon extends Model
         'discount',
         'start_date',
         'end_date',
-        'threshold'
+        'threshold',
+        'tour_id',
+        'created_by'
     ];
 
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'coupon_id');
+    }
+
+    public function tour(): BelongsTo
+    {
+        return $this->belongsTo(Tour::class, 'tour_id');
     }
 }

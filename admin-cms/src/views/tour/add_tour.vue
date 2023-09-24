@@ -1,105 +1,55 @@
 <template>
   <div class="container">
-    <el-form
-      ref="dataForm"
-      :model="tour"
-      label-position="left"
-      style="width: 500px; margin-left: 250px"
-    >
+    <el-form ref="dataForm" :model="tour" label-position="left" style="width: 500px; margin-left: 250px">
       <el-form-item label="Name" prop="title">
         <el-input v-model="tour.name" />
       </el-form-item>
-      <el-form-item label="Category"
-        ><el-select
-          v-model="tour.categories"
-          multiple
-          placeholder="Select Category"
-        >
-          <el-option
-            v-for="item in this.all_categories"
-            :key="Number(item.id)"
-            :label="item.name"
-            :value="Number(item.id)"
-          /> </el-select
-      ></el-form-item>
+      <el-form-item label="Category">
+        <el-select v-model="tour.categories" multiple placeholder="Select Category">
+          <el-option v-for="item in this.all_categories" :key="Number(item.id)" :label="item.name"
+            :value="Number(item.id)" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="Range" prop="title">
         <el-input v-model="tour.range" type="number" label="Range" />
       </el-form-item>
       <el-form-item label="Max Slot" prop="title">
-        <el-input
-          v-model="tour.max_slot"
-          type="number"
-          step="1"
-          label="Range"
-        />
+        <el-input v-model="tour.max_slot" type="number" step="1" label="Range" />
       </el-form-item>
 
       <el-form-item label="Hotel Star" prop="title">
-        <el-input
-          v-model="tour.hotel_star"
-          type="number"
-          step="1"
-          :min="1"
-          :max="5"
-          label=""
-        />
+        <el-input v-model="tour.hotel_star" type="number" step="1" :min="1" :max="5" label="" />
       </el-form-item>
       <el-form-item label="Vehicle" prop="title">
         <el-input v-model="tour.vehicle" />
       </el-form-item>
       <el-form-item label="Start Date" prop="title">
-        <el-input
-          v-model="tour.start_date"
-          placeholder="Pick a date"
-          type="date"
-        />
+        <el-input v-model="tour.start_date" placeholder="Pick a date" type="date" />
       </el-form-item>
       <el-form-item label="Schedule" prop="title">
-        <el-input
-          v-model="tour.schedule"
-          autosize
-          type="textarea"
-          multiple="multiple"
-          placeholder="Lịch trình"
-        />
+        <el-input v-model="tour.schedule" autosize type="textarea" multiple="multiple" placeholder="Lịch trình" />
       </el-form-item>
 
-      <el-form-item label="Places"
-        ><el-select v-model="tour.places" multiple placeholder="Select Places">
-          <el-option
-            v-for="item in this.all_places"
-            :key="Number(item.id)"
-            :label="item.name"
-            :value="Number(item.id)"
-          /> </el-select
-      ></el-form-item>
+      <el-form-item label="Places">
+        <el-select v-model="tour.places" multiple placeholder="Select Places">
+          <el-option v-for="item in this.all_places" :key="Number(item.id)" :label="item.name"
+            :value="Number(item.id)" />
+        </el-select>
+      </el-form-item>
 
       <el-form-item label="Giá vé người lớn">
-        <el-input
-          type="number"
-          step="100000"
-          v-model="tour.adult_price"
-          autocomplete="off"
-        ></el-input>
+        <el-input type="number" step="100000" v-model="tour.adult_price" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="Giá vé trẻ em">
-        <el-input
-          type="number"
-          step="100000"
-          v-model="tour.child_price"
-          autocomplete="off"
-        ></el-input>
+        <el-input type="number" step="100000" v-model="tour.child_price" autocomplete="off"></el-input>
       </el-form-item>
 
-      <el-form-item label="Guide"
-        ><el-select v-model="tour.tour_guide_id" placeholder="Select Guide">
-          <el-option
-            v-for="item in this.all_guides"
-            :key="Number(item.id)"
-            :label="item.name"
-            :value="Number(item.id)"
-          /> </el-select
-      ></el-form-item>
+      <el-form-item label="Guide">
+        <el-select v-model="tour.tour_guide_id" placeholder="Select Guide">
+          <el-option v-for="item in this.all_guides" :key="Number(item.id)" :label="item.name"
+            :value="Number(item.id)" />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Create</el-button>
         <el-button @click="onCancel">Cancel</el-button>
@@ -110,7 +60,7 @@
 
 <script>
 import { createTour } from "@/api/tour";
-import { getListPlace } from "@/api/place";
+import { getListPlace, getAllPlace } from "@/api/place";
 import { getListCategory } from "@/api/category";
 import { getListTourGuide } from "@/api/tour_guide";
 
@@ -136,15 +86,61 @@ export default {
       all_categories: [],
       all_guides: [],
       listLoading: null,
+      errors: [],
     };
   },
   created() {
     this.fetchData();
   },
   methods: {
+    checkForm() {
+      this.errors = []
+
+      if (!this.tour.name) {
+        this.errors.push("Chưa có tên tour");
+      }
+
+      if (!this.tour.categories.length) {
+        this.errors.push("Chưa có category");
+      }
+      if (this.tour.range <= 0) {
+        this.errors.push("Số ngày của tour không hợp lệ");
+      }
+      if (this.tour.max_slot <= 0) {
+        this.errors.push("Số khách tối đa không hợp lệ");
+      }
+      if (!this.tour.start_date) {
+        this.errors.push("Chưa chọn ngày bắt đầu");
+      }
+      if (!this.tour.schedule) {
+        this.errors.push("Chưa có lịch trình");
+      }
+      if (!this.tour.places.length) {
+        this.errors.push("Chưa có địa điểm sẽ đi qua");
+      }
+      if (this.tour.adult_price <= 0) {
+        this.errors.push("Giá vé người lớn không hợp lệ");
+      }
+      if (this.tour.child_price <= 0) {
+        this.errors.push("Giá vé trẻ em không hợp lệ");
+      }
+      if (!this.tour.tour_guide_id) {
+        this.errors.push("Chưa chọn hướng dẫn viên");
+      }
+      if (this.errors.length > 0) {
+        this.$notify({
+          message: this.errors[0],
+          type: 'error'
+        })
+        return false
+      }
+
+      return true
+    },
+
     async fetchData() {
       this.tour = Object.assign({}, this.defaultTour);
-      getListPlace().then((response) => {
+      getAllPlace().then((response) => {
         this.all_places = response.data;
       });
 
@@ -158,21 +154,25 @@ export default {
     },
 
     onSubmit() {
-      this.tour.places = this.convertNumber(this.tour.places);
-      this.tour.range = Number(this.tour.range);
-      this.tour.start_date = new Date(this.tour.start_date);
-      this.tour.dest = Number(this.tour.places[this.tour.places.length - 1]);
+      if (this.checkForm()) {
+        console.log(99);
+        this.tour.places = this.convertNumber(this.tour.places);
+        this.tour.range = Number(this.tour.range);
+        this.tour.start_date = new Date(this.tour.start_date);
+        this.tour.dest = Number(this.tour.places[this.tour.places.length - 1]);
 
-      console.log(this.tour);
-      createTour(this.tour).then((response) => {
-        if (response.code === 0) {
-          this.$notify({
-            message: "Create success",
-            type: "success",
-          });
-          this.$router.push("/tour/listing");
-        }
-      });
+        createTour(this.tour).then((response) => {
+          console.log(response);
+          if (response.code === 0) {
+            this.$notify({
+              message: "Create success",
+              type: "success",
+            });
+            this.$router.push("/tour/listing");
+          }
+        });
+      }
+
     },
 
     onCancel() {
@@ -197,9 +197,11 @@ export default {
 .line {
   text-align: center;
 }
+
 .m-2 {
   width: 500px;
 }
+
 a {
   text-decoration: none;
 }

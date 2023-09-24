@@ -10,6 +10,7 @@ const ROLE_SELLER = 'seller';
 
 const MID_ROLE_ADMIN = 'role:admin';
 const MID_ROLE_MEMBER = 'role:member';
+const MID_ROLE_SELLER = 'role:seller';
 
 const FILTER_TYPE = [
     'NUMBER' => "number",

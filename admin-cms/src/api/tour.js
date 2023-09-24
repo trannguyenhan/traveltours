@@ -1,13 +1,44 @@
 import request from '@/utils/request'
 
-export function getListTour(params) {
+export function getListTour(page, keyWord) {
+  if (keyWord !== '') page += '&keyword=' + keyWord
   return request({
-    url: '/tour/listing',
+    url: '/tour/seller/listing?page=' + page,
+    method: 'get',
+  })
+}
+
+export function getAllTours(params) {
+  return request({
+    url: '/tour/seller/listing/all',
     method: 'get',
     params
   })
 }
 
+export function getAllCategories(params) {
+  return request({
+    url: 'totalcategory/',
+    method: 'get',
+    params
+  })
+}
+
+export function getDetailTurnover(year, month) {
+
+  return request({
+    url: `turnoverintime/${year}/${month}/`,
+    method: 'get',
+  })
+}
+
+export function getTurnover(params) {
+  return request({
+    url: '/totalYear',
+    method: 'get',
+    params
+  })
+}
 export function createTour(params) {
   return request({
     url: '/tour/store',

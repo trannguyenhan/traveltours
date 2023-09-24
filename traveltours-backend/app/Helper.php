@@ -127,7 +127,7 @@ class Helper
 
         if ($type == 'user') {
             $avatar = User::query()->find($id)->avatar;
-            if ($avatar != null) {
+            if ($avatar != null and $avatar != "http://localhost:8000/uploads/user\avatardefault.png") {
                 $baseUrl = URL::to("/");
                 $avatar = str_replace($baseUrl, '', $avatar);
                 if (File::exists(public_path($avatar))) {

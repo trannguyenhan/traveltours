@@ -1,16 +1,11 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
+    <input type="text" v-model="tourName" placeholder="Search Tours..." />
+    <el-button @click="fetchData()">Search</el-button>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Tour Name">
@@ -39,14 +34,16 @@
           {{ scope.row.total_price }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Tax">
-        <template slot-scope="scope">
-          {{ scope.row.tax }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Total Price">
+
+      <el-table-column align="center" label="Payment Method">
         <template slot-scope="scope">
           {{ convertPayment(scope.row.payment_method) }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="Phone Number">
+        <template slot-scope="scope">
+          {{ scope.row.phone_number }}
         </template>
       </el-table-column>
 
@@ -58,26 +55,31 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        label="Actions"
-        align="center"
-        width="300"
-        class-name="small-padding fixed-width"
-      >
+      <el-table-column label="Actions" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="accept(scope.$index)">
             Accept
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index)"
-          >
+          <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">
             Delete
           </el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <p class="nextprev">
+      <el-button class="paginate" @click="prevPage">
+        Previous
+      </el-button>
+
+      <el-button class="paginate1">
+        page {{ this.currentPage }} of {{ this.pageNumber }}
+      </el-button>
+      <el-button class="paginate" @click="nextPage">
+        Next
+      </el-button>
+    </p>
+
   </div>
 </template>
 
@@ -105,6 +107,10 @@ export default {
       list: null,
       order: null,
       listLoading: true,
+      currentPage: 1,
+      total: 0,
+      pageNumber: 0,
+      tourName: ''
     };
   },
   created() {
@@ -120,7 +126,12 @@ export default {
     async fetchData() {
       this.listLoading = true;
 
-      getListOrder().then((response) => {
+      getListOrder(this.currentPage, this.tourName).then((response) => {
+        this.total = response.total;
+        let pageSize = 12;
+        if (this.total % pageSize == 0) this.pageNumber = this.total / pageSize;
+        else this.pageNumber = (this.total - (this.total % pageSize)) / pageSize + 1;
+
         this.list = response.data;
         console.log(this.list[0]);
         if (this.list.length > 0) {
@@ -146,7 +157,7 @@ export default {
     },
 
     accept(index) {
-      this.list[index].status = "active";
+      this.list[index].status = "accept";
       acceptOrder({
         id: this.list[index].id,
       }).then((response) => {
@@ -171,6 +182,19 @@ export default {
         }
       });
     },
+    nextPage() {
+      if (this.currentPage + 1 <= this.pageNumber) {
+        this.currentPage += 1;
+        this.fetchData()
+      }
+    },
+
+    prevPage() {
+      if (this.currentPage - 1 >= 1) {
+        this.currentPage -= 1;
+        this.fetchData();
+      }
+    }
   },
 };
 </script>
@@ -184,5 +208,12 @@ export default {
 
 .table {
   text-align: center;
+}
+
+.nextprev {
+  position: fixed;
+  left: 900px;
+  display: inline-block;
+  bottom: 20px;
 }
 </style>

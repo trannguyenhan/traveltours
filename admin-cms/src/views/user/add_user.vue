@@ -14,7 +14,13 @@
         <el-input v-model="form.password" type="password" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button type="primary" @click="createMember(['member'])"
+          >Create Member</el-button
+        >
+        <el-button type="primary" @click="createMember(['seller', 'member'])"
+          >Create Seller</el-button
+        >
+
         <el-button @click="onCancel">Cancel</el-button>
       </el-form-item>
     </el-form>
@@ -22,7 +28,7 @@
 </template>
 
 <script>
-import { assignUser } from '@/api/user'
+import { assignUser } from "@/api/user";
 
 export default {
   data() {
@@ -31,42 +37,49 @@ export default {
         name: null,
         username: null,
         email: null,
-        password: null
+        password: null,
       },
-      form: null
-    }
+      form: null,
+    };
   },
   created() {
-    this.form = Object.assign({}, this.defaultForm)
+    this.form = Object.assign({}, this.defaultForm);
   },
   methods: {
-    onSubmit() {
-      assignUser(this.form).then(
-        response => {
+    createMember(roleArray) {
+      this.form.role = roleArray;
+      assignUser(this.form)
+        .then((response) => {
           if (response.code === 0) {
             this.$notify({
-              message: 'Create success',
-              type: 'success'
-            })
-            this.form = Object.assign({}, this.defaultForm)
-            this.$router.push('/user/listing')
+              message: "Create success",
+              type: "success",
+            });
+            this.form = Object.assign({}, this.defaultForm);
+            this.$router.push("/user/listing");
           }
         })
+        .catch((error) => {
+          console.log(error.response);
+          this.$notify({
+            message: "Tài khoản đã tồn tại",
+            type: "error",
+          });
+        });
     },
     onCancel() {
-      this.form = Object.assign({}, this.defaultForm)
+      this.form = Object.assign({}, this.defaultForm);
       this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
-    }
-  }
-}
+        message: "cancel!",
+        type: "warning",
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-.line{
+.line {
   text-align: center;
 }
 </style>
-

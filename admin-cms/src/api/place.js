@@ -7,11 +7,18 @@ export function createPlace(params) {
     data: params
   })
 }
-export function getListPlace(params) {
+export function getListPlace(page, keyWord) {
+  if (keyWord !== '') page += '&keyword=' + keyWord
   return request({
-    url: '/place/listing',
+    url: '/place/sellerListing?page=' + page,
     method: 'get',
-    params
+  })
+}
+
+export function getAllPlace(page, keyWord) {
+  return request({
+    url: '/place/allSellerListing',
+    method: 'get',
   })
 }
 

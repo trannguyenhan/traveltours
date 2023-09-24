@@ -31,7 +31,7 @@ export default function (field) {
           delete routeQueryClone[field];
         }
 
-        this.$router.push({ path: 'tours', query: routeQueryClone });
+        this.$router.push({ path: 'places', query: routeQueryClone });
         // .catch(() => {});
       },
 
