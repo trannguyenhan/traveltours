@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  admin-service:
+    image: admin-web-service:latest
+    container_name: admin-web-service
+    ports:
+      - 9528:80
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+

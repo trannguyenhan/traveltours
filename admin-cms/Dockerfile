@@ -1,14 +1,17 @@
-FROM node:12
+# FROM node as build-stage
+# WORKDIR /app
+# COPY package*.json ./
+# RUN yarn install
+# COPY ./ ./
+# RUN yarn build
 
-WORKDIR /app
+# FROM nginx as production-stage
+# RUN mkdir /app
+# COPY --from=build-stage /app/dist /app
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-ENV PATH /app/node_modules/.bin:$PATH
+FROM nginx:latest
+RUN mkdir /app
+COPY /dist /app
+COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY package.json ./
-COPY package-lock.json ./
-
-RUN npm install
-
-COPY . ./
-
-CMD ["npm", "run", "dev"]

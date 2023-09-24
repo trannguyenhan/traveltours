@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  web-service:
+    image: frontend-web-service:latest
+    container_name: frontend-web-service
+    ports:
+      - 8080:80
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+

@@ -2,13 +2,13 @@ version: "3.8"
 services: 
     backend:
         build: 
-            context: ./traveltours-backend
+            context: .
             args:
                 user: trannguyenhan
                 uid: 1000
             dockerfile: Dockerfile
         volumes:
-            - ./traveltours-backend/:/var/www/html/
+            - ./:/var/www/html/
         networks:
             - h3t
     
@@ -17,8 +17,8 @@ services:
         ports:
             - 8000:80
         volumes:
-            - ./traveltours-backend/:/var/www/html/
-            - ./traveltours-backend/nginx/conf.d:/etc/nginx/conf.d/
+            - ./:/var/www/html/
+            - ./nginx/conf.d:/etc/nginx/conf.d/
         networks:
             - h3t
 
@@ -33,19 +33,6 @@ services:
             - "9906:3306"
         volumes:
             - ./db/:/docker-entrypoint-initdb.d/
-        networks:
-            - h3t
-
-    frontend:
-        build: ./traveltours-frontend
-        ports: 
-            - 8080:8080
-        networks:
-            - h3t
-    admin:
-        build: ./admin-cms
-        ports: 
-            - 9528:9528
         networks:
             - h3t
 networks: 
